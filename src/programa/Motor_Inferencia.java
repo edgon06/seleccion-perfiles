@@ -110,6 +110,7 @@ public class Motor_Inferencia
 		setSQLCargos("SELECT (Nombre, Familia, Grupo_ocupacional, Nivel_funcional, Grupo_laboral) FROM Cargos");
 		setSQLEmpleados("SELECT * FROM Empleados");
 		// Introducir los registros de la base de datos como hechos en la base de conocimiento del MI
+		// Nota: por la forma en que funciona Jess, puede que haya que resincronizar
 		SincronizarBD(MI,cargos, empleados);
 	}
 	
