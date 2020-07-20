@@ -57,6 +57,7 @@ public class Motor_Inferencia
 		plantillas = script;
 	}
 	
+	// "/Base de Conocimiento/Plantillas.clp"
 	public void setConsultas(String script)
 	{
 		consultas = script;

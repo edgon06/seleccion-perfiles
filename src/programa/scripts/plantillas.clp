@@ -10,7 +10,7 @@
 ; Formato de declaracion de plantillas:
 
 ; (deftemplate nombre-plantilla
-;     [extends nombre-plantilla-en-la-que-se-basa]
+;     [extends nombre-plantilla-en-la-que-se-basa]                      ;(opcional) es posible definir una plantilla basada en otra definida anteriormente, en cuyo caso se 'extiende' de esa plantilla
 ;     ["Descripcion de la plantilla (opcional)"]
 ;     [(declare  (slot-specific TRUE | FALSE)                           ;(opcional)
 ;                (backchain-reactive TRUE | FALSE)                      ;(opcional)
@@ -21,7 +21,7 @@
 ;          ([(type ANY | INTEGER | FLOAT | NUMBER | SYMBOL | STRING |
 ;                 LEXEME | OBJECT | LONG)]                              ;(el tipo del slot es opcional)
 ;          [(default default value)]                                    ;(puedes asignar un valor por defecto a un slot en caso de no ser llenado)
-;          [(default-dynamic expression)]
+;          [(default-dynamic expression)]                               ;(opcional)
 ;          [(allowed-values expression+)])*)                            ;(opcional)
 ;
 ; ***************************************************************************************************************************
@@ -98,7 +98,7 @@
 ;                    (pruebas_psicotecnicas "Administrador de Soporte Tecnico")))
 
 ; ***************************************************************************************************************************
-; Insercion de varios hechos con una sola instruccion:
+; Insercion de varios hechos con una sola instruccion/comando:
  (deffacts cargo "insercion de algunos cargos"
   (nombre "ABOGADO" familia "Servicios Legales, Seguridad Pública y Actividades Afines" grupo_ocupacional "Servicios Legales" nivel_funcional "Técnico y Profesional" grupo_laboral "Profesional")
   (nombre "ADMINISTRADOR" familia "Administración, Asistencia Técnica y Actividades Afines" grupo_ocupacional "Administración General" nivel_funcional "Técnico y Profesional" grupo_laboral "Técnico")
