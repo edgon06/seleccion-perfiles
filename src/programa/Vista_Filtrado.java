@@ -20,28 +20,18 @@ public class Vista_Filtrado extends JFrame implements ActionListener{
 
 	private JButton boton_filtrar;
 	private JButton boton_limpiar;
+	private JTextField textField_Experiencia;
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					Vista_Filtrado frame = new Vista_Filtrado();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+
 
 	/**
 	 * Create the frame.
 	 */
 	public Vista_Filtrado() {
 		setResizable(false);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 655, 378);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -96,6 +86,7 @@ public class Vista_Filtrado extends JFrame implements ActionListener{
 		comboBox_sexo.setBounds(164, 144, 116, 20);
 		contentPane.add(comboBox_sexo);
 		
+		//El area laboral será el Grupo Ocupacional
 		JComboBox comboBox_area_laboral = new JComboBox();
 		comboBox_area_laboral.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] {  })); // Hay que crear y llenar esta lista 
 		comboBox_area_laboral.setBounds(164, 222, 447, 20);
@@ -105,11 +96,6 @@ public class Vista_Filtrado extends JFrame implements ActionListener{
 		comboBox_puestos.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] {}));// Hay que crear y llenar esta lista
 		comboBox_puestos.setBounds(164, 253, 447, 20);
 		contentPane.add(comboBox_puestos);
-		
-		JComboBox comboBox_cantidad_exp = new JComboBox();
-		comboBox_cantidad_exp.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] {  }));// numeros 
-		comboBox_cantidad_exp.setBounds(164, 191, 116, 20);
-		contentPane.add(comboBox_cantidad_exp);
 		
 		JTextPane textPane = new JTextPane();
 		textPane.setBounds(359, 95, 252, 93);
@@ -124,12 +110,18 @@ public class Vista_Filtrado extends JFrame implements ActionListener{
 		boton_limpiar.addActionListener(this);
 		boton_limpiar.setBounds(324, 284, 89, 23);
 		contentPane.add(boton_limpiar);
+		
+		textField_Experiencia = new JTextField();
+		textField_Experiencia.setBounds(164, 191, 116, 20);
+		contentPane.add(textField_Experiencia);
+		textField_Experiencia.setColumns(10);
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) 
 	{
 		// TODO Auto-generated method stub
+		
 		
 	}
 }

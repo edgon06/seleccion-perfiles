@@ -32,11 +32,13 @@ Nombre VARCHAR(200),
 Familia VARCHAR(100),
 Grupo_ocupacional VARCHAR(100),
 Nivel_funcional VARCHAR(1000),
-Grupo_laboral VARCHAR(10),
+Grupo_laboral VARCHAR(20),
 PDF  VARCHAR(1000),
 
 PRIMARY KEY (Codigo)
 );
+
+DROP TABLE Cargos
 
 
 -- ******************************************************************************************************
@@ -383,4 +385,6 @@ INSERT INTO Cargos (Nombre, Familia, Grupo_ocupacional, Nivel_funcional, Grupo_l
 INSERT INTO Cargos (Nombre, Familia, Grupo_ocupacional, Nivel_funcional, Grupo_laboral, PDF) VALUES ("TRAMOYISTA","Administración, Asistencia Técnica y Actividades Afines","Información, Divulgación y Relaciones Públicas","Apoyo, Auxiliar y Asistencial","Auxiliar",""); 
 
 -- ******************************************************************************************************
--- SELECT * FROM Cargos;
+ SELECT DISTINCT Familia FROM Cargos ;
+ SELECT DISTINCT Grupo_laboral FROM Cargos ;
+ SELECT DISTINCT Grupo_ocupacional FROM Cargos ;
