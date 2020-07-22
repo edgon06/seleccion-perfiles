@@ -16,18 +16,18 @@ import javax.swing.JButton;
 
 public class Vista_Filtrado extends JFrame implements ActionListener{
 
+	/* ******************************************************************************************************************************************** */
+	/* Propiedades de la clase */
 	private JPanel contentPane;
 
 	private JButton boton_filtrar;
 	private JButton boton_limpiar;
 	private JTextField textField_Experiencia;
-	/**
-	 * Launch the application.
-	 */
 
+	/* ******************************************************************************************************************************************** */
 
 	/**
-	 * Create the frame.
+	 * Construir la ventana.
 	 */
 	public Vista_Filtrado() {
 		setResizable(false);
@@ -117,6 +117,9 @@ public class Vista_Filtrado extends JFrame implements ActionListener{
 		textField_Experiencia.setColumns(10);
 	}
 
+	/* ******************************************************************************************************************************************** */
+	/* Eventos */
+	
 	@Override
 	public void actionPerformed(ActionEvent e) 
 	{

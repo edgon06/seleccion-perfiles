@@ -3,13 +3,15 @@ package programa;
 public class Controlador 
 {
 	
+	/* ******************************************************************************************************************************************** */
+	
 	/* Debe solicitar los perfiles al motor de inferencia	 */
 	private void ObtenerPerfiles()
 	{
 		
 	}
 	
-	
+	/* ******************************************************************************************************************************************** */
 	/* Debe recibir el indice del perfil seleccionado y retornar 
 	 * estructura de datos personalizada que represente un perfil 
 	 * para ser mostrada en el panel_perfil	*/
@@ -20,6 +22,8 @@ public class Controlador
 		//return perfil;
 	}
 
+	/* ******************************************************************************************************************************************** */
+	/* Propiedades de la clase */
 	/*
 	 * Debe tener un metodo para enviar los parametros de filtrado al motor de inferencia 
 	 * que retorne una lista con los perfiles que cumplan dichos parametros */

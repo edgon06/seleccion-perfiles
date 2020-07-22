@@ -5,7 +5,7 @@ import java.awt.EventQueue;
 public class Programa {
 	
 	/**
-	 * Launch the application.
+	 * Metodo Principal.
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {

@@ -38,7 +38,8 @@ import java.awt.Dimension;
 import javax.swing.JTextField;
 import javax.swing.JComboBox;
 public class Vista_Principal extends JFrame implements ActionListener {
-	
+	/* ******************************************************************************************************************************************** */
+	/* Propiedades de la clase */
 	private Vista_Filtrado ventanaFiltrado; 
 
 	private JPanel contentPane;
@@ -65,7 +66,7 @@ public class Vista_Principal extends JFrame implements ActionListener {
 	
 	private JMenuItem filtrar;
 	
-	
+	/* ******************************************************************************************************************************************** */
 	/* Metodo para inicializar barra de menu*/
 	private void IncilizarBarraMenu(JPanel panel) 
 	{
@@ -88,7 +89,8 @@ public class Vista_Principal extends JFrame implements ActionListener {
 		
 	}
 	
-	//Metodo para incializar los parametros de los paneles en la ventana principal
+	/* ******************************************************************************************************************************************** */
+	/* Metodo para incializar los parametros de los paneles en la ventana principal */
 	private void InicializarPaneles( JPanel panelPrincipal) 
 	{
 		
@@ -135,7 +137,8 @@ public class Vista_Principal extends JFrame implements ActionListener {
 		panelPrincipal.add(panel_contenido,BorderLayout.CENTER);
 	}
 	
-	//Metodo para cargar el panel con las opciones de filtrado
+	/* ******************************************************************************************************************************************** */
+	/* Metodo para cargar el panel con las opciones de filtrado */
 	private void CargarOpcionesFiltrado(JPanel panel)
 	{
 		panel_filtrado_norte = new JPanel();
@@ -180,8 +183,8 @@ public class Vista_Principal extends JFrame implements ActionListener {
 		 comboBox_GrupoOcupacional = new JComboBox();
 		panel_filtrado_sur.add(comboBox_GrupoOcupacional);
 	}
-	
-	//Metodo para llenar el panel de perfiles con la lista de perfiles
+	/* ******************************************************************************************************************************************** */
+	/* Metodo para llenar el panel de perfiles con la lista de perfiles */
 	private void CargarPerfiles(JPanel panel) 
 	{
 		//Establecer el Layout del panel con la lista de perfiles:
@@ -199,7 +202,8 @@ public class Vista_Principal extends JFrame implements ActionListener {
 		
 	}
 	
-	//Metodo para mostrar el perfil seleccionado en el panel de contenido
+	/* ******************************************************************************************************************************************** */
+	/* Metodo para mostrar el perfil seleccionado en el panel de contenido */
 	private void MostrarPerfil(JPanel panel)
 	{
 		//Establecer el Layout del panel con la lista de perfiles:
@@ -212,6 +216,9 @@ public class Vista_Principal extends JFrame implements ActionListener {
 		panel_perfil.revalidate();
 		panel_perfil.validate();
 	}
+	
+	/* ******************************************************************************************************************************************** */
+	/* Propiedades de la clase */
 	
 	/**
 	 * Construir la ventana.
@@ -230,8 +237,10 @@ public class Vista_Principal extends JFrame implements ActionListener {
 		IncilizarBarraMenu(contentPane);
 		InicializarPaneles(contentPane);
 	}
-
-	// Eventos de los botones
+	
+	/* ******************************************************************************************************************************************** */
+	/* Eventos de los botones */
+ 
 	@Override
 	public void actionPerformed(ActionEvent e) 
 	{
@@ -241,6 +250,8 @@ public class Vista_Principal extends JFrame implements ActionListener {
 		}			
 	}
 	
+	/* ******************************************************************************************************************************************** */
+	/* Metodo para crear  la ventana de filtrado avanzado */
 	public void crearVentanaFiltradoAvanzado()
 	{
 		try {
@@ -251,6 +262,8 @@ public class Vista_Principal extends JFrame implements ActionListener {
 		}
 	}
 	
+	/* ******************************************************************************************************************************************** */
+	/*  Metodo para mostrar la ventana de filtrado avanzado */
 	public void abrirFiltradoAvanzado()
 	{
 		ventanaFiltrado.setVisible(true);
