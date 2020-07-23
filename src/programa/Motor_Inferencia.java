@@ -7,7 +7,8 @@ import java.sql.Statement;
 
 import javax.swing.JOptionPane;
 
-import org.jpl7.Query;
+import org.jpl7.*;
+import org.jpl7.fli.*;
 
 public class Motor_Inferencia 
 {
@@ -148,13 +149,53 @@ public class Motor_Inferencia
 	{
 		try 
 		{
-			Query con = new Query(base_conocimiento);
-			String consulta = "empleado(CIP, Nombre, Apellido, Telefono,'ABOGADO', Sexo, _, _, _, _, _, _).";
-			Query ejecutar = new Query(consulta);
-			if(ejecutar.hasSolution())
-			{
-				JOptionPane.showMessageDialog(null, "Cedula: "+ ejecutar.oneSolution().get("CIP").toString() + " Nombre: "+ ejecutar.oneSolution().get("Nombre").toString());
+			
+			System.out.println("Hola Mundo");
+			
+			Query q1 = 
+				    new Query( 
+					"consult", 
+					new Term[] {new Atom("C:\\Users\\bob_0\\eclipse-workspace\\seleccion-perfiles\\src\\programa\\base_conocimiento.pl")} 
+				    );
+			
+			System.out.println( "consult " + (q1.hasSolution() ? "succeeded" : "failed"));
+			
+			
+			Variable X = new Variable("X");
+			Query q2 = 
+					  new Query( 
+					      "empleado", 
+					      new Term[] {X	,new Atom("Edwin"),new Atom("Gonzalez"),
+					      new Atom("62006000"),new Atom("ABOGADO"),new Atom("m"),new Atom("1999-02-06"),
+					      new Atom("Lic. Ing. de Sistemas y Computacion"),new Atom("2 años - ABOGADO"),
+					      new Atom("63000000 - Sr. Paz"),new Atom("Panama Oeste"),new Atom("Administrador de Soporte Tecnico")} 
+					  );
+			System.out.println( 
+					  "hay solucion? " + 
+					  ( q2.hasSolution() ? "provable" : "not provable" ) 
+					);	
+			
+			java.util.Map<String,Term>[] solutions = q2.allSolutions();
+			for ( int i=0 ; i < solutions.length ; i++ ) { 
+			  System.out.println( "X = " + solutions[i].get("X"));
 			}
+			
+			/*Query q2 = 
+					  new Query( 
+					      "empleado", 
+					      new Term[] {new Atom("'8-940-1565'"),new Atom("'Edwin'"),new Atom("'Gonzalez'"),
+					      new Atom("'62006000'"),new Atom("'ABOGADO'"),new Atom("'m'"),new Atom("'1999-02-06'"),
+					      new Atom("'Lic. Ing. de Sistemas y Computacion'"),new Atom("'2 años - ABOGADO'"),
+					      new Atom("'63000000 - Sr. Paz'"),new Atom("'Panama Oeste'"),new Atom("'Administrador de Soporte Tecnico'")} 
+					  );
+			System.out.println( 
+					  "El Resultado es " + 
+					  ( q2.hasSolution() ? "provable" : "not provable" )); */
+			/*if(q2.hasSolution())
+			{
+				JOptionPane.showMessageDialog(null, "Cedula: "+ solution.get("X"));
+			}*/
+			  
 		}catch(Exception e)
 		{
 			e.printStackTrace();

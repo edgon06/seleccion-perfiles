@@ -25,7 +25,7 @@
 % cargo(nombre, familia, gupo_ocupacional, nivel_funcional,
 % grupo_laboral).
 
-% empleado( cedula, nombre, apellido, telefono, cargo_actual,
+% empleado( 	a, nombre, apellido, telefono, cargo_actual,
 % sexo,f_nacimiento, formacion_academica, experiencia,
 % referencias_laborales, centro_regional, pruebas_psicotecnicas).
 %
