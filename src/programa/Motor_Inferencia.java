@@ -149,7 +149,7 @@ public class Motor_Inferencia
 		try 
 		{
 			Query con = new Query(base_conocimiento);
-			String consulta = "empleado(CIP, Nombre, Apellido, Telefono,'ABOGADO', Sexo, _, _, _, _, _, _)";
+			String consulta = "empleado(CIP, Nombre, Apellido, Telefono,'ABOGADO', Sexo, _, _, _, _, _, _).";
 			Query ejecutar = new Query(consulta);
 			if(ejecutar.hasSolution())
 			{
