@@ -2,11 +2,12 @@ package programa;
 
 public class Controlador 
 {
+	private Motor_Inferencia MI = new Motor_Inferencia();
 	
 	/* ******************************************************************************************************************************************** */
 	
 	/* Debe solicitar los perfiles al motor de inferencia	 */
-	private void ObtenerPerfiles()
+	public void ObtenerPerfiles()
 	{
 		
 	}
@@ -15,7 +16,7 @@ public class Controlador
 	/* Debe recibir el indice del perfil seleccionado y retornar 
 	 * estructura de datos personalizada que represente un perfil 
 	 * para ser mostrada en el panel_perfil	*/
-	private void PerfilSeleccionado(int indice_perfil)
+	public void PerfilSeleccionado(int indice_perfil)
 	{
 		
 		
@@ -27,8 +28,13 @@ public class Controlador
 	/*
 	 * Debe tener un metodo para enviar los parametros de filtrado al motor de inferencia 
 	 * que retorne una lista con los perfiles que cumplan dichos parametros */
-	private void FiltrarPerfiles()
+	public void FiltrarPerfiles()
 	{
 		
+	}
+	
+	public void PruebaConexion()
+	{
+		MI.ConsultaPrueba();
 	}
 }

@@ -41,6 +41,7 @@ public class Vista_Principal extends JFrame implements ActionListener {
 	/* ******************************************************************************************************************************************** */
 	/* Propiedades de la clase */
 	private Vista_Filtrado ventanaFiltrado; 
+	private Controlador c = new Controlador();
 
 	private JPanel contentPane;
 	private JPanel panel_lista_perfiles;
@@ -152,6 +153,7 @@ public class Vista_Principal extends JFrame implements ActionListener {
 		textField_busqueda.setColumns(35);
 		
 		 btn_busqueda = new JButton("Buscar");
+		 btn_busqueda.addActionListener(this);
 		panel_filtrado_norte.add(btn_busqueda);
 		
 		 panel_filtrado_sur = new JPanel();
@@ -247,7 +249,11 @@ public class Vista_Principal extends JFrame implements ActionListener {
 		if(e.getSource()==filtrar)
 		{
 			abrirFiltradoAvanzado();
-		}			
+		}
+		if(e.getSource()==btn_busqueda)
+		{
+			c.PruebaConexion();
+		}
 	}
 	
 	/* ******************************************************************************************************************************************** */

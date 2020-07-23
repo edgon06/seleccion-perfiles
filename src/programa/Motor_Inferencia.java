@@ -15,10 +15,9 @@ public class Motor_Inferencia
 	/* Propiedades del motor de inferencia */
 	
 	/* Motor Rete de reglas: */
-	private Rete MI; 
 	
 	/* Direcciones de scripts .clp :*/
-	private String reglas;
+	private String base_conocimiento = "consult('base_conocimiento.pl')";
 	
 	/* Instancias para conectar a la base de datos: */
 	private ConectorSQL conector;
@@ -35,9 +34,9 @@ public class Motor_Inferencia
 	/* ******************************************************************************************************************************************** */
 	/* Metodos para establecer las propiedades de la clase  */
 	
-	public void setReglas(String script)
+	public void setBaseConocimiento(String script)
 	{
-		reglas = script;
+		base_conocimiento = script;
 	}
 
 	public void setSQLCargos(String query)
@@ -51,45 +50,22 @@ public class Motor_Inferencia
 	}
 	
 	/* ******************************************************************************************************************************************** */
-	/* Metodo para ejecutar Scripts .clp */
-	
-	public static void EjecutarScript(Rete MI, String script)
-	{
-		try 
-		{
-			// Ejecutar codigo en archivo en la direccion dentro de la variable 'script'
-			MI.batch(script);
-		} catch (JessException e) 
-		{
-			JOptionPane.showMessageDialog(null, "Error al ejecutar el codigo del archivo "+ script);
-			e.printStackTrace();
-		}
-	}
+
 	
 	/* ******************************************************************************************************************************************** */
 	/* Metodo para inicializar el Motor de reglas */
 	
 	public void Inicializar()
 	{
-		// Crear instancia del motor Rete
-		MI = new Rete();
-		
-		
-		// Ejecutar script en lenguaje Jess que definira las reglas del motor de inferencia
-		EjecutarScript(MI, reglas);
-		// Ejecutar script en lenguaje Jess que definira las funciones a utilizar por el motor de inferencias
-		EjecutarScript(MI, funciones);
-		// Ejecutar script en lenguaje Jess que definira las plantillas de los hechos de la base de conocimiento
-		EjecutarScript(MI, plantillas);
-		// Ejecutar script en lenguaje Jess que definira las reglas de consulta a la base de conocimientos
-		EjecutarScript(MI, consultas);
-		
+		// Para hacer algo supongo?
+		Query con = new Query(base_conocimiento);
+				
 		// Nota: Comprobar que estas consultas tienen bien la sintaxis :v
 		setSQLCargos("SELECT (Nombre, Familia, Grupo_ocupacional, Nivel_funcional, Grupo_laboral) FROM Cargos");
 		setSQLEmpleados("SELECT * FROM Empleados");
 		// Introducir los registros de la base de datos como hechos en la base de conocimiento del MI
 		// Nota: por la forma en que funciona Jess, puede que haya que resincronizar
-		SincronizarBD(MI,cargos, empleados);
+		SincronizarBD(cargos, empleados);
 	}
 	
 	/* ******************************************************************************************************************************************** */
@@ -114,56 +90,78 @@ public class Motor_Inferencia
 	/* ******************************************************************************************************************************************** */
 	/* Metodo para introducir los registros de la base de datos como hechos en la base de conocimiento del motor de reglas */
 	
-	public void SincronizarBD(Rete MI, ResultSet cargos, ResultSet empleados)
+	public void SincronizarBD(ResultSet cargos, ResultSet empleados)
 	{
 		ConectarBD();
 		try {
-			Fact cargo_hecho = new Fact("cargo",MI);
+			
 			while(cargos.next()) 
 			{
-				cargo_hecho.setSlotValue("nombre", new Value(cargos.getString(1), RU.STRING));
-				cargo_hecho.setSlotValue("familia", new Value(cargos.getString(2), RU.STRING));
-				cargo_hecho.setSlotValue("grupo_ocupacional", new Value(cargos.getString(3), RU.STRING));
-				cargo_hecho.setSlotValue("nivel_funcional", new Value(cargos.getString(4), RU.STRING));
-				cargo_hecho.setSlotValue("grupo_laboral", new Value(cargos.getString(5), RU.STRING));
-				MI.assertFact(cargo_hecho);
+				/*
+				"nombre", cargos.getString(1));
+				"familia", cargos.getString(2));
+				"grupo_ocupacional", cargos.getString(3);
+				"nivel_funcional", cargos.getString(4));
+				"grupo_laboral", cargos.getString(5));
+				*/
 			}
-		} catch (JessException e) {
+		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "Error al insertar los hechos de cargos");
 			e.printStackTrace();
-		}catch (SQLException e) {
+		}/*catch (SQLException e) {
 			JOptionPane.showMessageDialog(null, "Error al sincronizarse con la Base de Datos");
 			e.printStackTrace();
-		}
+		}*/
 		
 		try {
-			Fact empleado_hecho = new Fact("empleado",MI);
 		
 			while(empleados.next()) 
 			{
-				empleado_hecho.setSlotValue("cedula", new Value(empleados.getString(1), RU.STRING));
-				empleado_hecho.setSlotValue("nombre", new Value(empleados.getString(2), RU.STRING));
-				empleado_hecho.setSlotValue("apellido", new Value(empleados.getString(3), RU.STRING));
-				empleado_hecho.setSlotValue("telefono", new Value(empleados.getString(4), RU.STRING));
-				empleado_hecho.setSlotValue("cargo_actual", new Value(empleados.getString(5), RU.STRING));
-				empleado_hecho.setSlotValue("sexo", new Value(empleados.getString(6), RU.STRING));
-				empleado_hecho.setSlotValue("f_nacimiento", new Value(empleados.getString(7), RU.STRING));
-				empleado_hecho.setSlotValue("formacion_academica", new Value(empleados.getString(8), RU.STRING));
-				empleado_hecho.setSlotValue("experiencia", new Value(empleados.getString(9), RU.STRING));
-				empleado_hecho.setSlotValue("referencias_laborales", new Value(empleados.getString(10), RU.STRING));
-				empleado_hecho.setSlotValue("centro_regional", new Value(empleados.getString(11), RU.STRING));
-				empleado_hecho.setSlotValue("pruebas_psicotecnicas", new Value(empleados.getString(12), RU.STRING));
-				MI.assertFact(empleado_hecho);
+			/*
+			  	("cedula", empleados.getString(1));
+			 	("nombre", empleados.getString(2));
+				("apellido", empleados.getString(3));
+				("telefono", empleados.getString(4));
+				("cargo_actual", empleados.getString(5));
+				("sexo", empleados.getString(6));
+				("f_nacimiento", empleados.getString(7));
+				("formacion_academica", empleados.getString(8));
+				("experiencia", empleados.getString(9));
+				("referencias_laborales",empleados.getString(10));
+				("centro_regional",empleados.getString(11));
+				("pruebas_psicotecnicas",empleados.getString(12));
+			 */
 			}
 			
 		
-		} catch (JessException e) {
+		} catch (Exception ex) {
 			JOptionPane.showMessageDialog(null, "Error al insertar los hechos de empleado");
-			e.printStackTrace();
-		} catch (SQLException e) {
+			ex.printStackTrace();
+		} /*catch (SQLException e) {
 			JOptionPane.showMessageDialog(null, "Error al sincronizarse con la Base de Datos");
 			e.printStackTrace();
-		}		
+		}*/		
 	}
 	/* ******************************************************************************************************************************************** */
+	
+	public void ConsultaPrueba()
+	{
+		try 
+		{
+			Query con = new Query(base_conocimiento);
+			String consulta = "empleado(CIP, Nombre, Apellido, Telefono,'ABOGADO', Sexo, _, _, _, _, _, _)";
+			Query ejecutar = new Query(consulta);
+			if(ejecutar.hasSolution())
+			{
+				JOptionPane.showMessageDialog(null, "Cedula: "+ ejecutar.oneSolution().get("CIP").toString() + " Nombre: "+ ejecutar.oneSolution().get("Nombre").toString());
+			}
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(null,"ERROR LPM");
+		}
+		
+		
+		
+	}
 }

@@ -1,0 +1,34 @@
+% Reglas
+filtrar_cargo():-.
+filtrar_cargo_anterior():-.
+filtrar_experiencia():-.
+filtrar_grupo_ocupacional():-.
+
+filtrar_cargo_cargo_anterior():-.
+filtrar_cargo_experiencia():-.
+
+filtrar_cargo_grupo_ocupacional():-.
+filtrar_cargo_anterior_experiencia():-.
+filtrar_cargo_anterior_grupo_ocupacional():-.
+
+
+filtrar_experiencia_grupo_ocupacional():-.
+filtrar_centro_regional():-.
+filtrar_edad():-.
+filtrar_sexo():-.
+
+
+
+% Hechos
+%
+% cargo(nombre, familia, gupo_ocupacional, nivel_funcional,
+% grupo_laboral)
+
+% empleado( cedula, nombre, apellido, telefono, cargo_actual,
+% sexo,f_nacimiento, formacion_academica, experiencia,
+% referencias_laborales, centro_regional, pruebas_psicotecnicas).
+%
+
+cargo('ABOGADO','Servicios Legales, Seguridad Pública y Actividades Afines','Servicios Legales','Técnico y Profesional','Profesional').
+
+empleado('8-940-1565','Edwin','Gonzalez','62006000','ABOGADO','m','1999-02-06','Lic. Ing. de Sistemas y Computacion','2 años - ABOGADO','63000000 - Sr. Paz','Panama Oeste','Administrador de Soporte Tecnico').
