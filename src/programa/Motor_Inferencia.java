@@ -7,11 +7,7 @@ import java.sql.Statement;
 
 import javax.swing.JOptionPane;
 
-import jess.Fact;
-import jess.JessException;
-import jess.RU;
-import jess.Rete;
-import jess.Value;
+import org.jpl7.Query;
 
 public class Motor_Inferencia 
 {
@@ -23,9 +19,6 @@ public class Motor_Inferencia
 	
 	/* Direcciones de scripts .clp :*/
 	private String reglas;
-	private String funciones;
-	private String plantillas;
-	private String consultas;
 	
 	/* Instancias para conectar a la base de datos: */
 	private ConectorSQL conector;
@@ -46,23 +39,7 @@ public class Motor_Inferencia
 	{
 		reglas = script;
 	}
-	
-	public void setFunciones(String script)
-	{
-		funciones = script;
-	}
-	
-	public void setPlantillas(String script)
-	{
-		plantillas = script;
-	}
-	
-	// "/Base de Conocimiento/Plantillas.clp"
-	public void setConsultas(String script)
-	{
-		consultas = script;
-	}
-	
+
 	public void setSQLCargos(String query)
 	{
 		sql_query_cargos = query;
