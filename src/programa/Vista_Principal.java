@@ -58,9 +58,9 @@ public class Vista_Principal extends JFrame implements ActionListener {
 	private JComboBox comboBox_GrupoOcupacional;
 	
 	private JLabel Label_CargoActual;
-	private JLabel Label_Experiencia;
+	private JLabel lblEdad;
 	private JLabel Label_Ocupacional; 
-	private JLabel Label_CargoAnterior;
+	private JLabel lblCentroRegional;
 
 	private JTextField textField_busqueda;
 	private JTextField textField_Experiencia;
@@ -160,8 +160,8 @@ public class Vista_Principal extends JFrame implements ActionListener {
 		panel_filtrado.add(panel_filtrado_sur);
 		panel_filtrado_sur.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
-		 Label_CargoAnterior = new JLabel("Cargo Anterior");
-		panel_filtrado_sur.add(Label_CargoAnterior);
+		 lblCentroRegional = new JLabel("Centro Regional");
+		panel_filtrado_sur.add(lblCentroRegional);
 		
 		 comboBox_CargoAnterior = new JComboBox();
 		panel_filtrado_sur.add(comboBox_CargoAnterior);
@@ -172,8 +172,8 @@ public class Vista_Principal extends JFrame implements ActionListener {
 		 comboBox_CargoActual = new JComboBox();
 		panel_filtrado_sur.add(comboBox_CargoActual);
 		
-		 Label_Experiencia = new JLabel("A\u00F1os de Experiencia");
-		panel_filtrado_sur.add(Label_Experiencia);
+		 lblEdad = new JLabel("Edad");
+		panel_filtrado_sur.add(lblEdad);
 		
 		textField_Experiencia = new JTextField();
 		panel_filtrado_sur.add(textField_Experiencia);
