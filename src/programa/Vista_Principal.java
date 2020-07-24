@@ -439,8 +439,9 @@ public class Vista_Principal extends JFrame implements ActionListener {
 		}
 		if(e.getSource()==btn_busqueda)
 		{
+			/* AQUI */
 			try {
-				if(!textField_Edad.getText().equals(""))
+				if(!textField_Edad.getText().equals(""))// radiobutton_edad.esta seleccionados
 				{
 					limpiarLista();
 					DefaultTableModel modelo_tabla = new DefaultTableModel();
