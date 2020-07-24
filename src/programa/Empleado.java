@@ -17,7 +17,30 @@ public class Empleado
 	
 	
 	/* ******************************************************************************************************************************************** */
+	/* Constructores */
 	
+	public Empleado()
+	{
+		
+	}
+	
+	public Empleado(String cedula, String nombre, String apellido,String telefono, String cargo_actual,String sexo,String f_nacimiento, String formacion_academica, String experiencia, String referencias_laborales, String centro_regional, String pruebas_psicotecnicas )
+	{
+		this.cedula = cedula; 
+		this.nombre = nombre; 
+		this.apellido = apellido;
+		this.telefono = telefono;
+		this.cargo_actual =cargo_actual;
+		this.sexo = sexo;
+		this.f_nacimiento = f_nacimiento;
+		this.formacion_academica = formacion_academica;
+		this.experiencia = experiencia;
+		this.referencias_laborales = referencias_laborales;
+		this.centro_regional = centro_regional;
+		this.pruebas_psicotecnicas = pruebas_psicotecnicas;
+	}
+	
+	/* ******************************************************************************************************************************************** */
 	public String getCedula() {
 		return cedula;
 	}

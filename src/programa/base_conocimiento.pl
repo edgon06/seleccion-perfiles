@@ -17,12 +17,11 @@
 %filtrar_centro_regional():-.
 %filtrar_edad():-.
 %filtrar_sexo():-.
-buscar_(Grupo_ocupacional,C):- cargo(Cargo_actual,_,Grupo_ocupacional,_,_), empleado(C,_,_,_,Cargo_actual,_,_,_,_,_,_,_).
+buscar1_(Grupo_ocupacional,C):- cargo(Cargo_actual,_,Grupo_ocupacional,_,_), empleado(C,_,_,_,Cargo_actual,_,_,_,_,_,_,_).
+
 
 % Hechos
 %
-
-
 % cargo(nombre, familia, gupo_ocupacional, nivel_funcional,
 % grupo_laboral).
 
