@@ -48,7 +48,8 @@ public class Vista_Principal extends JFrame implements ActionListener {
 	
 	/* Paneles */
 	private JPanel contentPane;
-	private JScrollPane panel_lista_perfiles;
+	private JPanel panel_lista_perfiles;
+	private JScrollPane scrollpanel_izquierdo;
 	private JPanel panel_filtrado;
 	private JPanel panel_contenido;
 	private JPanel panel_perfil;
@@ -124,9 +125,7 @@ public class Vista_Principal extends JFrame implements ActionListener {
 		
 		crearVentanaFiltradoAvanzado();	
 	/* Inicializar panel de lista de perfiles */
-		panel_lista_perfiles = new JScrollPane();
-		panel_lista_perfiles.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		panel_lista_perfiles.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+		panel_lista_perfiles = new JPanel();
 		panel_lista_perfiles.setToolTipText("Lista de perfiles");
 		panel_lista_perfiles.setPreferredSize(new Dimension(200, 300));// Controlar el grosor del panel
 		panel_lista_perfiles.setBorder(new LineBorder(new Color(0, 0, 0)));
@@ -138,7 +137,7 @@ public class Vista_Principal extends JFrame implements ActionListener {
 	/*	Inicializar panel de opciones de filtrado  */
 		panel_filtrado = new JPanel();
 		panel_filtrado.setBorder(new LineBorder(new Color(0, 0, 0)));
-		panel_filtrado.setPreferredSize(new Dimension(200, 80));// Controlar el grosor del panel
+		panel_filtrado.setPreferredSize(new Dimension(200, 130));// Controlar el grosor del panel Dimension(anchura, altura)
 				
 	/*	Inicializar panel del perfil seleccionado  */
 		panel_perfil = new JPanel();
@@ -154,7 +153,10 @@ public class Vista_Principal extends JFrame implements ActionListener {
 		
 		
 	/*Añadir panel de lista de perfiles al panel principal (contentPane)	 */
-		panelPrincipal.add(panel_lista_perfiles, BorderLayout.WEST);
+		scrollpanel_izquierdo = new JScrollPane(panel_lista_perfiles);
+		scrollpanel_izquierdo.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		scrollpanel_izquierdo.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+		panelPrincipal.add(scrollpanel_izquierdo, BorderLayout.WEST);
 		
 	/*Añadir panel con opciones de filtrado al panel derecho */
 		panel_contenido.add(panel_filtrado,BorderLayout.NORTH);
@@ -163,6 +165,7 @@ public class Vista_Principal extends JFrame implements ActionListener {
 	
 	/*Añadir panel donde se muestra el perfil seleccionado en el panel	derecho */
 		panel_contenido.add(panel_perfil,BorderLayout.CENTER);
+		
 		CargarPanelPerfil();
 		
 	/* Añadir el panel derecho al panel principal  */		
@@ -222,7 +225,7 @@ public class Vista_Principal extends JFrame implements ActionListener {
 	
 	/* ******************************************************************************************************************************************** */
 	/* Metodo para llenar el panel de perfiles con la lista de perfiles */
-	private void CargarPerfiles(JScrollPane panel) 
+	private void CargarPerfiles(JPanel panel) 
 	{
 		//Establecer el Layout del panel con la lista de perfiles:
 		panel_lista_perfiles.setLayout(new BoxLayout(panel_lista_perfiles, BoxLayout.Y_AXIS));
