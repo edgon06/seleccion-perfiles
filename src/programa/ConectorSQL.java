@@ -41,7 +41,9 @@ public class ConectorSQL
 			}
 				
 			conexion = DriverManager.getConnection(url, usuario, contrasena); 
-		
+			
+			
+			
 			} catch (ClassNotFoundException e) {
 				JOptionPane.showMessageDialog(null, "Error al cargar el Driver");
 				e.printStackTrace();

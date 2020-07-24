@@ -225,6 +225,7 @@ public class Vista_Principal extends JFrame implements ActionListener {
 	/**
 	 * Construir la ventana.
 	 */
+	
 	public Vista_Principal() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 802, 431);
@@ -238,6 +239,8 @@ public class Vista_Principal extends JFrame implements ActionListener {
 		
 		IncilizarBarraMenu(contentPane);
 		InicializarPaneles(contentPane);
+		
+		c.IniciarMI();
 	}
 	
 	/* ******************************************************************************************************************************************** */

@@ -33,8 +33,20 @@ public class Controlador
 		
 	}
 	
+	/* ******************************************************************************************************************************************** */
+	/* Metodo para iniciar Motor de Inferencia */
+	
+	public void IniciarMI() 
+	{
+		MI.Inicializar();
+	}
+	
+	/* ******************************************************************************************************************************************** */
+	/* Metodo para Probar si hay conexion con el Motor de Inferencia */
+	
 	public void PruebaConexion()
 	{
+		
 		MI.ConsultaPrueba();
 	}
 }

@@ -38,7 +38,7 @@ PDF  VARCHAR(1000),
 PRIMARY KEY (Codigo)
 );
 
-DROP TABLE Cargos
+-- DROP TABLE Cargos
 
 
 -- ******************************************************************************************************
@@ -211,7 +211,7 @@ INSERT INTO Cargos (Nombre, Familia, Grupo_ocupacional, Nivel_funcional, Grupo_l
 INSERT INTO Cargos (Nombre, Familia, Grupo_ocupacional, Nivel_funcional, Grupo_laboral, PDF) VALUES ("INGENIERO MECANICO INDUSTRIAL","Arquitectura, Ingeniería, Geodesia, Geografía y Actividades Afines","Ingeniería Industrial, Química y de Minas","Técnico y Profesional","Profesional",""); 
 INSERT INTO Cargos (Nombre, Familia, Grupo_ocupacional, Nivel_funcional, Grupo_laboral, PDF) VALUES ("INSTRUCTOR DE CAPACITACION","Educación","Educación","Técnico y Profesional","Técnico",""); 
 INSERT INTO Cargos (Nombre, Familia, Grupo_ocupacional, Nivel_funcional, Grupo_laboral, PDF) VALUES ("JARDINERO","Mantenimiento, Construcción, Mecánica, Artesanía, Artes Gráficas y Oficios Diversos","Oficios Diversos","Apoyo, Auxiliar y Asistencial","Apoyo",""); 
-INSERT INTO Cargos (Nombre, Familia, Grupo_ocupacional, Nivel_funcional, Grupo_laboral, PDF) VALUES ("JEFE DE DEPARTAMENTO DE CAPACITACIÓN CONTINUA EN TIC'S","Administración, Asistencia Técnica y Actividades Afines","Procesamiento Electrónico de Datos","Técnico y Profesional","Profesional",""); 
+INSERT INTO Cargos (Nombre, Familia, Grupo_ocupacional, Nivel_funcional, Grupo_laboral, PDF) VALUES ("JEFE DE DEPARTAMENTO DE CAPACITACIÓN CONTINUA EN TICS","Administración, Asistencia Técnica y Actividades Afines","Procesamiento Electrónico de Datos","Técnico y Profesional","Profesional",""); 
 INSERT INTO Cargos (Nombre, Familia, Grupo_ocupacional, Nivel_funcional, Grupo_laboral, PDF) VALUES ("JEFE DE DEPARTAMENTO DE ALMACEN","Administración, Asistencia Técnica y Actividades Afines","Ventas, Compras y Almacenamiento","Técnico y Profesional","Profesional",""); 
 INSERT INTO Cargos (Nombre, Familia, Grupo_ocupacional, Nivel_funcional, Grupo_laboral, PDF) VALUES ("JEFE DE DEPARTAMENTO DE ARCHIVOS GENERALES","Administración, Asistencia Técnica y Actividades Afines","Información, Divulgación y Relaciones Públicas","Técnico y Profesional","Profesional",""); 
 INSERT INTO Cargos (Nombre, Familia, Grupo_ocupacional, Nivel_funcional, Grupo_laboral, PDF) VALUES ("JEFE DE DEPARTAMENTO DE AUDITORIA INTERNA","Administración, Asistencia Técnica y Actividades Afines","Contabilidad, Auditoria, Banca, Finanzas y Actividades Afines","Técnico y Profesional","Profesional",""); 
@@ -385,6 +385,10 @@ INSERT INTO Cargos (Nombre, Familia, Grupo_ocupacional, Nivel_funcional, Grupo_l
 INSERT INTO Cargos (Nombre, Familia, Grupo_ocupacional, Nivel_funcional, Grupo_laboral, PDF) VALUES ("TRAMOYISTA","Administración, Asistencia Técnica y Actividades Afines","Información, Divulgación y Relaciones Públicas","Apoyo, Auxiliar y Asistencial","Auxiliar",""); 
 
 -- ******************************************************************************************************
+
+-- Consultas Utiles
  SELECT DISTINCT Familia FROM Cargos ;
  SELECT DISTINCT Grupo_laboral FROM Cargos ;
  SELECT DISTINCT Grupo_ocupacional FROM Cargos ;
+ 
+ SELECT * FROM empleados;
