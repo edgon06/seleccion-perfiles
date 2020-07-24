@@ -25,7 +25,7 @@ public class Motor_Inferencia
 	// Directorio Christian: C:\Users\\bob_0\eclipse-workspace\seleccion-perfiles\src\programa\base_conocimiento.pl
 	// Directorio Edwin: D:\Archivos\Proyectos\eclipse-workspace\seleccion-perfiles\src\programa\base_conocimiento.pl
 	
-	private String base_conocimiento = "C:\\Users\\bob_0\\eclipse-workspace\\seleccion-perfiles\\src\\programa\\base_conocimiento.pl";
+	private String base_conocimiento = "D:\\Archivos\\Proyectos\\eclipse-workspace\\seleccion-perfiles\\src\\programa\\base_conocimiento.pl";
 	
 	/* Instancias para conectar a la base de datos: */
 	private ConectorSQL conector;
@@ -99,17 +99,11 @@ public class Motor_Inferencia
 			} catch (Exception ex) {
 				JOptionPane.showMessageDialog(null, "Error al insertar los hechos de cargos");
 				ex.printStackTrace();
-			}/*catch (SQLException e) {
-				JOptionPane.showMessageDialog(null, "Error al sincronizarse con la Base de Datos");
-				e.printStackTrace();
-			}*/
-			
+			}	
 			
 			st2 = conexion.createStatement();
-			empleados = st2.executeQuery(sql_query_empleados);
-			
-			try {
-				
+			empleados = st2.executeQuery(sql_query_empleados);	
+			try {	
 				while(empleados.next()) 
 				{
 				  	e.setCedula(empleados.getString(1));
@@ -124,17 +118,13 @@ public class Motor_Inferencia
 					e.setReferencias_laborales(empleados.getString(10));
 					e.setCentro_regional(empleados.getString(11));;
 					e.setPruebas_psicotecnicas(empleados.getString(12));
-					
-					escribir(assertz(e));
-					
+		
+					escribir(assertz(e));	
 				}
 			} catch (Exception ex) {
 				JOptionPane.showMessageDialog(null, "Error al insertar los hechos de empleado");
 				ex.printStackTrace();
-			} /*catch (SQLException e) {
-				JOptionPane.showMessageDialog(null, "Error al sincronizarse con la Base de Datos");
-				e.printStackTrace();
-			}*/
+			} 
 			
 		} catch (SQLException exc) {
 			JOptionPane.showMessageDialog(null, "Error al conectarse con la Base de Datos");

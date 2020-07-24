@@ -38,6 +38,8 @@ public class Vista_Filtrado extends JFrame implements ActionListener{
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
+		Controlador c = new Controlador();
+		
 		JLabel lblCentroRegional = new JLabel("Centro Regional:");
 		lblCentroRegional.setBounds(38, 70, 116, 14);
 		contentPane.add(lblCentroRegional);
@@ -67,7 +69,6 @@ public class Vista_Filtrado extends JFrame implements ActionListener{
 		contentPane.add(label_comparar_texto);
 		
 		JComboBox comboBox_centro_regional = new JComboBox();
-		comboBox_centro_regional.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Azuero", "Bocas del Toro","Chiriqui","Cocle","Colon","Panama","Panama Oeste","Tocumen","Veraguas" }));
 		comboBox_centro_regional.setBounds(164, 67, 116, 20);
 		contentPane.add(comboBox_centro_regional);
 		
@@ -100,6 +101,8 @@ public class Vista_Filtrado extends JFrame implements ActionListener{
 		JTextPane textPane = new JTextPane();
 		textPane.setBounds(359, 95, 252, 93);
 		contentPane.add(textPane);
+		
+		c.LlenarComboBoxes(comboBox_centro_regional, comboBox_puestos, comboBox_area_laboral);
 		
 		boton_filtrar = new JButton("Filtrar");
 		boton_filtrar.addActionListener(this);
