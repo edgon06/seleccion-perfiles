@@ -48,7 +48,7 @@ public class Vista_Principal extends JFrame implements ActionListener {
 	
 	/* Paneles */
 	private JPanel contentPane;
-	private JPanel panel_lista_perfiles;
+	private JScrollPane panel_lista_perfiles;
 	private JPanel panel_filtrado;
 	private JPanel panel_contenido;
 	private JPanel panel_perfil;
@@ -124,7 +124,9 @@ public class Vista_Principal extends JFrame implements ActionListener {
 		
 		crearVentanaFiltradoAvanzado();	
 	/* Inicializar panel de lista de perfiles */
-		panel_lista_perfiles = new JPanel();
+		panel_lista_perfiles = new JScrollPane();
+		panel_lista_perfiles.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		panel_lista_perfiles.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 		panel_lista_perfiles.setToolTipText("Lista de perfiles");
 		panel_lista_perfiles.setPreferredSize(new Dimension(200, 300));// Controlar el grosor del panel
 		panel_lista_perfiles.setBorder(new LineBorder(new Color(0, 0, 0)));
@@ -220,7 +222,7 @@ public class Vista_Principal extends JFrame implements ActionListener {
 	
 	/* ******************************************************************************************************************************************** */
 	/* Metodo para llenar el panel de perfiles con la lista de perfiles */
-	private void CargarPerfiles(JPanel panel) 
+	private void CargarPerfiles(JScrollPane panel) 
 	{
 		//Establecer el Layout del panel con la lista de perfiles:
 		panel_lista_perfiles.setLayout(new BoxLayout(panel_lista_perfiles, BoxLayout.Y_AXIS));
