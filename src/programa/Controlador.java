@@ -41,6 +41,10 @@ public class Controlador
 		MI.Inicializar();
 	}
 	
+	public void EliminarBC() {
+		MI.EliminarArchivo();
+	}
+	
 	/* ******************************************************************************************************************************************** */
 	/* Metodo para Probar si hay conexion con el Motor de Inferencia */
 	
@@ -49,4 +53,5 @@ public class Controlador
 		
 		MI.ConsultaPrueba();
 	}
+
 }

@@ -37,6 +37,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import javax.swing.JTextField;
 import javax.swing.JComboBox;
+import java.awt.Font;
 public class Vista_Principal extends JFrame implements ActionListener {
 	/* ******************************************************************************************************************************************** */
 	/* Propiedades de la clase */
@@ -66,10 +67,13 @@ public class Vista_Principal extends JFrame implements ActionListener {
 	private JTextField textField_Experiencia;
 	
 	private JMenuItem filtrar;
+	private JLabel lblFormacinAcadmica;
+	private JLabel lblAosDeExperiencia;
+	private JLabel lblInformacinDeContacto;
 	
 	/* ******************************************************************************************************************************************** */
 	/* Metodo para inicializar barra de menu*/
-	private void IncilizarBarraMenu(JPanel panel) 
+	private void InicializarBarraMenu(JPanel panel) 
 	{
 		//Crear Barra de Menu 
 		JMenuBar menuBar = new JMenuBar();
@@ -133,9 +137,61 @@ public class Vista_Principal extends JFrame implements ActionListener {
 		
 	
 	//Aniadir panel donde se muestra el perfil seleccionado en el panel	derecho
-		panel_contenido.add(panel_perfil,BorderLayout.WEST);
+		panel_contenido.add(panel_perfil,BorderLayout.CENTER);
+		
+		JLabel lblNewLabel = new JLabel("Datos Personales del Aspirante");
+		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 20));
+		lblNewLabel.setBounds(10, 11, 323, 25);
+		panel_perfil.add(lblNewLabel);
+		
+		JLabel lblNewLabel_1 = new JLabel("Primer Nombre");
+		lblNewLabel_1.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 14));
+		lblNewLabel_1.setBounds(20, 47, 109, 14);
+		panel_perfil.add(lblNewLabel_1);
+		
+		JLabel lblSegundoNombre = new JLabel("Segundo Nombre");
+		lblSegundoNombre.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 14));
+		lblSegundoNombre.setBounds(230, 47, 131, 14);
+		panel_perfil.add(lblSegundoNombre);
+		
+		JLabel lblPrimerApellido = new JLabel("Primer Apellido");
+		lblPrimerApellido.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 14));
+		lblPrimerApellido.setBounds(20, 92, 109, 14);
+		panel_perfil.add(lblPrimerApellido);
+		
+		JLabel lblSegundoApellido = new JLabel("Segundo Apellido");
+		lblSegundoApellido.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 14));
+		lblSegundoApellido.setBounds(230, 92, 131, 14);
+		panel_perfil.add(lblSegundoApellido);
+		
+		JLabel lblCdula = new JLabel("C\u00E9dula");
+		lblCdula.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 14));
+		lblCdula.setBounds(35, 137, 52, 14);
+		panel_perfil.add(lblCdula);
+		
+		JLabel lblTelfono = new JLabel("Tel\u00E9fono");
+		lblTelfono.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 14));
+		lblTelfono.setBounds(35, 182, 67, 14);
+		panel_perfil.add(lblTelfono);
+		
+		lblFormacinAcadmica = new JLabel("Formaci\u00F3n Acad\u00E9mica");
+		lblFormacinAcadmica.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 14));
+		lblFormacinAcadmica.setBounds(21, 275, 155, 14);
+		panel_perfil.add(lblFormacinAcadmica);
+		
+		lblAosDeExperiencia = new JLabel("A\u00F1os de Experiencia");
+		lblAosDeExperiencia.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 14));
+		lblAosDeExperiencia.setBounds(20, 227, 145, 14);
+		panel_perfil.add(lblAosDeExperiencia);
+		
+		lblInformacinDeContacto = new JLabel("Informaci\u00F3n de Contacto de Referencias Laborales");
+		lblInformacinDeContacto.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 14));
+		lblInformacinDeContacto.setBounds(20, 356, 358, 14);
+		panel_perfil.add(lblInformacinDeContacto);
 	//Aniadir el panel derecho al panel principal		
 		panelPrincipal.add(panel_contenido,BorderLayout.CENTER);
+		
+		
 	}
 	
 	/* ******************************************************************************************************************************************** */
@@ -206,7 +262,7 @@ public class Vista_Principal extends JFrame implements ActionListener {
 	
 	/* ******************************************************************************************************************************************** */
 	/* Metodo para mostrar el perfil seleccionado en el panel de contenido */
-	private void MostrarPerfil(JPanel panel)
+	private void MostrarPerfil(Empleado empleado)
 	{
 		//Establecer el Layout del panel con la lista de perfiles:
 		panel_perfil.setLayout(null);
@@ -228,6 +284,13 @@ public class Vista_Principal extends JFrame implements ActionListener {
 	
 	public Vista_Principal() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+               c.EliminarBC();
+            }
+        });
+		
 		setBounds(100, 100, 802, 431);
 		setMinimumSize(new Dimension (1000,600));
 		
@@ -237,10 +300,12 @@ public class Vista_Principal extends JFrame implements ActionListener {
 		setContentPane(contentPane);
 		
 		
-		IncilizarBarraMenu(contentPane);
+		InicializarBarraMenu(contentPane);
 		InicializarPaneles(contentPane);
 		
 		c.IniciarMI();
+		
+		
 	}
 	
 	/* ******************************************************************************************************************************************** */

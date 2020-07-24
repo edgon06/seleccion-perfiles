@@ -1,5 +1,6 @@
 package programa;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.sql.Connection;
@@ -21,17 +22,14 @@ public class Motor_Inferencia
 	/* Motor Rete de reglas: */
 	
 	/* Direcciones de archivo .pl :*/
-	// Directorio Christian: C:\\Users\\bob_0\\eclipse-workspace\\seleccion-perfiles\\src\\programa\\base_conocimiento.pl
+	// Directorio Christian: C:\Users\\bob_0\eclipse-workspace\seleccion-perfiles\src\programa\base_conocimiento.pl
 	// Directorio Edwin: D:\Archivos\Proyectos\eclipse-workspace\seleccion-perfiles\src\programa\base_conocimiento.pl
 	
-	private String base_conocimiento = "D:\\Archivos\\Proyectos\\eclipse-workspace\\seleccion-perfiles\\src\\programa\\base_conocimiento.pl";
+	private String base_conocimiento = "C:\\Users\\bob_0\\eclipse-workspace\\seleccion-perfiles\\src\\programa\\base_conocimiento.pl";
 	
 	/* Instancias para conectar a la base de datos: */
 	private ConectorSQL conector;
 
-	
-	
-	
 	/* Cadenas con las consultas en lenguaje SQL: */
 	private String sql_query_cargos = "SELECT Nombre, Familia, Grupo_ocupacional, Nivel_funcional, Grupo_laboral FROM Cargos";
 	private String sql_query_empleados = "SELECT * FROM Empleados";
@@ -128,6 +126,7 @@ public class Motor_Inferencia
 					e.setPruebas_psicotecnicas(empleados.getString(12));
 					
 					escribir(assertz(e));
+					
 				}
 			} catch (Exception ex) {
 				JOptionPane.showMessageDialog(null, "Error al insertar los hechos de empleado");
@@ -145,7 +144,7 @@ public class Motor_Inferencia
 		{
 			try {
 				conexion.close();
-				JOptionPane.showMessageDialog(null, "Insercion realizada con exito");
+				JOptionPane.showMessageDialog(null, "Base de Conocimiento cargada con exito");
 			} catch (SQLException exc) {
 				// TODO Auto-generated catch block
 				JOptionPane.showMessageDialog(null, "Error al cerrar la conexion a la Base de Datos");
@@ -264,4 +263,21 @@ public class Motor_Inferencia
            }
         }
 	}
+	
+	public void EliminarArchivo() {
+		
+		File fichero = new File(base_conocimiento);
+
+		if (fichero.delete())
+		   System.out.println("El fichero ha sido borrado satisfactoriamente");
+		else
+		   System.out.println("El fichero no puede ser borrado");
+	}
+	
+	
+	
+	
+	
+	
+	
 }
