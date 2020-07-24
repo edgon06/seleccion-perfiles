@@ -1,4 +1,4 @@
-CREATE DATABASE UTP_empleados;
+﻿CREATE DATABASE UTP_empleados;
 -- Drop database utp_empleados;
 
 
@@ -24,9 +24,14 @@ PRIMARY KEY (CIP)
 -- FOREIGN KEY (Cargo_actual) REFERENCES Cargos(Nombre)
 );
 
-INSERT INTO Empleados VALUES ("8-333-3333","Maikol","Marin","63006000","ADMINISTRADOR DE BASE DE DATOS","m","1998-07-20","Lic. Ing. de Sistemas y Computacion","2 anios - ADMINISTRADOR DE BASE DE DATOS; 5 meses - Administrador de Soporte Tecnico","63000000 - Sra. Petronila","Panama Oeste","ADMINISTRADOR DE BASE DE DATOS");
-INSERT INTO Empleados VALUES ("9-340-3333","Petronilo","Nunez","63006000","ADMINISTRADOR DE BASE DE DATOS","m","1998-07-20","Lic. Ing. de Sistemas y Computacion","2 anios - ADMINISTRADOR DE BASE DE DATOS; 5 meses - Administrador de Soporte Tecnico","63000000 - Sra. Petronila","Panama Oeste","ADMINISTRADOR DE BASE DE DATOS");
-INSERT INTO Empleados VALUES ("7-203-3333","Braulio","Mañanitas","63006000","ADMINISTRADOR DE BASE DE DATOS","m","1998-07-20","Lic. Ing. de Sistemas y Computacion","2 anios - ADMINISTRADOR DE BASE DE DATOS; 5 meses - Administrador de Soporte Tecnico","63000000 - Sra. Petronila","Panama Oeste","ADMINISTRADOR DE BASE DE DATOS");
+INSERT INTO Empleados VALUES ("8-003-3333","Renault","Marin","63006000","ADMINISTRADOR DE BASE DE DATOS","m","1980-07-20","Lic. Ing. de Sistemas y Computacion","2 años - ADMINISTRADOR DE BASE DE DATOS; 5 meses - Administrador de Soporte Tecnico","63000000 - Sra. Petronila","Azuero","ADMINISTRADOR DE BASE DE DATOS");
+INSERT INTO Empleados VALUES ("9-340-3333","Petronilo","Nunez","63006000","ADMINISTRADOR DE BASE DE DATOS","m","1970-07-20","Lic. Ing. de Sistemas y Computacion","2 años - ADMINISTRADOR DE BASE DE DATOS; 5 meses - Administrador de Soporte Tecnico","63000000 - Sra. Petronila","Panama_Oeste","ADMINISTRADOR DE BASE DE DATOS");
+INSERT INTO Empleados VALUES ("7-203-3333","Braulio","Mañanitas","63006000","ADMINISTRADOR DE BASE DE DATOS","m","2000-07-20","Lic. Ing. de Sistemas y Computacion","2 aos - ADMINISTRADOR DE BASE DE DATOS; 5 meses - Administrador de Soporte Tecnico","63000000 - Sra. Petronila","Panama","ADMINISTRADOR DE BASE DE DATOS");
+INSERT INTO Empleados VALUES ("8-333-3333","Maikol","Marin","63006000","ADMINISTRADOR DE SOPORTE TECNICO","m","1998-07-20","Lic. Ing. de Sistemas y Computacion","2 años - ADMINISTRADOR DE RECURSOS INFORMATICOS; 5 meses - ADMINISTRADOR DE SOPORTE TECNICO","63000000 - Sra. Petronila","Panama_Oeste","ADMINISTRADOR DE SOPORTE TECNICO");
+INSERT INTO Empleados VALUES ("7-444-4444","Flavio","Castro","63000666","ADMINISTRADOR DE PROYECTO","m","1996-07-24","Lic. Ing. de Sistemas y Computacion","4 años - ADMINISTRADOR DE REDES; 6 meses - ADMINISTRADOR DE PROYECTO","63001111 - Sra. Anatasia","Azuero","ADMINISTRADOR DE PROYECTO");
+INSERT INTO Empleados VALUES ("6-555-5555","José","Espinosa","63554114","ADMINISTRADOR DE LABORATORIO DE COMPUTO","m","1990-04-28","Lic. Ing. de Sistemas y Computacion","2 años - ADMINISTRADOR WEB; 4 meses - ADMINISTRADOR DE LABORATORIO DE COMPUTO","63540077 - Sra. Anacleta","Azuero","ADMINISTRADOR DE LABORATORIO DE COMPUTO");
+INSERT INTO Empleados VALUES ("8-777-6666","Itzel","Terrado","64558888","ARCHIVISTA DIGITAL","f","1992-02-14","Lic. Ing. de Sistemas y Computacion","3 años - ARCHIVERO; 2 meses - ARCHIVISTA DIGITAL","63540000 - Sr. Petronilo","Panama_Oeste","ARCHIVISTA DIGITAL");
+INSERT INTO Empleados VALUES ("5-666-7777","Angie","Árauz","66664256","ANALISTA DE SISTEMAS","f","1996-12-31","Lic. Ing. de Sistemas y Computacion","1 años - ADMINISTRADOR DE BASE DE DATOS; 6 meses - ADMINISTRADOR DE RECURSOS INFORMATICOS","65433456 - Sr. Ernesto","Chiriqui","ANALISTA DE SISTEMAS");
 
 CREATE TABLE Cargos(
 Codigo INT AUTO_INCREMENT NOT NULL ,
@@ -40,7 +45,7 @@ PDF  VARCHAR(1000),
 PRIMARY KEY (Codigo)
 );
 
--- DROP TABLE Cargos
+-- DROP TABLE Empleados
 
 
 -- ******************************************************************************************************

@@ -7,8 +7,10 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.lang.Integer;
 
 import javax.naming.spi.DirStateFactory.Result;
 import javax.swing.JOptionPane;
@@ -27,8 +29,8 @@ public class Motor_Inferencia
 	// Directorio Christian: C:\Users\\bob_0\eclipse-workspace\seleccion-perfiles\src\programa\base_conocimiento.pl
 	// Directorio Edwin: D:\Archivos\Proyectos\eclipse-workspace\seleccion-perfiles\src\programa\base_conocimiento.pl
 	
-	private String base_conocimiento = "D:\\Archivos\\Proyectos\\eclipse-workspace\\seleccion-perfiles\\src\\programa\\base_conocimiento.pl";
-	
+	private String base_conocimiento = System.getProperty("user.dir") + "\\base_conocimiento.pl";
+
 	/* Instancias para conectar a la base de datos: */
 	private ConectorSQL conector;
 
@@ -67,6 +69,7 @@ public class Motor_Inferencia
 			
 		// Introducir los registros de la base de datos como hechos en la base de conocimiento del MI
 		SincronizarBD();
+		JOptionPane.showMessageDialog(null, base_conocimiento);
 	}
 	
 	/* ******************************************************************************************************************************************** */
@@ -248,6 +251,7 @@ public class Motor_Inferencia
 	
 	/* ******************************************************************************************************************************************** */
 	/* Metodo para obtener todos los perfiles */
+	
 	public Iterator getPerfiles()
 	{
 		Iterator perfiles = null;
@@ -270,16 +274,7 @@ public class Motor_Inferencia
 		Variable Referencias = new Variable("Referencias");
 		Variable Centro_Regional = new Variable("Centro_Regional");
 		Variable Pruebas_psicotecnicas = new Variable("Pruebas_psicotecnicas");
-		/*
-		Query q2 = 
-				  new Query( 
-				      "empleado", 
-				      new Term[] { CIP, Nombre , Apellido,
-				    		  Telefono , Cargo,
-				    		  Sexo, Fecha_nacimiento,
-				    		  Formacion_academica, Experiencia, Referencias, Centro_Regional, Pruebas_psicotecnicas} 
-				  );
-		*/
+	
 		Query q2 = 
 				  new Query( 
 				      "empleado", 
@@ -307,30 +302,166 @@ public class Motor_Inferencia
 	}
 	
 	/* ******************************************************************************************************************************************** */
+	/* Metodo para Filtrar perfiles por edad */
+	
+	public Iterator FiltrarPerfilesEdad(int Edad)
+	{
+		Iterator perfiles = null;
+		
+		Query q1 = 
+			    new Query( 
+				"consult", 
+				new Term[] {new Atom(base_conocimiento)} 
+			    );
+		
+		Variable CIP = new Variable("CIP");
+		Variable Nombre = new Variable("Nombre");
+		Variable Apellido = new Variable("Apellido");
+		Variable Telefono = new Variable("Telefono");
+		Variable Cargo = new Variable("Cargo");
+		Variable Sexo = new Variable("Sexo");
+		Variable Fecha_nacimiento = new Variable("Fecha_nacimiento");
+		Variable Formacion_academica = new Variable("Formacion_academica");
+		Variable Experiencia = new Variable("Experiencia");
+		Variable Referencias = new Variable("Referencias");
+		Variable Centro_Regional = new Variable("Centro_Regional");
+		Variable Pruebas_psicotecnicas = new Variable("Pruebas_psicotecnicas");
+	
+		Query q2 = 
+				  new Query( 
+				      "empleado", 
+				      new Term[] { CIP, Nombre , Apellido, Telefono , Cargo, Sexo, Fecha_nacimiento, Formacion_academica, Experiencia, Referencias, Centro_Regional, Pruebas_psicotecnicas } 
+				  );
+		
+		
+		if(q2.hasSolution())
+		{			
+			int y=0;
+			java.util.Map<String,Term>[] solutions = q2.allSolutions();
+			ArrayList<Empleado> p = new ArrayList<Empleado>();
+			for ( int i=0 ; i < solutions.length ; i++ ) 
+			{ 
+				if(CalcularEdad(solutions[i].get("Fecha_nacimiento").toString())==Edad)
+				{	
+					y++;
+					p.add(new Empleado(y , solutions[i].get("CIP").toString(),solutions[i].get("Nombre").toString(),solutions[i].get("Apellido").toString()));
+				}
+				
+			}	
+			
+			perfiles = p.iterator();
+		}
+		else
+		{
+			JOptionPane.showMessageDialog(null, "Hijole, creo que no se va a poder... ");
+		}
+		
+		return perfiles;
+	}
+	
+	/* ******************************************************************************************************************************************** */
+	/* Metodo para Filtrar perfiles por centro Regional */
+	
+	public Iterator FiltrarPerfilesCentroRegional(String Centro)
+	{
+		Iterator perfiles = null;
+		
+		Query q1 = 
+			    new Query( 
+				"consult", 
+				new Term[] {new Atom(base_conocimiento)} 
+			    );
+		
+		Variable CIP = new Variable("CIP");
+		Variable Nombre = new Variable("Nombre");
+		Variable Apellido = new Variable("Apellido");
+		Variable Telefono = new Variable("Telefono");
+		Variable Cargo = new Variable("Cargo");
+		Variable Sexo = new Variable("Sexo");
+		Variable Fecha_nacimiento = new Variable("Fecha_nacimiento");
+		Variable Formacion_academica = new Variable("Formacion_academica");
+		Variable Experiencia = new Variable("Experiencia");
+		Variable Referencias = new Variable("Referencias");
+		Variable Centro_Regional = new Variable("Centro_Regional");
+		Variable Pruebas_psicotecnicas = new Variable("Pruebas_psicotecnicas");
+	
+		Query q2 = 
+				  new Query( 
+				      "empleado", 
+				      new Term[] { CIP, Nombre , Apellido, Telefono , Cargo, Sexo, Fecha_nacimiento, Formacion_academica, Experiencia, Referencias, new Atom(Centro), Pruebas_psicotecnicas } 
+				  );
+		
+		
+		if(q2.hasSolution())
+		{			
+			int y=0;
+			java.util.Map<String,Term>[] solutions = q2.allSolutions();
+			ArrayList<Empleado> p = new ArrayList<Empleado>();
+			for ( int i=0 ; i < solutions.length ; i++ ) 
+			{ 
+					p.add(new Empleado(i,solutions[i].get("CIP").toString(),solutions[i].get("Nombre").toString(),solutions[i].get("Apellido").toString()));			
+			}	
+			
+			perfiles = p.iterator();
+		}
+		else
+		{
+			JOptionPane.showMessageDialog(null, "Hijole, creo que no se va a poder... ");
+		}
+		
+		return perfiles;
+	}
+	
+	/* ******************************************************************************************************************************************** */
+	/* Metodo para Filtrar perfiles por area laboral */
+	
+	public Iterator FiltrarPerfilesAreaLaboral(String grupo_laboral)
+	{
+		Iterator perfiles = null;
+		
+		Query q1 = 
+			    new Query( 
+				"consult", 
+				new Term[] {new Atom(base_conocimiento)} 
+			    );
+		
+		Variable CIP = new Variable("CIP");
+		Variable Nombre = new Variable("Nombre");
+		Variable Apellido = new Variable("Apellido");
+
+	
+		Query q2 = 
+				  new Query( 
+				      "buscar_grupo", 
+				      new Term[] { new Atom(grupo_laboral),CIP, Nombre , Apellido,} 
+				  );
+		
+		
+		if(q2.hasSolution())
+		{			
+
+			java.util.Map<String,Term>[] solutions = q2.allSolutions();
+			ArrayList<Empleado> p = new ArrayList<Empleado>();
+			for ( int i=0 ; i < solutions.length ; i++ ) 
+			{ 
+					p.add(new Empleado(i,solutions[i].get("CIP").toString(),solutions[i].get("Nombre").toString(),solutions[i].get("Apellido").toString()));			
+			}	
+			
+			perfiles = p.iterator();
+		}
+		else
+		{
+			JOptionPane.showMessageDialog(null, "Hijole, creo que no se va a poder... ");
+		}
+		
+		return perfiles;
+	}
+	
+	/* ******************************************************************************************************************************************** */
 	/* Metodo para Cargar las reglas a */
 	public void CargarReglas()
 	{
-		/*
-		 * % Reglas
-%filtrar_cargo(CIP, Cargo):-.
-
-%filtrar_cargo_anterior(CIP):-.
-%filtrar_experiencia(CIP):-.
-%filtrar_grupo_ocupacional(CIP):-.
-
-%filtrar_cargo_cargo_anterior(CIP):-.
-%filtrar_cargo_experiencia(CIP):-.
-
-%filtrar_cargo_grupo_ocupacional(CIP):-.
-%filtrar_cargo_anterior_experiencia(CIP):-.
-%filtrar_cargo_anterior_grupo_ocupacional(CIP):-.
-
-
-%filtrar_experiencia_grupo_ocupacional(CIP):-.
-%filtrar_centro_regional():-.
-%filtrar_edad():-.
-%filtrar_sexo():-.
-		*/
+		escribir("buscar_grupo(Grupo_ocupacional,C,N,A):- cargo(Cargo_actual,_,Grupo_ocupacional,_,_), empleado(C,N,A,_,Cargo_actual,_,_,_,_,_,_,_).");
 	}
 	
 	public String assertz(Empleado e)
@@ -340,12 +471,18 @@ public class Motor_Inferencia
 		return hecho;
 	}
 	
+	/* ******************************************************************************************************************************************** */
+	/* Metodo para Cargar las reglas a */
+	
 	public String assertz(Cargo c)
 	{
 		String hecho;
 		hecho = "cargo('"+c.getNombre()+"','"+c.getFamilia()+"','"+c.getGupo_ocupacional()+"','"+c.getNivel_funcional()+"','"+c.getGrupo_laboral()+"').";
 		return hecho;	
 	}
+	
+	/* ******************************************************************************************************************************************** */
+	/* Metodo para escribiren el archivo temporal*/
 	
 	public void escribir(String hecho)
 	{
@@ -372,6 +509,9 @@ public class Motor_Inferencia
         }
 	}
 	
+	/* ******************************************************************************************************************************************** */
+	/* Metodo para Eliminar el archivo temporal */
+	
 	public void EliminarArchivo() {
 		
 		File fichero = new File(base_conocimiento);
@@ -382,10 +522,20 @@ public class Motor_Inferencia
 		   System.out.println("El fichero no puede ser borrado");
 	}
 	
+	/* ******************************************************************************************************************************************** */
+	/* Metodo para Calcular edad */
 	
+	public int CalcularEdad(String nacimiento)
+	{
+		int ano =DateFormat.getDateTimeInstance().getCalendar().get(DateFormat.YEAR_FIELD)+80;
+		int ano_nacimiento = Integer.parseInt(nacimiento.substring(1, 5));
+		int edad = ano-ano_nacimiento;
+		System.out.println("Nacido: "+ano_nacimiento);
+		System.out.println("Edad: "+edad);
+		System.out.println("Año: "+ano);
+		
+		return edad;
+	}
 	
-	
-	
-	
-	
+		
 }

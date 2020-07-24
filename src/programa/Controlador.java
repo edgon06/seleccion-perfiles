@@ -39,6 +39,60 @@ public class Controlador
 		}
 	}
 	
+	public void ObtenerPerfilesEdad(DefaultTableModel modelo_tabla, ArrayList <Empleado> empleados, int Edad )
+	{
+		Iterator p;
+		String [] datos = new String[1];
+		p = MI.FiltrarPerfilesEdad(Edad);
+		while(p.hasNext())
+		{
+			
+			Empleado o = (Empleado) p.next();
+			datos[0] = o.getNombre() +" "+ o.getApellido();
+			System.out.println(datos[0]);
+			System.out.println(o.getIndice_tabla());
+			modelo_tabla.addRow(datos);
+			empleados.add(o);
+			
+		}
+	}
+	
+	public void ObtenerPerfilesCentroRegional(DefaultTableModel modelo_tabla, ArrayList <Empleado> empleados, String Centro_regional )
+	{
+		Iterator p;
+		String [] datos = new String[1];
+		p = MI.FiltrarPerfilesCentroRegional(Centro_regional);
+		while(p.hasNext())
+		{
+			
+			Empleado o = (Empleado) p.next();
+			datos[0] = o.getNombre() +" "+ o.getApellido();
+			System.out.println(datos[0]);
+			System.out.println(o.getIndice_tabla());
+			modelo_tabla.addRow(datos);
+			empleados.add(o);
+			
+		}
+	}
+	
+	public void ObtenerPerfilesAreaLaboral(DefaultTableModel modelo_tabla, ArrayList <Empleado> empleados, String Area_laboral )
+	{
+		Iterator p;
+		String [] datos = new String[1];
+		p = MI.FiltrarPerfilesAreaLaboral(Area_laboral);
+		while(p.hasNext())
+		{
+			
+			Empleado o = (Empleado) p.next();
+			datos[0] = o.getNombre() +" "+ o.getApellido();
+			System.out.println(datos[0]);
+			System.out.println(o.getIndice_tabla());
+			modelo_tabla.addRow(datos);
+			empleados.add(o);
+			
+		}
+	}
+	
 	/* ******************************************************************************************************************************************** */
 	/* Debe recibir el indice del perfil seleccionado y retornar 
 	 * estructura de datos personalizada que represente un perfil 
@@ -62,7 +116,7 @@ public class Controlador
 	
 	public void LlenarComboBoxes(JComboBox centros, JComboBox cargos, JComboBox grupos_ocupacionales)
 	{
-		centros.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Azuero", "Bocas del Toro","Chiriqui","Cocle","Colon","Panama","Panama Oeste","Tocumen","Veraguas" }));
+		centros.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] {null, "Azuero", "Bocas_del_Toro","Chiriqui","Cocle","Colon","Panama","Panama_Oeste","Tocumen","Veraguas" }));
 		
 		ConectorSQL conector = new ConectorSQL();
 		Connection conexion= conector.getConexion("UTP_empleados", "root", "");
@@ -71,6 +125,7 @@ public class Controlador
 		DefaultComboBoxModel<String> modelo_cargos = new javax.swing.DefaultComboBoxModel<String>();
 		String cargo;
 		try{
+			modelo_cargos.addElement(null);
 			Statement st2 = conexion.createStatement();
 			ResultSet CAR = st2.executeQuery("SELECT DISTINCT Nombre FROM Cargos ORDER BY Nombre");
 			try {
@@ -87,12 +142,14 @@ public class Controlador
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
 		cargos.setModel(modelo_cargos);
 		
 		/* Llenar ComboBox de Grupo Ocupacional */
 		DefaultComboBoxModel<String> modelo_grupos = new javax.swing.DefaultComboBoxModel<String>();
 		String grupo;
 		try {
+			modelo_grupos.addElement(null);
 			Statement st = conexion.createStatement();
 			ResultSet GO = st.executeQuery("SELECT DISTINCT Grupo_ocupacional FROM Cargos ORDER BY Grupo_ocupacional");
 			try {

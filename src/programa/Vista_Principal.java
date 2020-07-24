@@ -24,6 +24,7 @@ import java.awt.ScrollPane;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
@@ -245,21 +246,7 @@ public class Vista_Principal extends JFrame implements ActionListener {
 		panel_lista_perfiles.removeAll();
 		
 		lista_perfiles = new JTable();
-		/* LA WEA VA AQUI XUXA DE TU MADRE*/
-		
-		
-		
-		
-		
-		//Se crea el objeto JLabel
-		  JLabel ejemplo = new JLabel();
-		  //Le asignamos un texto
-		  ejemplo.setText("Empleados UTP");
-		//Se crea el objeto JLabel
-		  JLabel ejemplo2 = new JLabel();
-		  
-		panel.add(ejemplo);
-		panel.add(ejemplo2);
+	
 		lista_perfiles.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 			
 			@Override
@@ -416,8 +403,6 @@ public class Vista_Principal extends JFrame implements ActionListener {
     			//MostrarPerfil(c.PerfilSeleccionado("8-333-3333"));
     			DefaultTableModel modelo_tabla = new DefaultTableModel();
     			modelo_tabla.addColumn("Nombre");
-    			
-    			
     			lista_perfiles.setModel(modelo_tabla);
     			c.ObtenerPerfiles(modelo_tabla, elementos_lista);
     			panel_lista_perfiles.add(lista_perfiles);
@@ -454,10 +439,87 @@ public class Vista_Principal extends JFrame implements ActionListener {
 		}
 		if(e.getSource()==btn_busqueda)
 		{
+			try {
+				if(!textField_Edad.getText().equals(""))
+				{
+					limpiarLista();
+					DefaultTableModel modelo_tabla = new DefaultTableModel();
+	    			modelo_tabla.addColumn("Nombre");
+	    			c.ObtenerPerfilesEdad(modelo_tabla, elementos_lista, Integer.parseInt(textField_Edad.getText().toString()));
+	    			lista_perfiles.setModel(modelo_tabla);
+	    			panel_lista_perfiles.add(lista_perfiles);
+	    			panel_lista_perfiles.repaint();
+					
+				}
+				}
+				catch(Exception ex)
+				{
+					limpiarLista();
+					ex.getStackTrace();
+					DefaultTableModel modelo_tabla = new DefaultTableModel();
+	    			modelo_tabla.addColumn("Nombre");
+	    			lista_perfiles.setModel(modelo_tabla);
+					c.ObtenerPerfiles(modelo_tabla, elementos_lista);
+					panel_lista_perfiles.add(lista_perfiles);
+	    			panel_lista_perfiles.repaint();
+				}
 			
+			try {
+				if(!comboBox_Centro.getSelectedItem().toString().equals(null))
+				{
+					limpiarLista();
+					DefaultTableModel modelo_tabla = new DefaultTableModel();
+	    			modelo_tabla.addColumn("Nombre");
+	    			lista_perfiles.setModel(modelo_tabla);
+	    			c.ObtenerPerfilesCentroRegional(modelo_tabla, elementos_lista,comboBox_Centro.getSelectedItem().toString() );
+	    			panel_lista_perfiles.add(lista_perfiles);
+	    			panel_lista_perfiles.repaint();
+					System.out.println(comboBox_Centro.getSelectedItem().toString());
+				}
+				}
+				catch(Exception ex)
+				{
+					limpiarLista();
+					ex.getStackTrace();
+					DefaultTableModel modelo_tabla = new DefaultTableModel();
+	    			modelo_tabla.addColumn("Nombre");
+	    			lista_perfiles.setModel(modelo_tabla);
+					c.ObtenerPerfiles(modelo_tabla, elementos_lista);
+					panel_lista_perfiles.add(lista_perfiles);
+	    			panel_lista_perfiles.repaint();
+				}
 			
-			
+			try {
+				if(!comboBox_GrupoOcupacional.getSelectedItem().toString().equals(null))
+				{
+					limpiarLista();
+					DefaultTableModel modelo_tabla = new DefaultTableModel();
+	    			modelo_tabla.addColumn("Nombre");
+	    			lista_perfiles.setModel(modelo_tabla);
+	    			c.ObtenerPerfilesAreaLaboral(modelo_tabla, elementos_lista, comboBox_GrupoOcupacional.getSelectedItem().toString());
+	    			panel_lista_perfiles.add(lista_perfiles);
+	    			panel_lista_perfiles.repaint();
+					System.out.println(comboBox_GrupoOcupacional.getSelectedItem().toString());
+				}
+				}
+				catch(Exception ex)
+				{
+					limpiarLista();
+					ex.getStackTrace();
+					DefaultTableModel modelo_tabla = new DefaultTableModel();
+	    			modelo_tabla.addColumn("Nombre");
+	    			lista_perfiles.setModel(modelo_tabla);
+					c.ObtenerPerfiles(modelo_tabla, elementos_lista);
+					panel_lista_perfiles.add(lista_perfiles);
+	    			panel_lista_perfiles.repaint();
+				}
+					
+				
 		}
+			
+			
+			
+		
 		
 	}
 	
@@ -478,5 +540,10 @@ public class Vista_Principal extends JFrame implements ActionListener {
 	public void abrirFiltradoAvanzado()
 	{
 		ventanaFiltrado.setVisible(true);
+	}
+	
+	public void limpiarLista()
+	{
+		elementos_lista.clear();
 	}
 }
