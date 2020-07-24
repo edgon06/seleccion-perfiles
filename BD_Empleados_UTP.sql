@@ -24,7 +24,14 @@ PRIMARY KEY (CIP)
 -- FOREIGN KEY (Cargo_actual) REFERENCES Cargos(Nombre)
 );
 
-INSERT INTO Empleados VALUES ("8-333-3333","Maikol","Marin","63006000","Administrador de Soporte Tecnico","m","1998-07-20","Lic. Ing. de Sistemas y Computacion","2 anios - Administrador de Recursos Informaticos; 5 meses - Administrador de Soporte Tecnico","63000000 - Sra. Petronila","Panama Oeste","Administrador de Soporte Tecnico");
+INSERT INTO Empleados VALUES ("8-333-3333","Maikol","Marin","63006000","ADMINISTRADOR DE SOPORTE TECNICO","m","1998-07-20","Lic. Ing. de Sistemas y Computacion","2 anios - ADMINISTRADOR DE RECURSOS INFORMATICOS; 5 meses - ADMINISTRADOR DE SOPORTE TECNICO","63000000 - Sra. Petronila","Panama Oeste","ADMINISTRADOR DE SOPORTE TECNICO");
+INSERT INTO Empleados VALUES ("7-444-4444","Flavio","Castro","63000666","ADMINISTRADOR DE PROYECTO","m","1996-07-24","Lic. Ing. de Sistemas y Computacion","4 anios - ADMINISTRADOR DE REDES; 6 meses - ADMINISTRADOR DE PROYECTO","63001111 - Sra. Anatasia","Los Santos","ADMINISTRADOR DE PROYECTO");
+INSERT INTO Empleados VALUES ("6-555-5555","José","Espinosa","63554114","ADMINISTRADOR DE LABORATORIO DE COMPUTO","m","1990-04-28","Lic. Ing. de Sistemas y Computacion","2 anios - ADMINISTRADOR WEB; 4 meses - ADMINISTRADOR DE LABORATORIO DE COMPUTO","63540077 - Sra. Anacleta","Herrera","ADMINISTRADOR DE LABORATORIO DE COMPUTO");
+INSERT INTO Empleados VALUES ("8-777-6666","Itzel","Terrado","64558888","ARCHIVISTA DIGITAL","f","1992-02-14","Lic. Ing. de Sistemas y Computacion","3 anios - ARCHIVERO; 2 meses - ARCHIVISTA DIGITAL","63540000 - Sr. Petronilo","Panama Oeste","ARCHIVISTA DIGITAL");
+INSERT INTO Empleados VALUES ("5-666-7777","Angie","Árauz","66666666","CAJERO DE CAFETERIA","f","1996-12-31","Lic. Ing. de Sistemas y Computacion","1 anios - CAJERO; 6 meses - CAJERO DE CAFETERIA","65433456 - Sr. Ernesto","Darien","CAJERO DE CAFETERIA");
+
+
+
 
 CREATE TABLE Cargos(
 Codigo INT AUTO_INCREMENT NOT NULL ,
