@@ -22,10 +22,10 @@ public class Motor_Inferencia
 	/* Motor Rete de reglas: */
 	
 	/* Direcciones de archivo .pl :*/
-	// Directorio Christian: C:\Users\\bob_0\eclipse-workspace\seleccion-perfiles\src\programa\base_conocimiento.pl
+	// Directorio Christian: C:\Users\bob_0\eclipse-workspace\seleccion-perfiles\src\programa\base_conocimiento.pl
 	// Directorio Edwin: D:\Archivos\Proyectos\eclipse-workspace\seleccion-perfiles\src\programa\base_conocimiento.pl
 	
-	private String base_conocimiento = "D:\\Archivos\\Proyectos\\eclipse-workspace\\seleccion-perfiles\\src\\programa\\base_conocimiento.pl";
+	private String base_conocimiento = "C:\\Users\\bob_0\\eclipse-workspace\\seleccion-perfiles\\src\\programa\\base_conocimiento.pl";
 	
 	/* Instancias para conectar a la base de datos: */
 	private ConectorSQL conector;

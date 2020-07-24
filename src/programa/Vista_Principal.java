@@ -208,12 +208,12 @@ public class Vista_Principal extends JFrame implements ActionListener {
 		 comboBox_CargoActual = new JComboBox();
 		panel_filtrado_sur.add(comboBox_CargoActual);
 		
-		 lblEdad = new JLabel("Edad");
+		/*lblEdad = new JLabel("Edad");
 		panel_filtrado_sur.add(lblEdad);
 		
 		textField_Edad = new JTextField();
 		panel_filtrado_sur.add(textField_Edad);
-		textField_Edad.setColumns(4);
+		textField_Edad.setColumns(4);*/
 		
 		 Label_Ocupacional = new JLabel("Grupo Ocupacional");
 		panel_filtrado_sur.add(Label_Ocupacional);
