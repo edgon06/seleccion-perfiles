@@ -24,7 +24,9 @@ PRIMARY KEY (CIP)
 -- FOREIGN KEY (Cargo_actual) REFERENCES Cargos(Nombre)
 );
 
-INSERT INTO Empleados VALUES ("8-333-3333","Maikol","Marin","63006000","Administrador de Soporte Tecnico","m","1998-07-20","Lic. Ing. de Sistemas y Computacion","2 anios - Administrador de Recursos Informaticos; 5 meses - Administrador de Soporte Tecnico","63000000 - Sra. Petronila","Panama Oeste","Administrador de Soporte Tecnico");
+INSERT INTO Empleados VALUES ("8-333-3333","Maikol","Marin","63006000","ADMINISTRADOR DE BASE DE DATOS","m","1998-07-20","Lic. Ing. de Sistemas y Computacion","2 anios - ADMINISTRADOR DE BASE DE DATOS; 5 meses - Administrador de Soporte Tecnico","63000000 - Sra. Petronila","Panama Oeste","ADMINISTRADOR DE BASE DE DATOS");
+INSERT INTO Empleados VALUES ("9-340-3333","Petronilo","Nunez","63006000","ADMINISTRADOR DE BASE DE DATOS","m","1998-07-20","Lic. Ing. de Sistemas y Computacion","2 anios - ADMINISTRADOR DE BASE DE DATOS; 5 meses - Administrador de Soporte Tecnico","63000000 - Sra. Petronila","Panama Oeste","ADMINISTRADOR DE BASE DE DATOS");
+INSERT INTO Empleados VALUES ("7-203-3333","Braulio","Mañanitas","63006000","ADMINISTRADOR DE BASE DE DATOS","m","1998-07-20","Lic. Ing. de Sistemas y Computacion","2 anios - ADMINISTRADOR DE BASE DE DATOS; 5 meses - Administrador de Soporte Tecnico","63000000 - Sra. Petronila","Panama Oeste","ADMINISTRADOR DE BASE DE DATOS");
 
 CREATE TABLE Cargos(
 Codigo INT AUTO_INCREMENT NOT NULL ,

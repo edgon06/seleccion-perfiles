@@ -4,22 +4,39 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 
 public class Controlador 
 {
 	private Motor_Inferencia MI = new Motor_Inferencia();
-	private Empleado seleccionado;
+	
 	
 	/* ******************************************************************************************************************************************** */
 	
 	/* Debe solicitar los perfiles al motor de inferencia	 */
-	public void ObtenerPerfiles()
+	public void ObtenerPerfiles(DefaultTableModel modelo_tabla, ArrayList <Empleado> empleados)
 	{
-		
+		Iterator p;
+		String [] datos = new String[1];
+		p = MI.getPerfiles();
+		while(p.hasNext())
+		{
+			
+			Empleado o = (Empleado) p.next();
+			datos[0] = o.getNombre() +" "+ o.getApellido();
+			System.out.println(datos[0]);
+			System.out.println(o.getIndice_tabla());
+			modelo_tabla.addRow(datos);
+			empleados.add(o);
+			
+		}
 	}
 	
 	/* ******************************************************************************************************************************************** */

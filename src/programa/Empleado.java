@@ -15,6 +15,8 @@ public class Empleado
 	private String centro_regional;
 	private String pruebas_psicotecnicas;
 	
+	private int indice_tabla;
+	
 	
 	/* ******************************************************************************************************************************************** */
 	/* Constructores */
@@ -22,6 +24,14 @@ public class Empleado
 	public Empleado()
 	{
 		
+	}
+	
+	public Empleado(int indice, String cedula, String nombre, String apellido)
+	{
+		this.indice_tabla = indice;
+		this.cedula = cedula;
+		this.nombre = nombre;
+		this.apellido = apellido;
 	}
 	
 	public Empleado(String cedula, String nombre, String apellido,String telefono, String cargo_actual,String sexo,String f_nacimiento, String formacion_academica, String experiencia, String referencias_laborales, String centro_regional, String pruebas_psicotecnicas )
@@ -145,5 +155,15 @@ public class Empleado
 	}
 	public void setPruebas_psicotecnicas(String pruebas_psicotecnicas) {
 		this.pruebas_psicotecnicas = pruebas_psicotecnicas;
+	}
+
+	/* ******************************************************************************************************************************************** */
+	
+	public int getIndice_tabla() {
+		return indice_tabla;
+	}
+
+	public void setIndice_tabla(int indice_tabla) {
+		this.indice_tabla = indice_tabla;
 	} 
 }

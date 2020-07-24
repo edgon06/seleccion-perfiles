@@ -7,6 +7,8 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 import javax.naming.spi.DirStateFactory.Result;
 import javax.swing.JOptionPane;
@@ -190,6 +192,8 @@ public class Motor_Inferencia
 				
 	}
 	
+	/* ******************************************************************************************************************************************** */
+	/* Metodo para obtener un perfil con la cedula dada */
 	public Empleado getPerfil(String Cedula)
 	{
 		Empleado e = new Empleado();
@@ -242,6 +246,68 @@ public class Motor_Inferencia
 		return e;
 	}
 	
+	/* ******************************************************************************************************************************************** */
+	/* Metodo para obtener todos los perfiles */
+	public Iterator getPerfiles()
+	{
+		Iterator perfiles = null;
+		
+		Query q1 = 
+			    new Query( 
+				"consult", 
+				new Term[] {new Atom(base_conocimiento)} 
+			    );
+		
+		Variable CIP = new Variable("CIP");
+		Variable Nombre = new Variable("Nombre");
+		Variable Apellido = new Variable("Apellido");
+		Variable Telefono = new Variable("Telefono");
+		Variable Cargo = new Variable("Cargo");
+		Variable Sexo = new Variable("Sexo");
+		Variable Fecha_nacimiento = new Variable("Fecha_nacimiento");
+		Variable Formacion_academica = new Variable("Formacion_academica");
+		Variable Experiencia = new Variable("Experiencia");
+		Variable Referencias = new Variable("Referencias");
+		Variable Centro_Regional = new Variable("Centro_Regional");
+		Variable Pruebas_psicotecnicas = new Variable("Pruebas_psicotecnicas");
+		/*
+		Query q2 = 
+				  new Query( 
+				      "empleado", 
+				      new Term[] { CIP, Nombre , Apellido,
+				    		  Telefono , Cargo,
+				    		  Sexo, Fecha_nacimiento,
+				    		  Formacion_academica, Experiencia, Referencias, Centro_Regional, Pruebas_psicotecnicas} 
+				  );
+		*/
+		Query q2 = 
+				  new Query( 
+				      "empleado", 
+				      new Term[] { CIP, Nombre , Apellido, Telefono , Cargo, Sexo, Fecha_nacimiento, Formacion_academica, Experiencia, Referencias, Centro_Regional, Pruebas_psicotecnicas } 
+				  );
+		
+		if(q2.hasSolution())
+		{			
+			java.util.Map<String,Term>[] solutions = q2.allSolutions();
+			ArrayList<Empleado> p = new ArrayList<Empleado>();
+			for ( int i=0 ; i < solutions.length ; i++ ) 
+			{ 
+				p.add(new Empleado(i,solutions[i].get("CIP").toString(),solutions[i].get("Nombre").toString(),solutions[i].get("Apellido").toString()));
+				
+			}	
+			
+			perfiles = p.iterator();
+		}
+		else
+		{
+			JOptionPane.showMessageDialog(null, "Hijole, creo que no se va a poder... ");
+		}
+		
+		return perfiles;
+	}
+	
+	/* ******************************************************************************************************************************************** */
+	/* Metodo para Cargar las reglas a */
 	public void CargarReglas()
 	{
 		/*

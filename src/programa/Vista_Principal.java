@@ -9,9 +9,13 @@ import javax.swing.JButton;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.BoxLayout;
 import javax.swing.JSplitPane;
+import javax.swing.JTable;
+
 import java.awt.GridLayout;
+import java.awt.List;
 import java.awt.Rectangle;
 import java.awt.CardLayout;
 import javax.swing.SwingConstants;
@@ -19,6 +23,7 @@ import java.awt.Choice;
 import java.awt.ScrollPane;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
@@ -33,11 +38,16 @@ import java.awt.FlowLayout;
 import javax.swing.JRadioButton;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.LineBorder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.table.DefaultTableModel;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import javax.swing.JTextField;
 import javax.swing.JComboBox;
 import java.awt.Font;
+
 public class Vista_Principal extends JFrame implements ActionListener {
 	/* ******************************************************************************************************************************************** */
 	/* Propiedades de la clase */
@@ -56,6 +66,9 @@ public class Vista_Principal extends JFrame implements ActionListener {
 	private JPanel panel_filtrado_norte;
 	private JPanel panel_filtrado_sur;
 	
+	/* Controles para listas de perfiles */
+	private JTable lista_perfiles;
+	private ArrayList <Empleado> elementos_lista = new ArrayList<Empleado>();
 	
 	/* Controles para Panel de Filtrado */
 	private JButton btn_busqueda;
@@ -104,7 +117,7 @@ public class Vista_Principal extends JFrame implements ActionListener {
 		setJMenuBar(menuBar);
 			
 		//Crear boton de 'Filtrado Avanzado'
-		 filtrar = new JMenuItem("Filtrado Avanzado");
+		filtrar = new JMenuItem("Filtrado Avanzado");
 		filtrar.setHorizontalAlignment(SwingConstants.LEFT);
 		filtrar.addActionListener(this);
 		menuBar.add(filtrar);
@@ -229,17 +242,33 @@ public class Vista_Principal extends JFrame implements ActionListener {
 	{
 		//Establecer el Layout del panel con la lista de perfiles:
 		panel_lista_perfiles.setLayout(new BoxLayout(panel_lista_perfiles, BoxLayout.Y_AXIS));
+		panel_lista_perfiles.removeAll();
+		
+		lista_perfiles = new JTable();
+		/* LA WEA VA AQUI XUXA DE TU MADRE*/
+		
+		
+		
+		
 		
 		//Se crea el objeto JLabel
 		  JLabel ejemplo = new JLabel();
 		  //Le asignamos un texto
-		  ejemplo.setText("HOLA MUNDO!!");
+		  ejemplo.setText("Empleados UTP");
 		//Se crea el objeto JLabel
 		  JLabel ejemplo2 = new JLabel();
 		  
 		panel.add(ejemplo);
 		panel.add(ejemplo2);
-		
+		lista_perfiles.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+			
+			@Override
+			public void valueChanged(ListSelectionEvent event) 
+			{
+				MostrarPerfil(c.PerfilSeleccionado(elementos_lista.get(lista_perfiles.getSelectedRow()).getCedula().replaceAll("'", "")));	
+			}
+		});
+		panel_lista_perfiles.repaint();
 	}
 	/* ******************************************************************************************************************************************** */
 	/* Metodo para mostrar el panel de contenido del Perfil */
@@ -289,44 +318,44 @@ public class Vista_Principal extends JFrame implements ActionListener {
 		
 		textField_nombre = new JTextField();
 		textField_nombre.setEditable(false);
-		textField_nombre.setBounds(475, 121, 232, 20);
+		textField_nombre.setBounds(475, 121, 287, 20);
 		panel_perfil.add(textField_nombre);
 		textField_nombre.setColumns(10);
 		
 		textField_apellido = new JTextField();
 		textField_apellido.setEditable(false);
 		textField_apellido.setColumns(10);
-		textField_apellido.setBounds(475, 159, 232, 20);
+		textField_apellido.setBounds(475, 159, 287, 20);
 		panel_perfil.add(textField_apellido);
 		
 		textField_cedula = new JTextField();
 		textField_cedula.setEditable(false);
 		textField_cedula.setColumns(10);
-		textField_cedula.setBounds(475, 76, 232, 20);
+		textField_cedula.setBounds(475, 76, 287, 20);
 		panel_perfil.add(textField_cedula);
 		
 		textField_telefono = new JTextField();
 		textField_telefono.setEditable(false);
 		textField_telefono.setColumns(10);
-		textField_telefono.setBounds(475, 200, 232, 20);
+		textField_telefono.setBounds(475, 200, 287, 20);
 		panel_perfil.add(textField_telefono);
 		
 		textField_experiencia = new JTextField();
 		textField_experiencia.setEditable(false);
 		textField_experiencia.setColumns(10);
-		textField_experiencia.setBounds(475, 320, 232, 20);
+		textField_experiencia.setBounds(475, 320, 287, 20);
 		panel_perfil.add(textField_experiencia);
 		
 		textField_formacion = new JTextField();
 		textField_formacion.setEditable(false);
 		textField_formacion.setColumns(10);
-		textField_formacion.setBounds(475, 283, 232, 20);
+		textField_formacion.setBounds(475, 283, 287, 20);
 		panel_perfil.add(textField_formacion);
 		
 		textField_referencias = new JTextField();
 		textField_referencias.setEditable(false);
 		textField_referencias.setColumns(10);
-		textField_referencias.setBounds(475, 371, 232, 20);
+		textField_referencias.setBounds(475, 371, 287, 20);
 		panel_perfil.add(textField_referencias);
 		
 		lblCargo = new JLabel("Cargo Actual");
@@ -337,7 +366,7 @@ public class Vista_Principal extends JFrame implements ActionListener {
 		textField_cargo = new JTextField();
 		textField_cargo.setEditable(false);
 		textField_cargo.setColumns(10);
-		textField_cargo.setBounds(475, 239, 232, 20);
+		textField_cargo.setBounds(475, 239, 287, 20);
 		panel_perfil.add(textField_cargo);
 		
 		panel_perfil.revalidate();
@@ -353,14 +382,14 @@ public class Vista_Principal extends JFrame implements ActionListener {
 		panel_perfil.setLayout(null);
 		
 		
-		textField_nombre.setText(empleado.getNombre());
-		textField_apellido.setText(empleado.getApellido());
-		textField_cedula.setText(empleado.getCedula());
-		textField_telefono.setText(empleado.getTelefono());
-		textField_cargo.setText(empleado.getCargo_actual());
-		textField_formacion.setText(empleado.getFormacion_academica());
-		textField_experiencia.setText(empleado.getExperiencia());
-		textField_referencias.setText(empleado.getReferencias_laborales());
+		textField_nombre.setText(empleado.getNombre().replaceAll("'", ""));
+		textField_apellido.setText(empleado.getApellido().replaceAll("'", ""));
+		textField_cedula.setText(empleado.getCedula().replaceAll("'", ""));
+		textField_telefono.setText(empleado.getTelefono().replaceAll("'", ""));
+		textField_cargo.setText(empleado.getCargo_actual().replaceAll("'", ""));
+		textField_formacion.setText(empleado.getFormacion_academica().replaceAll("'", ""));
+		textField_experiencia.setText(empleado.getExperiencia().replaceAll("'", ""));
+		textField_referencias.setText(empleado.getReferencias_laborales().replaceAll("'", ""));
 		
 		panel_perfil.revalidate();
 		panel_perfil.validate();
@@ -379,6 +408,21 @@ public class Vista_Principal extends JFrame implements ActionListener {
             public void windowClosing(java.awt.event.WindowEvent evt) {
                c.EliminarBC();
             }
+            
+            @Override
+            public void windowOpened(java.awt.event.WindowEvent e){
+            	   //Realizas lo que quieras
+            	c.PruebaConexion();
+    			//MostrarPerfil(c.PerfilSeleccionado("8-333-3333"));
+    			DefaultTableModel modelo_tabla = new DefaultTableModel();
+    			modelo_tabla.addColumn("Nombre");
+    			
+    			
+    			lista_perfiles.setModel(modelo_tabla);
+    			c.ObtenerPerfiles(modelo_tabla, elementos_lista);
+    			panel_lista_perfiles.add(lista_perfiles);
+    			panel_lista_perfiles.repaint();
+            	  }
         });
 		
 		setBounds(100, 100, 802, 431);
@@ -389,11 +433,11 @@ public class Vista_Principal extends JFrame implements ActionListener {
 		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
 		
-		
+		c.IniciarMI();
 		InicializarBarraMenu(contentPane);
 		InicializarPaneles(contentPane);
 		
-		c.IniciarMI();
+		
 		
 		
 	}
@@ -410,9 +454,11 @@ public class Vista_Principal extends JFrame implements ActionListener {
 		}
 		if(e.getSource()==btn_busqueda)
 		{
-			c.PruebaConexion();
-			MostrarPerfil(c.PerfilSeleccionado("8-333-3333"));
+			
+			
+			
 		}
+		
 	}
 	
 	/* ******************************************************************************************************************************************** */
