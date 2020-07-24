@@ -12,6 +12,7 @@ import javax.swing.JOptionPane;
 public class Controlador 
 {
 	private Motor_Inferencia MI = new Motor_Inferencia();
+	private Empleado seleccionado;
 	
 	/* ******************************************************************************************************************************************** */
 	
@@ -26,11 +27,9 @@ public class Controlador
 	 * estructura de datos personalizada que represente un perfil 
 	 * para ser mostrada en el panel_perfil	*/
 	
-	public void PerfilSeleccionado(int indice_perfil)
+	public Empleado PerfilSeleccionado(String Cedula)
 	{
-		
-		
-		//return perfil;
+		return MI.getPerfil(Cedula);
 	}
 
 	/* ******************************************************************************************************************************************** */
@@ -104,12 +103,12 @@ public class Controlador
 		grupos_ocupacionales.setModel(modelo_grupos);
 	}
 	
+	/*
 	public void LlenarComboBoxes(JComboBox cargos)
 	{
 		ConectorSQL conector = new ConectorSQL();
 		Connection conexion= conector.getConexion("UTP_empleados", "root", "");
-		
-		/* */
+
 		DefaultComboBoxModel<String> modelo_cargos = new javax.swing.DefaultComboBoxModel<String>();
 		String cargo;
 		try{
@@ -139,6 +138,7 @@ public class Controlador
 		}
 		cargos.setModel(modelo_cargos);
 	}
+	*/
 	
 	/* ******************************************************************************************************************************************** */
 	/* Metodo para iniciar Motor de Inferencia */
@@ -157,7 +157,6 @@ public class Controlador
 	
 	public void PruebaConexion()
 	{
-		
 		MI.ConsultaPrueba();
 	}
 

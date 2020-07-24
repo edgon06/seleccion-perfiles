@@ -82,6 +82,7 @@ public class Vista_Principal extends JFrame implements ActionListener {
 	private JLabel lblApellido;
 	private JLabel lblCedula;
 	private JLabel lblTelefono;
+	private JLabel lblCargo;
 	
 	private JTextField textField_nombre;
 	private JTextField textField_apellido;
@@ -90,6 +91,7 @@ public class Vista_Principal extends JFrame implements ActionListener {
 	private JTextField textField_experiencia;
 	private JTextField textField_formacion;
 	private JTextField textField_referencias;
+	private JTextField textField_cargo;
 	
 	/* ******************************************************************************************************************************************** */
 	/* Metodo para inicializar barra de menu*/
@@ -206,7 +208,7 @@ public class Vista_Principal extends JFrame implements ActionListener {
 		
 		textField_Edad = new JTextField();
 		panel_filtrado_sur.add(textField_Edad);
-		textField_Edad.setColumns(10);
+		textField_Edad.setColumns(4);
 		
 		 Label_Ocupacional = new JLabel("Grupo Ocupacional");
 		panel_filtrado_sur.add(Label_Ocupacional);
@@ -247,17 +249,17 @@ public class Vista_Principal extends JFrame implements ActionListener {
 		
 		lblNombre = new JLabel("Primer Nombre");
 		lblNombre.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 14));
-		lblNombre.setBounds(31, 61, 118, 17);
+		lblNombre.setBounds(31, 121, 118, 17);
 		panel_perfil.add(lblNombre);
 		
 		lblApellido = new JLabel("Primer Apellido");
 		lblApellido.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 14));
-		lblApellido.setBounds(31, 99, 118, 17);
+		lblApellido.setBounds(31, 159, 118, 17);
 		panel_perfil.add(lblApellido);
 		
 		lblCedula = new JLabel("C\u00E9dula");
 		lblCedula.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 14));
-		lblCedula.setBounds(31, 149, 78, 17);
+		lblCedula.setBounds(31, 76, 78, 17);
 		panel_perfil.add(lblCedula);
 		
 		lblTelefono = new JLabel("Tel\u00E9fono");
@@ -267,7 +269,7 @@ public class Vista_Principal extends JFrame implements ActionListener {
 		
 		lblFormacionAcademica = new JLabel("Formaci\u00F3n Acad\u00E9mica");
 		lblFormacionAcademica.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 14));
-		lblFormacionAcademica.setBounds(31, 264, 156, 17);
+		lblFormacionAcademica.setBounds(31, 283, 156, 17);
 		panel_perfil.add(lblFormacionAcademica);
 		
 		lblExperiencia = new JLabel("Experiencia");
@@ -282,45 +284,57 @@ public class Vista_Principal extends JFrame implements ActionListener {
 		
 		textField_nombre = new JTextField();
 		textField_nombre.setEditable(false);
-		textField_nombre.setBounds(475, 61, 155, 20);
+		textField_nombre.setBounds(475, 121, 232, 20);
 		panel_perfil.add(textField_nombre);
 		textField_nombre.setColumns(10);
 		
 		textField_apellido = new JTextField();
 		textField_apellido.setEditable(false);
 		textField_apellido.setColumns(10);
-		textField_apellido.setBounds(475, 99, 155, 20);
+		textField_apellido.setBounds(475, 159, 232, 20);
 		panel_perfil.add(textField_apellido);
 		
 		textField_cedula = new JTextField();
 		textField_cedula.setEditable(false);
 		textField_cedula.setColumns(10);
-		textField_cedula.setBounds(475, 149, 155, 20);
+		textField_cedula.setBounds(475, 76, 232, 20);
 		panel_perfil.add(textField_cedula);
 		
 		textField_telefono = new JTextField();
 		textField_telefono.setEditable(false);
 		textField_telefono.setColumns(10);
-		textField_telefono.setBounds(475, 200, 155, 20);
+		textField_telefono.setBounds(475, 200, 232, 20);
 		panel_perfil.add(textField_telefono);
 		
 		textField_experiencia = new JTextField();
 		textField_experiencia.setEditable(false);
 		textField_experiencia.setColumns(10);
-		textField_experiencia.setBounds(475, 320, 155, 20);
+		textField_experiencia.setBounds(475, 320, 232, 20);
 		panel_perfil.add(textField_experiencia);
 		
 		textField_formacion = new JTextField();
 		textField_formacion.setEditable(false);
 		textField_formacion.setColumns(10);
-		textField_formacion.setBounds(475, 264, 155, 20);
+		textField_formacion.setBounds(475, 283, 232, 20);
 		panel_perfil.add(textField_formacion);
 		
 		textField_referencias = new JTextField();
 		textField_referencias.setEditable(false);
 		textField_referencias.setColumns(10);
-		textField_referencias.setBounds(475, 371, 155, 20);
+		textField_referencias.setBounds(475, 371, 232, 20);
 		panel_perfil.add(textField_referencias);
+		
+		lblCargo = new JLabel("Cargo Actual");
+		lblCargo.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 14));
+		lblCargo.setBounds(31, 239, 156, 17);
+		panel_perfil.add(lblCargo);
+		
+		textField_cargo = new JTextField();
+		textField_cargo.setEditable(false);
+		textField_cargo.setColumns(10);
+		textField_cargo.setBounds(475, 239, 232, 20);
+		panel_perfil.add(textField_cargo);
+		
 		panel_perfil.revalidate();
 		panel_perfil.validate();
 	}
@@ -333,9 +347,15 @@ public class Vista_Principal extends JFrame implements ActionListener {
 		//Establecer el Layout del panel con la lista de perfiles:
 		panel_perfil.setLayout(null);
 		
-		/*
-		 * Funciones de clase controlador para cargar el panel con datos del perfil seleccionado
-		 * */
+		
+		textField_nombre.setText(empleado.getNombre());
+		textField_apellido.setText(empleado.getApellido());
+		textField_cedula.setText(empleado.getCedula());
+		textField_telefono.setText(empleado.getTelefono());
+		textField_cargo.setText(empleado.getCargo_actual());
+		textField_formacion.setText(empleado.getFormacion_academica());
+		textField_experiencia.setText(empleado.getExperiencia());
+		textField_referencias.setText(empleado.getReferencias_laborales());
 		
 		panel_perfil.revalidate();
 		panel_perfil.validate();
@@ -386,6 +406,7 @@ public class Vista_Principal extends JFrame implements ActionListener {
 		if(e.getSource()==btn_busqueda)
 		{
 			c.PruebaConexion();
+			MostrarPerfil(c.PerfilSeleccionado("8-333-3333"));
 		}
 	}
 	

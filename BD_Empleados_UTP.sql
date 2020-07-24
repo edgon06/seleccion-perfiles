@@ -387,6 +387,8 @@ INSERT INTO Cargos (Nombre, Familia, Grupo_ocupacional, Nivel_funcional, Grupo_l
 -- ******************************************************************************************************
 
 -- Consultas Utiles
+
+ SELECT DISTINCT Nombre FROM Cargos;
  SELECT DISTINCT Familia FROM Cargos ;
  SELECT DISTINCT Grupo_laboral FROM Cargos ;
  SELECT DISTINCT Grupo_ocupacional FROM Cargos ;

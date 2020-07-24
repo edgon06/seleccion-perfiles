@@ -190,6 +190,58 @@ public class Motor_Inferencia
 				
 	}
 	
+	public Empleado getPerfil(String Cedula)
+	{
+		Empleado e = new Empleado();
+		Query q1 = 
+			    new Query( 
+				"consult", 
+				new Term[] {new Atom(base_conocimiento)} 
+			    );
+		
+		//Variable CIP = new Variable("CIP");
+		Variable Nombre = new Variable("Nombre");
+		Variable Apellido = new Variable("Apellido");
+		Variable Telefono = new Variable("Telefono");
+		Variable Cargo = new Variable("Cargo");
+		Variable Sexo = new Variable("Sexo");
+		Variable Fecha_nacimiento = new Variable("Fecha_nacimiento");
+		Variable Formacion_academica = new Variable("Formacion_academica");
+		Variable Experiencia = new Variable("Experiencia");
+		Variable Referencias = new Variable("Referencias");
+		Variable Centro_Regional = new Variable("Centro_Regional");
+		Variable Pruebas_psicotecnicas = new Variable("Pruebas_psicotecnicas");
+		
+		Query q2 = 
+				  new Query( 
+				      "empleado", 
+				      new Term[] {new Atom(Cedula)	,Nombre ,Apellido,
+				    		  Telefono,Cargo,Sexo, Fecha_nacimiento,
+				    		  Formacion_academica, Experiencia,
+				    		  Referencias,Centro_Regional ,Pruebas_psicotecnicas} 
+				  );
+		if(q2.hasSolution())
+		{
+			e.setCedula(Cedula);
+			e.setNombre(q2.oneSolution().get("Nombre").toString());
+			e.setApellido(q2.oneSolution().get("Apellido").toString());
+			e.setTelefono(q2.oneSolution().get("Telefono").toString());
+			e.setCargo_actual(q2.oneSolution().get("Cargo").toString());
+			e.setSexo(q2.oneSolution().get("Sexo").toString());
+			e.setF_nacimiento(q2.oneSolution().get("Fecha_nacimiento").toString());
+			e.setFormacion_academica(q2.oneSolution().get("Formacion_academica").toString());
+			e.setExperiencia(q2.oneSolution().get("Experiencia").toString());
+			e.setReferencias_laborales(q2.oneSolution().get("Referencias").toString());
+			e.setCentro_regional(q2.oneSolution().get("Centro_Regional").toString());
+			e.setPruebas_psicotecnicas(q2.oneSolution().get("Pruebas_psicotecnicas").toString());
+		}
+		else
+		{
+			JOptionPane.showMessageDialog(null, "Hijole, creo que no se va a poder... ");
+		}
+		return e;
+	}
+	
 	public void CargarReglas()
 	{
 		/*
