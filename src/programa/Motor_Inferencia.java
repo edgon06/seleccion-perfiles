@@ -333,17 +333,12 @@ public class Motor_Inferencia
 	
 		String[] datos = new String[2];
 			java.util.Map<String,Term>[] solutions = q2.allSolutions();
-			//ArrayList<Empleado> p = new ArrayList<Empleado>();
 			for ( int i=0 ; i < solutions.length ; i++ ) 
 			{ 
 				datos[0] = solutions[i].get("Nombre").toString() + " " + solutions[i].get("Apellido").toString();
 				datos[1] = solutions[i].get("CIP").toString();
 				modelo_tabla.addRow(datos);
-					//p.add(i,new Empleado(i,solutions[i].get("CIP").toString(),solutions[i].get("Nombre").toString(),solutions[i].get("Apellido").toString()));
-			}
-			
-		//return p;
-		
+			}		
 	}
 	
 	/* ******************************************************************************************************************************************** */
@@ -478,28 +473,91 @@ public class Motor_Inferencia
 			{ 
 				datos[0] = solutions[i].get("Nombre").toString() + " " + solutions[i].get("Apellido").toString();
 				datos[1] = solutions[i].get("CIP").toString();
-				modelo_tabla.addRow(datos);
-				//p.add(new Empleado(i,solutions[i].get("CIP").toString(),solutions[i].get("Nombre").toString(),solutions[i].get("Apellido").toString()));					
+				modelo_tabla.addRow(datos);					
 			}			
 	}
 	
 	/* ******************************************************************************************************************************************** */
+	/* Metodo para Filtrar perfiles por area laboral */
+	
+	public void FiltrarTextoBruto(String texto, DefaultTableModel modelo_tabla) 
+	{
+		Query q1 = 
+			    new Query( 
+				"consult", 
+				new Term[] {new Atom(base_conocimiento)} 
+			    );
+		
+		Variable CIP = new Variable("CIP");
+		Variable Nombre = new Variable("Nombre");
+		Variable Apellido = new Variable("Apellido");
+		Variable Telefono = new Variable("Telefono");
+		Variable Cargo = new Variable("Cargo");
+		Variable Sexo = new Variable("Sexo");
+		Variable Fecha_nacimiento = new Variable("Fecha_nacimiento");
+		Variable Formacion_academica = new Variable("Formacion_academica");
+		Variable Experiencia = new Variable("Experiencia");
+		Variable Referencias = new Variable("Referencias");
+		Variable Centro_Regional = new Variable("Centro_Regional");
+		Variable Pruebas_psicotecnicas = new Variable("Pruebas_psicotecnicas");
+		
+		Query q2 = 
+				  new Query( 
+				      "empleado", 
+				      new Term[] { CIP, Nombre, Apellido, Telefono, Cargo, Sexo, Fecha_nacimiento, Formacion_academica, Experiencia, Referencias, Centro_Regional, Pruebas_psicotecnicas} 
+				  );
+		JOptionPane.showMessageDialog(null, "Esta a punto de filtrar perfiles por un texto introducido ");
+		if(q2.hasSolution())
+		{
+			modelo_tabla.addColumn("Nombre");
+			modelo_tabla.addColumn("CIP");
+			String[] datos = new String[2];			
+			java.util.Map<String,Term>[] solutions = q2.allSolutions();
+			for ( int i=0 ; i < solutions.length ; i++ ) 
+			{ 
+				if( 	solutions[i].get("CIP").toString().toLowerCase().contains(texto.toLowerCase())||
+						solutions[i].get("Nombre").toString().toLowerCase().contains(texto.toLowerCase())||
+						solutions[i].get("Apellido").toString().toLowerCase().contains(texto.toLowerCase())||
+						solutions[i].get("Telefono").toString().toLowerCase().contains(texto.toLowerCase())||
+						solutions[i].get("Cargo").toString().toLowerCase().contains(texto.toLowerCase())||
+						solutions[i].get("Sexo").toString().toLowerCase().contains(texto.toLowerCase())||
+						solutions[i].get("Fecha_nacimiento").toString().toLowerCase().contains(texto.toLowerCase())||
+						solutions[i].get("Formacion_academica").toString().toLowerCase().contains(texto.toLowerCase())||
+						solutions[i].get("Experiencia").toString().toLowerCase().contains(texto.toLowerCase())||
+						solutions[i].get("Referencias").toString().toLowerCase().contains(texto.toLowerCase())||
+						solutions[i].get("Centro_Regional").toString().toLowerCase().contains(texto.toLowerCase())||
+						solutions[i].get("Pruebas_psicotecnicas").toString().toLowerCase().contains(texto.toLowerCase())	
+						)
+				{
+					datos[0] = solutions[i].get("Nombre").toString() + " " + solutions[i].get("Apellido").toString();
+					datos[1] = solutions[i].get("CIP").toString();
+					modelo_tabla.addRow(datos);	
+				}					
+			}
+		}
+		else
+		{
+			JOptionPane.showMessageDialog(null, "No se pudo encontrar al encontrar empleado con caracteristicas solicitadas ");
+		}
+	}
+	
+	/* ******************************************************************************************************************************************** */
 	/* Metodo para Cargar las reglas a */
+	
 	public void CargarReglas()
 	{
 		escribir("buscar_grupo(Grupo_ocupacional,C,N,A):- cargo(Cargo_actual,_,Grupo_ocupacional,_,_), empleado(C,N,A,_,Cargo_actual,_,_,_,_,_,_,_).");
 	}
 	
+	/* ******************************************************************************************************************************************** */
+	/* Metodos para insertar hechos */
 	public String assertz(Empleado e)
 	{
 		String hecho;
 		hecho = "empleado('"+e.getCedula()+"', '"+e.getNombre()+"', '"+e.getApellido()+"', '"+e.getTelefono()+"', '"+e.getCargo_actual()+"', '"+e.getSexo()+"', '"+e.getF_nacimiento()+"', '"+e.getFormacion_academica()+"', '"+e.getExperiencia()+"', '"+e.getReferencias_laborales()+"', '"+e.getCentro_regional()+"', '"+e.getPruebas_psicotecnicas()+"').";
 		return hecho;
 	}
-	
-	/* ******************************************************************************************************************************************** */
-	/* Metodo para Cargar las reglas a */
-	
+		
 	public String assertz(Cargo c)
 	{
 		String hecho;
@@ -562,6 +620,8 @@ public class Motor_Inferencia
 		
 		return edad;
 	}
+
+
 
 	
 	

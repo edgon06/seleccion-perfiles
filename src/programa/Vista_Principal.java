@@ -724,6 +724,9 @@ public class Vista_Principal extends JFrame implements ActionListener {
 	    		CargarPerfiles(modelo_tabla);
 	    		limpiarcomponentes();	
 			}
+			
+			/* ********************************************************************************************************************************************************************************** */
+			/* Filtrar por cargo */
 			if(e.getSource()==btn_busqueda && chckbx_Cargo.isSelected() &&!comboBox_CargoActual.getSelectedItem().toString().equals(null))
 			{
 				System.out.println(comboBox_CargoActual.getSelectedItem().toString());
@@ -745,6 +748,9 @@ public class Vista_Principal extends JFrame implements ActionListener {
 				CargarPerfiles(modelo_tabla);
 				limpiarcomponentes();
 			}
+			
+			/* ********************************************************************************************************************************************************************************** */
+			/* Filtrar por texto introducido */
 			if((e.getSource()==btn_busqueda && !textField_busqueda.getText().equals("")) && chckbx_busquedaFiltrado.isSelected() )// radiobutton_edad.esta seleccionados
 			{
 				chckbx_Centro.setSelected(false);
@@ -760,7 +766,7 @@ public class Vista_Principal extends JFrame implements ActionListener {
 	            chckbx_busquedaFiltrado.setEnabled(true);
 	            
 				DefaultTableModel modelo_tabla = new DefaultTableModel();
-	    		c.ObtenerPerfilesEdad(modelo_tabla, Integer.parseInt(textField_busqueda.getText().toString()));
+	    		c.ObtenerPerfilesEspecificos(modelo_tabla, textField_busqueda.getText().toString());
 	    		CargarPerfiles(modelo_tabla);
 	    		limpiarcomponentes();	
 			}

@@ -45,6 +45,12 @@ public class Controlador
 		MI.FiltrarPerfilesCargo(Cargo, modelo_tabla);
 	}
 	
+	public void ObtenerPerfilesEspecificos(DefaultTableModel modelo_tabla, String texto) 
+	{
+		// TODO Auto-generated method stub
+		MI.FiltrarTextoBruto(texto, modelo_tabla);
+	}
+	
 	/* ******************************************************************************************************************************************** */
 	/* Debe recibir el indice del perfil seleccionado y retornar 
 	 * estructura de datos personalizada que represente un perfil 
@@ -54,7 +60,7 @@ public class Controlador
 	{
 		return MI.getPerfil(Cedula);
 	}
-
+	
 	/* ******************************************************************************************************************************************** */
 	/*                                                      Metodos de Inicializacion                                                               */
 	/* ******************************************************************************************************************************************** */
