@@ -299,7 +299,50 @@ public class Motor_Inferencia
 	
 	public void FiltrarPerfilesCargo(String cargo, DefaultTableModel modelo_tabla) 
 	{
+		Query q1 = 
+			    new Query( 
+				"consult", 
+				new Term[] {new Atom(base_conocimiento)} 
+			    );
+		System.out.println( "consult " + (q1.hasSolution() ? "succeeded" : "failed"));
 		
+		Variable CIP = new Variable("CIP");
+		Variable Nombre = new Variable("Nombre");
+		Variable Apellido = new Variable("Apellido");
+		Variable Telefono = new Variable("Telefono");
+		//Variable Cargo = new Variable("Cargo");
+		Variable Sexo = new Variable("Sexo");
+		Variable Fecha_nacimiento = new Variable("Fecha_nacimiento");
+		Variable Formacion_academica = new Variable("Formacion_academica");
+		Variable Experiencia = new Variable("Experiencia");
+		Variable Referencias = new Variable("Referencias");
+		Variable Centro_Regional = new Variable("Centro_Regional");
+		Variable Pruebas_psicotecnicas = new Variable("Pruebas_psicotecnicas");
+		Query q2 = 
+				  new Query( 
+				      "empleado", 
+				      new Term[] { CIP, Nombre , Apellido, Telefono ,new Atom(cargo), Sexo, Fecha_nacimiento, Formacion_academica, Experiencia, Referencias, Centro_Regional, Pruebas_psicotecnicas } 
+				     
+				  );
+		
+		
+		JOptionPane.showMessageDialog(null, "Esta a punto de filtrar perfiles por cargo actual ");
+			
+		modelo_tabla.addColumn("Nombre");
+		modelo_tabla.addColumn("CIP");
+	
+		String[] datos = new String[2];
+			java.util.Map<String,Term>[] solutions = q2.allSolutions();
+			//ArrayList<Empleado> p = new ArrayList<Empleado>();
+			for ( int i=0 ; i < solutions.length ; i++ ) 
+			{ 
+				datos[0] = solutions[i].get("Nombre").toString() + " " + solutions[i].get("Apellido").toString();
+				datos[1] = solutions[i].get("CIP").toString();
+				modelo_tabla.addRow(datos);
+					//p.add(i,new Empleado(i,solutions[i].get("CIP").toString(),solutions[i].get("Nombre").toString(),solutions[i].get("Apellido").toString()));
+			}
+			
+		//return p;
 		
 	}
 	
