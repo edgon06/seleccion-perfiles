@@ -33,6 +33,13 @@ public class Empleado
 		this.nombre = nombre;
 		this.apellido = apellido;
 	}
+
+	public Empleado(String cedula, String nombre, String apellido)
+	{
+		this.cedula = cedula;
+		this.nombre = nombre;
+		this.apellido = apellido;
+	}
 	
 	public Empleado(String cedula, String nombre, String apellido,String telefono, String cargo_actual,String sexo,String f_nacimiento, String formacion_academica, String experiencia, String referencias_laborales, String centro_regional, String pruebas_psicotecnicas )
 	{

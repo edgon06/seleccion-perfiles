@@ -10,6 +10,7 @@ import java.sql.Statement;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Map;
 import java.lang.Integer;
 
 import javax.naming.spi.DirStateFactory.Result;
@@ -33,6 +34,7 @@ public class Motor_Inferencia
 
 	/* Instancias para conectar a la base de datos: */
 	private ConectorSQL conector;
+	private Cargo c;
 
 	/* Cadenas con las consultas en lenguaje SQL: */
 	private String sql_query_cargos = "SELECT Nombre, Familia, Grupo_ocupacional, Nivel_funcional, Grupo_laboral FROM Cargos";
@@ -79,7 +81,7 @@ public class Motor_Inferencia
 	{
 		ResultSet cargos = null;
 		ResultSet empleados = null;
-		Cargo c = new Cargo();;
+		Cargo c = new Cargo();
 		Empleado e = new Empleado();
 		
 		conector = new ConectorSQL();
@@ -244,7 +246,7 @@ public class Motor_Inferencia
 		}
 		else
 		{
-			JOptionPane.showMessageDialog(null, "Hijole, creo que no se va a poder... ");
+			JOptionPane.showMessageDialog(null, "Error al encontrar empleado por cedula ");
 		}
 		return e;
 	}
@@ -281,22 +283,33 @@ public class Motor_Inferencia
 				      new Term[] { CIP, Nombre , Apellido, Telefono , Cargo, Sexo, Fecha_nacimiento, Formacion_academica, Experiencia, Referencias, Centro_Regional, Pruebas_psicotecnicas } 
 				  );
 		
-		if(q2.hasSolution())
-		{			
-			java.util.Map<String,Term>[] solutions = q2.allSolutions();
+		//if(q2.hasSolution())
+		//{			
+			/*java.util.Map<String,Term>[] solutions = q2.allSolutions();
 			ArrayList<Empleado> p = new ArrayList<Empleado>();
 			for ( int i=0 ; i < solutions.length ; i++ ) 
 			{ 
 				p.add(new Empleado(i,solutions[i].get("CIP").toString(),solutions[i].get("Nombre").toString(),solutions[i].get("Apellido").toString()));
 				
 			}	
-			
+			int i=0;
+			perfiles = p.iterator();*/
+			int i=0;
+			ArrayList<Empleado> p = new ArrayList<Empleado>();
+			java.util.Map<String,Term> solutions;
+			while ( q2.hasMoreSolutions())
+			{ 
+					solutions = q2.nextSolution();
+					
+					p.add(i,new Empleado(solutions.get("CIP").toString(),solutions.get("Nombre").toString(),solutions.get("Apellido").toString()));	
+			i++;
+			}	
 			perfiles = p.iterator();
-		}
+		/*}
 		else
 		{
-			JOptionPane.showMessageDialog(null, "Hijole, creo que no se va a poder... ");
-		}
+			JOptionPane.showMessageDialog(null, "Error en el metodo getPerfiles ");
+		}*/
 		
 		return perfiles;
 	}
@@ -334,9 +347,9 @@ public class Motor_Inferencia
 				  );
 		
 		
-		if(q2.hasSolution())
-		{			
-			int y=0;
+		//if(q2.hasSolution())
+		//{			
+			/*int y=0;
 			java.util.Map<String,Term>[] solutions = q2.allSolutions();
 			ArrayList<Empleado> p = new ArrayList<Empleado>();
 			for ( int i=0 ; i < solutions.length ; i++ ) 
@@ -349,12 +362,26 @@ public class Motor_Inferencia
 				
 			}	
 			
+			perfiles = p.iterator();*/
+			int i=0;
+			ArrayList<Empleado> p = new ArrayList<Empleado>();
+			//for ( int i=0 ; i < solutions.length ; i++ ) 
+			java.util.Map<String,Term> solutions;
+			while ( q2.hasMoreSolutions())
+			{ 
+					solutions = q2.nextSolution();
+					
+					if(CalcularEdad(solutions.get("Fecha_nacimiento").toString())==Edad)
+					p.add(i,new Empleado(solutions.get("CIP").toString(),solutions.get("Nombre").toString(),solutions.get("Apellido").toString()));	
+			i++;
+			}	
+			
 			perfiles = p.iterator();
-		}
+		/*}
 		else
 		{
-			JOptionPane.showMessageDialog(null, "Hijole, creo que no se va a poder... ");
-		}
+			JOptionPane.showMessageDialog(null, "Error al filtrar perfiles por edad ");
+		}*/
 		
 		return perfiles;
 	}
@@ -362,15 +389,15 @@ public class Motor_Inferencia
 	/* ******************************************************************************************************************************************** */
 	/* Metodo para Filtrar perfiles por centro Regional */
 	
-	public Iterator FiltrarPerfilesCentroRegional(String Centro)
+	public ArrayList<Empleado> FiltrarPerfilesCentroRegional(String Centro)
 	{
-		Iterator perfiles = null;
 		
 		Query q1 = 
 			    new Query( 
 				"consult", 
 				new Term[] {new Atom(base_conocimiento)} 
 			    );
+		System.out.println( "consult " + (q1.hasSolution() ? "succeeded" : "failed"));
 		
 		Variable CIP = new Variable("CIP");
 		Variable Nombre = new Variable("Nombre");
@@ -382,34 +409,43 @@ public class Motor_Inferencia
 		Variable Formacion_academica = new Variable("Formacion_academica");
 		Variable Experiencia = new Variable("Experiencia");
 		Variable Referencias = new Variable("Referencias");
-		Variable Centro_Regional = new Variable("Centro_Regional");
+		//Variable Centro_Regional = new Variable("Centro_Regional");
 		Variable Pruebas_psicotecnicas = new Variable("Pruebas_psicotecnicas");
-	
 		Query q2 = 
 				  new Query( 
 				      "empleado", 
 				      new Term[] { CIP, Nombre , Apellido, Telefono , Cargo, Sexo, Fecha_nacimiento, Formacion_academica, Experiencia, Referencias, new Atom(Centro), Pruebas_psicotecnicas } 
+				     
 				  );
 		
+		JOptionPane.showMessageDialog(null, "Esta a punto de filtrar perfiles por centro regional ");
 		
-		if(q2.hasSolution())
-		{			
-			int y=0;
-			java.util.Map<String,Term>[] solutions = q2.allSolutions();
-			ArrayList<Empleado> p = new ArrayList<Empleado>();
-			for ( int i=0 ; i < solutions.length ; i++ ) 
-			{ 
-					p.add(new Empleado(i,solutions[i].get("CIP").toString(),solutions[i].get("Nombre").toString(),solutions[i].get("Apellido").toString()));			
-			}	
+		//if(q2.hasSolution())
+		//{		
 			
-			perfiles = p.iterator();
-		}
-		else
-		{
-			JOptionPane.showMessageDialog(null, "Hijole, creo que no se va a poder... ");
-		}
+			java.util.Map<String,Term> solutions;	
+			int i=0;
+			//java.util.Map<String,Term>[] solutions = q2.allSolutions();
+			ArrayList<Empleado> p = new ArrayList<Empleado>();
+			//for ( int i=0 ; i < solutions.length ; i++ ) 
+			//{ 
+			//		p.add(i,new Empleado(i,solutions[i].get("CIP").toString(),solutions[i].get("Nombre").toString(),solutions[i].get("Apellido").toString()));			
+			//}
+			while ( q2.hasMoreSolutions()) {    
+				 solutions = q2.nextSolution();
+			p.add(i,new Empleado(i,solutions.get("CIP").toString(),solutions.get("Nombre").toString(),solutions.get("Apellido").toString()));			
+			i++;
+			}
+			//q2.close();
+
+			
+		//}
+		//else
+		//{
+			//JOptionPane.showMessageDialog(null, "Error al filtrar perfiles por centro regional ");
+	//	}
 		
-		return perfiles;
+		return p;
 	}
 	
 	/* ******************************************************************************************************************************************** */
@@ -437,22 +473,29 @@ public class Motor_Inferencia
 				  );
 		
 		
-		if(q2.hasSolution())
-		{			
-
-			java.util.Map<String,Term>[] solutions = q2.allSolutions();
+		//if(q2.hasSolution())
+		//{			
+			java.util.Map<String,Term> solutions;	
+			int i=0;
+			
+			//java.util.Map<String,Term>[] solutions = q2.allSolutions();
 			ArrayList<Empleado> p = new ArrayList<Empleado>();
-			for ( int i=0 ; i < solutions.length ; i++ ) 
+			/*for ( int i=0 ; i < solutions.length ; i++ ) 
 			{ 
-					p.add(new Empleado(i,solutions[i].get("CIP").toString(),solutions[i].get("Nombre").toString(),solutions[i].get("Apellido").toString()));			
-			}	
+					p.add(new Empleado(i,solutions[i].get("CIP").toString(),solutions[i].get("Nombre").toString(),solutions[i].get("Apellido").toString()));					
+			}*/
+			while ( q2.hasMoreSolutions()) {    
+				 solutions = q2.nextSolution();
+			p.add(i,new Empleado(i,solutions.get("CIP").toString(),solutions.get("Nombre").toString(),solutions.get("Apellido").toString()));			
+			i++;
+			}
 			
 			perfiles = p.iterator();
-		}
-		else
-		{
-			JOptionPane.showMessageDialog(null, "Hijole, creo que no se va a poder... ");
-		}
+		//}
+		//else
+		//{
+		//	JOptionPane.showMessageDialog(null, "Error al filtrar perfiles por area laboral");
+		//}
 		
 		return perfiles;
 	}

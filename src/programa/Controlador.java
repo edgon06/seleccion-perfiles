@@ -61,7 +61,8 @@ public class Controlador
 	{
 		Iterator p;
 		String [] datos = new String[1];
-		p = MI.FiltrarPerfilesCentroRegional(Centro_regional);
+		empleados = MI.FiltrarPerfilesCentroRegional(Centro_regional);
+		p=empleados.iterator();
 		while(p.hasNext())
 		{
 			
@@ -116,7 +117,7 @@ public class Controlador
 	
 	public void LlenarComboBoxes(JComboBox centros, JComboBox cargos, JComboBox grupos_ocupacionales)
 	{
-		centros.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] {null, "Azuero", "Bocas_del_Toro","Chiriqui","Cocle","Colon","Panama","Panama_Oeste","Tocumen","Veraguas" }));
+		centros.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] {null, "Azuero", "Bocas del Toro","Chiriqui","Cocle","Colon","Panama","Panama Oeste","Tocumen","Veraguas" }));
 		
 		ConectorSQL conector = new ConectorSQL();
 		Connection conexion= conector.getConexion("UTP_empleados", "root", "");
