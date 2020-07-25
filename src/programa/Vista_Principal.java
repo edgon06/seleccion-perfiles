@@ -11,26 +11,16 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.BoxLayout;
-import javax.swing.JSplitPane;
 import javax.swing.JTable;
 
-import java.awt.GridLayout;
-import java.awt.List;
-import java.awt.Rectangle;
-import java.awt.CardLayout;
 import javax.swing.SwingConstants;
-import java.awt.Choice;
-import java.awt.ScrollPane;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.util.ArrayList;
-import java.util.Iterator;
+
 
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.JButton;
-import java.awt.GridBagLayout;
 import javax.swing.JLabel;
 import java.awt.GridBagConstraints;
 import javax.swing.JList;
@@ -62,6 +52,7 @@ public class Vista_Principal extends JFrame implements ActionListener {
 	private JMenuBar menuBar;
 	private JMenuItem filtrar;
 	private JMenuItem manuales;
+	private JMenuItem mostrar_todos;
 	
 	/* Paneles */
 	private JPanel contentPane;
@@ -135,13 +126,18 @@ public class Vista_Principal extends JFrame implements ActionListener {
 		filtrar = new JMenuItem("Filtrado Avanzado");
 		filtrar.setHorizontalAlignment(SwingConstants.LEFT);
 		filtrar.addActionListener(this);
-		menuBar.add(filtrar);
+	// menuBar.add(filtrar); 
 		
 	//	Crear boton de 'Manuales de Cargo'
 		manuales = new JMenuItem("Manuales de Cargo");
 		manuales.setHorizontalAlignment(SwingConstants.LEFT);
 		manuales.addActionListener(this);
 		menuBar.add(manuales);
+		
+		mostrar_todos = new JMenuItem("Mostrar Todos los Perfiles");
+		mostrar_todos.setHorizontalAlignment(SwingConstants.LEFT);
+		mostrar_todos.addActionListener(this);
+		menuBar.add(mostrar_todos);
 	}
 	
 	/* ******************************************************************************************************************************************** */
@@ -310,7 +306,7 @@ public class Vista_Principal extends JFrame implements ActionListener {
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
-					JOptionPane.showMessageDialog(null,"Algo anda mal... "+ lista_perfiles.getValueAt(lista_perfiles.getSelectedRow(),1).toString().replaceAll("'", ""));
+					JOptionPane.showMessageDialog(null,"Error "+ lista_perfiles.getValueAt(lista_perfiles.getSelectedRow(),1).toString().replaceAll("'", ""));
 				}	
 			}
 		});
@@ -643,21 +639,25 @@ public class Vista_Principal extends JFrame implements ActionListener {
     
          }
 		
-		if(e.getSource()==filtrar)
+		if(e.getSource()== filtrar)
 		{
 			abrirFiltradoAvanzado();
 		}
-		if(e.getSource()==manuales)
+		if(e.getSource()== manuales)
 		{
 			abrirManuales();
+		}
+		if(e.getSource()== mostrar_todos)
+		{
+			DefaultTableModel modelo_tabla = new DefaultTableModel();
+			c.ObtenerPerfiles(modelo_tabla);
+			CargarPerfiles(modelo_tabla);
 		}
 		
 		/* ********************************************************************************************************************************************************************************** */
 		/* Filtrar por centro regional */
 		if(e.getSource()==btn_busqueda && chckbx_Centro.isSelected() &&!comboBox_Centro.getSelectedItem().toString().equals(null))
 		{
-			
-			System.out.println(comboBox_Centro.getSelectedItem().toString());
 			chckbx_Centro.setSelected(false);
 			chckbx_Cargo.setSelected(false);
 			chckbx_grupo.setSelected(false);
@@ -680,7 +680,6 @@ public class Vista_Principal extends JFrame implements ActionListener {
 		/* Filtrar por area laboral */
 		if(e.getSource()==btn_busqueda && chckbx_grupo.isSelected() &&!comboBox_GrupoOcupacional.getSelectedItem().toString().equals(null))
 		{
-			System.out.println(comboBox_GrupoOcupacional.getSelectedItem().toString());
 			chckbx_Centro.setSelected(false);
 			chckbx_Cargo.setSelected(false);
 			chckbx_grupo.setSelected(false);
@@ -695,7 +694,6 @@ public class Vista_Principal extends JFrame implements ActionListener {
             
 			DefaultTableModel modelo_tabla = new DefaultTableModel();
 			c.ObtenerPerfilesAreaLaboral(modelo_tabla, comboBox_GrupoOcupacional.getSelectedItem().toString());
-			System.out.println(comboBox_GrupoOcupacional.getSelectedItem().toString());
 			CargarPerfiles(modelo_tabla);
 			limpiarcomponentes();
 		}
@@ -729,7 +727,6 @@ public class Vista_Principal extends JFrame implements ActionListener {
 			/* Filtrar por cargo */
 			if(e.getSource()==btn_busqueda && chckbx_Cargo.isSelected() &&!comboBox_CargoActual.getSelectedItem().toString().equals(null))
 			{
-				System.out.println(comboBox_CargoActual.getSelectedItem().toString());
 				chckbx_Centro.setSelected(false);
 				chckbx_Cargo.setSelected(false);
 				chckbx_grupo.setSelected(false);
@@ -744,7 +741,6 @@ public class Vista_Principal extends JFrame implements ActionListener {
 	            
 				DefaultTableModel modelo_tabla = new DefaultTableModel();
 				c.ObtenerPerfilesCargo(modelo_tabla, comboBox_CargoActual.getSelectedItem().toString());
-				System.out.println(comboBox_CargoActual.getSelectedItem().toString());
 				CargarPerfiles(modelo_tabla);
 				limpiarcomponentes();
 			}

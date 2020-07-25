@@ -4,13 +4,9 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.Iterator;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
-import javax.swing.JOptionPane;
-import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 public class Controlador 
@@ -47,15 +43,11 @@ public class Controlador
 	
 	public void ObtenerPerfilesEspecificos(DefaultTableModel modelo_tabla, String texto) 
 	{
-		// TODO Auto-generated method stub
 		MI.FiltrarTextoBruto(texto, modelo_tabla);
 	}
 	
 	/* ******************************************************************************************************************************************** */
-	/* Debe recibir el indice del perfil seleccionado y retornar 
-	 * estructura de datos personalizada que represente un perfil 
-	 * para ser mostrada en el panel_perfil	*/
-	
+	/* Metodo para mostrar en el panel de contenido el perfil del empleado seleccionado */
 	public Empleado PerfilSeleccionado(String Cedula)
 	{
 		return MI.getPerfil(Cedula);
@@ -68,13 +60,13 @@ public class Controlador
 	/* Metodo para lenar ComboBoxes*/
 	public void LlenarComboBoxes(JComboBox centros, JComboBox cargos, JComboBox grupos_ocupacionales)
 	{
-	/* Llenar ComboBox de Centros Regionales */
+		/* ************************************************ Llenar ComboBox de Cargos ****************************************************** */
 		centros.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] {null, "Azuero", "Bocas del Toro","Chiriqui","Cocle","Colon","Panama","Panama Oeste","Tocumen","Veraguas" }));
 		
 		ConectorSQL conector = new ConectorSQL();
 		Connection conexion= conector.getConexion("UTP_empleados", "root", "");
 		
-	/* Llenar ComboBox de Cargos */
+		/* ************************************************ Llenar ComboBox de Cargos ****************************************************** */
 		DefaultComboBoxModel<String> modelo_cargos = new javax.swing.DefaultComboBoxModel<String>();
 		String cargo;
 		try{
@@ -98,7 +90,7 @@ public class Controlador
 		
 		cargos.setModel(modelo_cargos);
 		
-	/* Llenar ComboBox de Grupo Ocupacional */
+	/* ************************************************ Llenar ComboBox de Grupo Ocupacional ****************************************************** */
 		DefaultComboBoxModel<String> modelo_grupos = new javax.swing.DefaultComboBoxModel<String>();
 		String grupo;
 		try {
@@ -112,18 +104,15 @@ public class Controlador
 					 modelo_grupos.addElement(grupo);
 				}
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}finally 
 		{
 			try {
 				conexion.close();
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -139,6 +128,8 @@ public class Controlador
 		MI.Inicializar();
 	}
 	
+	/* ******************************************************************************************************************************************** */
+	/* Metodo para vaciar base de conocimiento terminada la ejecucion */
 	public void EliminarBC() {
 		MI.EliminarArchivo();
 	}

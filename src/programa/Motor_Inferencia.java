@@ -25,17 +25,11 @@ public class Motor_Inferencia
 	/* ******************************************************************************************************************************************** */
 	/* Propiedades del motor de inferencia */
 	
-	/* Motor Rete de reglas: */
-	
-	/* Direcciones de archivo .pl :*/
-	// Directorio Christian: C:\Users\\bob_0\eclipse-workspace\seleccion-perfiles\src\programa\base_conocimiento.pl
-	// Directorio Edwin: D:\Archivos\Proyectos\eclipse-workspace\seleccion-perfiles\src\programa\base_conocimiento.pl
-	
+	/* Direccion de almacenamiento temporal de la base de conocimiento */
 	private String base_conocimiento = System.getProperty("user.dir") + "\\base_conocimiento.pl";
 
 	/* Instancias para conectar a la base de datos: */
 	private ConectorSQL conector;
-	private Cargo c;
 
 	/* Cadenas con las consultas en lenguaje SQL: */
 	private String sql_query_cargos = "SELECT Nombre, Familia, Grupo_ocupacional, Nivel_funcional, Grupo_laboral FROM Cargos";
@@ -58,21 +52,17 @@ public class Motor_Inferencia
 	{
 		sql_query_empleados = query;
 	}
-	
-	/* ******************************************************************************************************************************************** */
-
-	
+		
 	/* ******************************************************************************************************************************************** */
 	/* Metodo para inicializar el Motor de reglas */
 	
 	public void Inicializar()
 	{
-		// Para hacer algo supongo?
+		// Cargar reglas predefinidas 
 		CargarReglas();
 			
 		// Introducir los registros de la base de datos como hechos en la base de conocimiento del MI
 		SincronizarBD();
-		JOptionPane.showMessageDialog(null, base_conocimiento);
 	}
 	
 	/* ******************************************************************************************************************************************** */
@@ -87,6 +77,8 @@ public class Motor_Inferencia
 		
 		conector = new ConectorSQL();
 		Connection conexion= conector.getConexion("UTP_empleados", "root", "");
+		
+		/* ***************************************************** Cargar cargos como hechos ******************************************************** */
 		Statement st; 
 		Statement st2;
 		try {
@@ -105,10 +97,11 @@ public class Motor_Inferencia
 					escribir(assertz(c));
 				}
 			} catch (Exception ex) {
-				JOptionPane.showMessageDialog(null, "Error al insertar los hechos de cargos");
+				JOptionPane.showMessageDialog(null, "Error al insertar los hechos de cargos.");
 				ex.printStackTrace();
-			}	
+			}
 			
+			/* ************************************************ Cargar empleados como hechos ****************************************************** */	
 			st2 = conexion.createStatement();
 			empleados = st2.executeQuery(sql_query_empleados);	
 			try {	
@@ -130,22 +123,22 @@ public class Motor_Inferencia
 					escribir(assertz(e));	
 				}
 			} catch (Exception ex) {
-				JOptionPane.showMessageDialog(null, "Error al insertar los hechos de empleado");
+				JOptionPane.showMessageDialog(null, "Error al insertar los hechos de empleado.");
 				ex.printStackTrace();
 			} 
 			
 		} catch (SQLException exc) {
-			JOptionPane.showMessageDialog(null, "Error al conectarse con la Base de Datos");
+			JOptionPane.showMessageDialog(null, "Error al conectarse con la Base de Datos.");
 			exc.printStackTrace();
 		}
 		finally
 		{
 			try {
 				conexion.close();
-				JOptionPane.showMessageDialog(null, "Base de Conocimiento cargada con exito");
+				JOptionPane.showMessageDialog(null, "Base de Conocimiento cargada con exito.");
 			} catch (SQLException exc) {
 				// TODO Auto-generated catch block
-				JOptionPane.showMessageDialog(null, "Error al cerrar la conexion a la Base de Datos");
+				JOptionPane.showMessageDialog(null, "Error al cerrar la conexion a la Base de Datos.");
 				exc.printStackTrace();
 			}
 		}				
@@ -153,11 +146,11 @@ public class Motor_Inferencia
 	
 	/* ******************************************************************************************************************************************** */
 	/* Metodo para probar conexion */
+	
 	public void ConsultaPrueba()
 	{
 		try 
 		{	
-			System.out.println("Probando conexion con Prolog...");
 			Query q1 = 
 				    new Query( 
 					"consult", 
@@ -165,29 +158,10 @@ public class Motor_Inferencia
 				    );
 			
 			System.out.println( "Conection with Prolog Knowledge Base " + (q1.hasSolution() ? "succeeded" : "failed"));
-			Variable X = new Variable("X");
-			
-			Query q2 = 
-					  new Query( 
-					      "empleado", 
-					      new Term[] {X	,new Atom("Edwin"),new Atom("Gonzalez"),
-					      new Atom("62006000"),new Atom("ABOGADO"),new Atom("m"),new Atom("1999-02-06"),
-					      new Atom("Lic. Ing. de Sistemas y Computacion"),new Atom("2 años - ABOGADO"),
-					      new Atom("63000000 - Sr. Paz"),new Atom("Panama Oeste"),new Atom("Administrador de Soporte Tecnico")} 
-					  );
-			System.out.println( 
-					  "Existe un Edwin?: " + 
-					  ( q2.hasSolution() ? "puede ser" : "nope" ) 
-					);	
-			
-			java.util.Map<String,Term>[] solutions = q2.allSolutions();
-			for ( int i=0 ; i < solutions.length ; i++ ) { 
-			  System.out.println( "X = " + solutions[i].get("X"));
-			}	  
 		}catch(Exception e)
 		{
 			e.printStackTrace();
-			JOptionPane.showMessageDialog(null,"ERROR LPM");
+			JOptionPane.showMessageDialog(null,"Error al conectarse con Prolog.");
 		}
 				
 	}
@@ -243,7 +217,7 @@ public class Motor_Inferencia
 		}
 		else
 		{
-			JOptionPane.showMessageDialog(null, "Error al encontrar empleado por cedula ");
+			JOptionPane.showMessageDialog(null, "Error al encontrar empleado.");
 		}
 		return e;
 	}
@@ -286,8 +260,8 @@ public class Motor_Inferencia
 			java.util.Map<String,Term>[] solutions = q2.allSolutions();
 			for ( int i=0 ; i < solutions.length ; i++ ) 
 			{ 
-				datos[0] = solutions[i].get("Nombre").toString() + " " + solutions[i].get("Apellido").toString();
-				datos[1] = solutions[i].get("CIP").toString();
+				datos[0] = solutions[i].get("Nombre").toString().replaceAll("'", "") + " " + solutions[i].get("Apellido").toString().replaceAll("'", "");
+				datos[1] = solutions[i].get("CIP").toString().replaceAll("'", "");
 				modelo_tabla.addRow(datos);
 			}
 		}
@@ -304,7 +278,6 @@ public class Motor_Inferencia
 				"consult", 
 				new Term[] {new Atom(base_conocimiento)} 
 			    );
-		System.out.println( "consult " + (q1.hasSolution() ? "succeeded" : "failed"));
 		
 		Variable CIP = new Variable("CIP");
 		Variable Nombre = new Variable("Nombre");
@@ -322,21 +295,17 @@ public class Motor_Inferencia
 				  new Query( 
 				      "empleado", 
 				      new Term[] { CIP, Nombre , Apellido, Telefono ,new Atom(cargo), Sexo, Fecha_nacimiento, Formacion_academica, Experiencia, Referencias, Centro_Regional, Pruebas_psicotecnicas } 
-				     
 				  );
-		
-		
-		JOptionPane.showMessageDialog(null, "Esta a punto de filtrar perfiles por cargo actual ");
 			
 		modelo_tabla.addColumn("Nombre");
 		modelo_tabla.addColumn("CIP");
-	
 		String[] datos = new String[2];
+		
 			java.util.Map<String,Term>[] solutions = q2.allSolutions();
 			for ( int i=0 ; i < solutions.length ; i++ ) 
 			{ 
-				datos[0] = solutions[i].get("Nombre").toString() + " " + solutions[i].get("Apellido").toString();
-				datos[1] = solutions[i].get("CIP").toString();
+				datos[0] = solutions[i].get("Nombre").toString().replaceAll("'", "") + " " + solutions[i].get("Apellido").toString().replaceAll("'", "");
+				datos[1] = solutions[i].get("CIP").toString().replaceAll("'", "");
 				modelo_tabla.addRow(datos);
 			}		
 	}
@@ -381,12 +350,11 @@ public class Motor_Inferencia
 			{ 
 				if(CalcularEdad(solutions[i].get("Fecha_nacimiento").toString())==Edad)
 				{	
-					datos[0] = solutions[i].get("Nombre").toString() + " " + solutions[i].get("Apellido").toString();
-					datos[1] = solutions[i].get("CIP").toString();
+					datos[0] = solutions[i].get("Nombre").toString().replaceAll("'", "") + " " + solutions[i].get("Apellido").toString().replaceAll("'", "");
+					datos[1] = solutions[i].get("CIP").toString().replaceAll("'", "");
 					modelo_tabla.addRow(datos);
 				}
 			}	
-	
 	}
 	
 	/* ******************************************************************************************************************************************** */
@@ -400,8 +368,7 @@ public class Motor_Inferencia
 				"consult", 
 				new Term[] {new Atom(base_conocimiento)} 
 			    );
-		System.out.println( "consult " + (q1.hasSolution() ? "succeeded" : "failed"));
-		
+				
 		Variable CIP = new Variable("CIP");
 		Variable Nombre = new Variable("Nombre");
 		Variable Apellido = new Variable("Apellido");
@@ -420,26 +387,18 @@ public class Motor_Inferencia
 				      new Term[] { CIP, Nombre , Apellido, Telefono , Cargo, Sexo, Fecha_nacimiento, Formacion_academica, Experiencia, Referencias, new Atom(Centro), Pruebas_psicotecnicas } 
 				     
 				  );
-		
-		
-		JOptionPane.showMessageDialog(null, "Esta a punto de filtrar perfiles por centro regional ");
 			
 		modelo_tabla.addColumn("Nombre");
 		modelo_tabla.addColumn("CIP");
-	
 		String[] datos = new String[2];
+		
 			java.util.Map<String,Term>[] solutions = q2.allSolutions();
-			//ArrayList<Empleado> p = new ArrayList<Empleado>();
 			for ( int i=0 ; i < solutions.length ; i++ ) 
 			{ 
-				datos[0] = solutions[i].get("Nombre").toString() + " " + solutions[i].get("Apellido").toString();
-				datos[1] = solutions[i].get("CIP").toString();
+				datos[0] = solutions[i].get("Nombre").toString().replaceAll("'", "") + " " + solutions[i].get("Apellido").toString().replaceAll("'", "");
+				datos[1] = solutions[i].get("CIP").toString().replaceAll("'", "");
 				modelo_tabla.addRow(datos);
-					//p.add(i,new Empleado(i,solutions[i].get("CIP").toString(),solutions[i].get("Nombre").toString(),solutions[i].get("Apellido").toString()));
-			}
-			
-		//return p;
-		
+			}		
 	}
 	
 	/* ******************************************************************************************************************************************** */
@@ -462,8 +421,7 @@ public class Motor_Inferencia
 				      "buscar_grupo", 
 				      new Term[] { new Atom(grupo_laboral),CIP, Nombre , Apellido,} 
 				  );
-		JOptionPane.showMessageDialog(null, "Esta a punto de filtrar perfiles por su area laboral ");
-		
+	
 		modelo_tabla.addColumn("Nombre");
 		modelo_tabla.addColumn("CIP");
 		String[] datos = new String[2];
@@ -471,8 +429,8 @@ public class Motor_Inferencia
 			java.util.Map<String,Term>[] solutions = q2.allSolutions();
 			for ( int i=0 ; i < solutions.length ; i++ ) 
 			{ 
-				datos[0] = solutions[i].get("Nombre").toString() + " " + solutions[i].get("Apellido").toString();
-				datos[1] = solutions[i].get("CIP").toString();
+				datos[0] = solutions[i].get("Nombre").toString().replaceAll("'", "") + " " + solutions[i].get("Apellido").toString().replaceAll("'", "");
+				datos[1] = solutions[i].get("CIP").toString().replaceAll("'", "");
 				modelo_tabla.addRow(datos);					
 			}			
 	}
@@ -506,12 +464,12 @@ public class Motor_Inferencia
 				      "empleado", 
 				      new Term[] { CIP, Nombre, Apellido, Telefono, Cargo, Sexo, Fecha_nacimiento, Formacion_academica, Experiencia, Referencias, Centro_Regional, Pruebas_psicotecnicas} 
 				  );
-		JOptionPane.showMessageDialog(null, "Esta a punto de filtrar perfiles por un texto introducido ");
 		if(q2.hasSolution())
 		{
 			modelo_tabla.addColumn("Nombre");
 			modelo_tabla.addColumn("CIP");
-			String[] datos = new String[2];			
+			String[] datos = new String[2];
+			
 			java.util.Map<String,Term>[] solutions = q2.allSolutions();
 			for ( int i=0 ; i < solutions.length ; i++ ) 
 			{ 
@@ -529,15 +487,15 @@ public class Motor_Inferencia
 						solutions[i].get("Pruebas_psicotecnicas").toString().toLowerCase().contains(texto.toLowerCase())	
 						)
 				{
-					datos[0] = solutions[i].get("Nombre").toString() + " " + solutions[i].get("Apellido").toString();
-					datos[1] = solutions[i].get("CIP").toString();
+					datos[0] = solutions[i].get("Nombre").toString().replaceAll("'", "") + " " + solutions[i].get("Apellido").toString().replaceAll("'", "");
+					datos[1] = solutions[i].get("CIP").toString().replaceAll("'", "");
 					modelo_tabla.addRow(datos);	
 				}					
 			}
 		}
 		else
 		{
-			JOptionPane.showMessageDialog(null, "No se pudo encontrar al encontrar empleado con caracteristicas solicitadas ");
+			JOptionPane.showMessageDialog(null, "No se pudo encontrar al encontrar empleado con caracteristicas solicitadas.");
 		}
 	}
 	
@@ -551,6 +509,7 @@ public class Motor_Inferencia
 	
 	/* ******************************************************************************************************************************************** */
 	/* Metodos para insertar hechos */
+	
 	public String assertz(Empleado e)
 	{
 		String hecho;
@@ -614,9 +573,6 @@ public class Motor_Inferencia
 		int ano =DateFormat.getDateTimeInstance().getCalendar().get(DateFormat.YEAR_FIELD)+80;
 		int ano_nacimiento = Integer.parseInt(nacimiento.substring(1, 5));
 		int edad = ano-ano_nacimiento;
-		System.out.println("Nacido: "+ano_nacimiento);
-		System.out.println("Edad: "+edad);
-		System.out.println("Año: "+ano);
 		
 		return edad;
 	}
