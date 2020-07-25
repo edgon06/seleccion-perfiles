@@ -166,7 +166,7 @@ public class Vista_Principal extends JFrame implements ActionListener {
 		
 		
 	/*Cargar panel con lista de perfiles */
-		CargarPerfiles(panel_lista_perfiles);
+		CargarPerfiles(null);
 	/*Cargar panel con opciones de filtrado */
 		CargarOpcionesFiltrado(panel_filtrado);
 	
@@ -264,25 +264,49 @@ public class Vista_Principal extends JFrame implements ActionListener {
 	
 	/* ******************************************************************************************************************************************** */
 	/* Metodo para llenar el panel de perfiles con la lista de perfiles */
-	private void CargarPerfiles(JPanel panel) 
+	private void CargarPerfiles(DefaultTableModel modelo_tabla) 
 	{
+		panel_lista_perfiles.removeAll();
 		//Establecer el Layout del panel con la lista de perfiles:
 		panel_lista_perfiles.setLayout(new BoxLayout(panel_lista_perfiles, BoxLayout.Y_AXIS));
-		panel_lista_perfiles.removeAll();
+		
 		
 		lista_perfiles = new JTable();
-	
+		if(modelo_tabla == null)
+		{
+			DefaultTableModel modelo_provisional = new DefaultTableModel();
+			modelo_provisional.addColumn("Nombre");
+			modelo_provisional.addColumn("CIP");
+			lista_perfiles.setModel(modelo_provisional);
+			lista_perfiles.getColumnModel().getColumn(1).setPreferredWidth(0);;
+			lista_perfiles.getColumnModel().getColumn(1).setResizable(false);
+		}
+		else
+		{
+			lista_perfiles.setModel(modelo_tabla);
+			lista_perfiles.getColumnModel().getColumn(1).setPreferredWidth(0);;
+			lista_perfiles.getColumnModel().getColumn(1).setResizable(false);
+		}
+		panel_lista_perfiles.add(lista_perfiles);
 		lista_perfiles.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 			
 			@Override
 			public void valueChanged(ListSelectionEvent event) 
 			{
-				MostrarPerfil(c.PerfilSeleccionado(elementos_lista.get(lista_perfiles.getSelectedRow()).getCedula().replaceAll("'", "")));	
-				panel_lista_perfiles.revalidate();
-				panel_lista_perfiles.validate();
+				
+				try {
+					MostrarPerfil(c.PerfilSeleccionado(lista_perfiles.getValueAt(lista_perfiles.getSelectedRow(),1).toString().replaceAll("'", "")));
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					JOptionPane.showMessageDialog(null, lista_perfiles.getValueAt(lista_perfiles.getSelectedRow(),1).toString().replaceAll("'", ""));
+				}
+				
 			}
 		});
 		panel_lista_perfiles.repaint();
+		panel_lista_perfiles.revalidate();
+		panel_lista_perfiles.validate();
 	}
 	/* ******************************************************************************************************************************************** */
 	/* Metodo para mostrar el panel de contenido del Perfil */
@@ -431,8 +455,9 @@ public class Vista_Principal extends JFrame implements ActionListener {
     			DefaultTableModel modelo_tabla = new DefaultTableModel();
     			modelo_tabla.addColumn("Nombre");
     			lista_perfiles.setModel(modelo_tabla);
-    			c.ObtenerPerfiles(modelo_tabla, elementos_lista);
-    			panel_lista_perfiles.add(lista_perfiles);
+    			c.ObtenerPerfiles(modelo_tabla);
+    			
+    			
     			panel_lista_perfiles.repaint();
             	  }
         });
@@ -523,6 +548,9 @@ public class Vista_Principal extends JFrame implements ActionListener {
 		{
 			abrirFiltradoAvanzado();
 		}
+		
+		/* ********************************************************************************************************************************************************************************** */
+		/* Filtrar por centro regional */
 		if(e.getSource()==btn_busqueda && chckbx_Centro.isSelected() &&!comboBox_Centro.getSelectedItem().toString().equals(null))
 		{
 			aux= comboBox_Centro.getSelectedItem().toString();
@@ -538,23 +566,18 @@ public class Vista_Principal extends JFrame implements ActionListener {
             checkBox_Edad.setEnabled(true);
             
            
-			limpiarLista();
+		
 			DefaultTableModel modelo_tabla = new DefaultTableModel();
-			modelo_tabla.addColumn("Nombre");
-			lista_perfiles.setModel(modelo_tabla);
-			c.ObtenerPerfilesCentroRegional(modelo_tabla, elementos_lista,aux );
-			panel_lista_perfiles.add(lista_perfiles);
-			panel_lista_perfiles.repaint();
-			
-			panel_lista_perfiles.revalidate();
-			panel_lista_perfiles.validate();
+			c.ObtenerPerfilesCentroRegional(modelo_tabla, aux);
+			CargarPerfiles(modelo_tabla);
 			
 			limpiarcomponentes();
 			aux="";
 		}
+		/* ********************************************************************************************************************************************************************************** */
+		/* Filtrar por area laboral */
 		if(e.getSource()==btn_busqueda && chckbx_grupo.isSelected() &&!comboBox_GrupoOcupacional.getSelectedItem().toString().equals(null))
 		{
-			aux= comboBox_GrupoOcupacional.getSelectedItem().toString();
 			System.out.println(comboBox_GrupoOcupacional.getSelectedItem().toString());
 			chckbx_Centro.setSelected(false);
 			chckbx_Cargo.setSelected(false);
@@ -567,93 +590,32 @@ public class Vista_Principal extends JFrame implements ActionListener {
             checkBox_Edad.setEnabled(true);
             
            
-			limpiarLista();
 			DefaultTableModel modelo_tabla = new DefaultTableModel();
-			modelo_tabla.addColumn("Nombre");
-			lista_perfiles.setModel(modelo_tabla);
-			c.ObtenerPerfilesAreaLaboral(modelo_tabla, elementos_lista, comboBox_GrupoOcupacional.getSelectedItem().toString());
-			panel_lista_perfiles.add(lista_perfiles);
-			panel_lista_perfiles.repaint();
+			c.ObtenerPerfilesAreaLaboral(modelo_tabla, comboBox_GrupoOcupacional.getSelectedItem().toString());
 			System.out.println(comboBox_GrupoOcupacional.getSelectedItem().toString());
-			aux="";
-			JOptionPane.showMessageDialog(null,"LLEGUÉ");
+			CargarPerfiles(modelo_tabla);
 		}
-			 /*try {
-				if(!textField_Edad.getText().equals(""))// radiobutton_edad.esta seleccionados
-				{
-					limpiarLista();
-					DefaultTableModel modelo_tabla = new DefaultTableModel();
-	    			modelo_tabla.addColumn("Nombre");
-	    			c.ObtenerPerfilesEdad(modelo_tabla, elementos_lista, Integer.parseInt(textField_Edad.getText().toString()));
-	    			lista_perfiles.setModel(modelo_tabla);
-	    			panel_lista_perfiles.add(lista_perfiles);
-	    			panel_lista_perfiles.repaint();
+		
+		/* ********************************************************************************************************************************************************************************** */
+		/* Filtrar por edad */
+			if((e.getSource()==btn_busqueda && !textField_Edad.getText().equals("")) && checkBox_Edad.isSelected() )// radiobutton_edad.esta seleccionados
+			{
+				chckbx_Centro.setSelected(false);
+				chckbx_Cargo.setSelected(false);
+				chckbx_grupo.setSelected(false);
+				checkBox_Edad.setSelected(true);
+				
+	            chckbx_Centro.setEnabled(true);
+	            chckbx_Cargo.setEnabled(true);
+	            chckbx_grupo.setEnabled(true);
+	            checkBox_Edad.setEnabled(true);
+	            
+				DefaultTableModel modelo_tabla = new DefaultTableModel();
+	    		c.ObtenerPerfilesEdad(modelo_tabla, Integer.parseInt(textField_Edad.getText().toString()));
+	    		CargarPerfiles(modelo_tabla);
 					
-				}
-				}
-				catch(Exception ex)
-				{
-					limpiarLista();
-					ex.getStackTrace();
-					DefaultTableModel modelo_tabla = new DefaultTableModel();
-	    			modelo_tabla.addColumn("Nombre");
-	    			lista_perfiles.setModel(modelo_tabla);
-					c.ObtenerPerfiles(modelo_tabla, elementos_lista);
-					panel_lista_perfiles.add(lista_perfiles);
-	    			panel_lista_perfiles.repaint();
-				}
-			
-			try {
-				if(!comboBox_Centro.getSelectedItem().toString().equals(null))
-				{
-					limpiarLista();
-					System.out.println("Entro en combobox_centro");
-					DefaultTableModel modelo_tabla = new DefaultTableModel();
-	    			modelo_tabla.addColumn("Nombre");
-	    			lista_perfiles.setModel(modelo_tabla);
-	    			c.ObtenerPerfilesCentroRegional(modelo_tabla, elementos_lista,comboBox_Centro.getSelectedItem().toString() );
-	    			panel_lista_perfiles.add(lista_perfiles);
-	    			panel_lista_perfiles.repaint();
-					System.out.println(comboBox_Centro.getSelectedItem().toString());
-					System.out.println("Entro en combobox_centro2");
-				}
-				}
-				catch(Exception ex)
-				{
-					limpiarLista();
-					ex.getStackTrace();
-					DefaultTableModel modelo_tabla = new DefaultTableModel();
-	    			modelo_tabla.addColumn("Nombre");
-	    			lista_perfiles.setModel(modelo_tabla);
-					c.ObtenerPerfiles(modelo_tabla, elementos_lista);
-					panel_lista_perfiles.add(lista_perfiles);
-	    			panel_lista_perfiles.repaint();
-				}
-			
-			try {
-				if(!comboBox_GrupoOcupacional.getSelectedItem().toString().equals(null))
-				{
-					limpiarLista();
-					DefaultTableModel modelo_tabla = new DefaultTableModel();
-	    			modelo_tabla.addColumn("Nombre");
-	    			lista_perfiles.setModel(modelo_tabla);
-	    			c.ObtenerPerfilesAreaLaboral(modelo_tabla, elementos_lista, comboBox_GrupoOcupacional.getSelectedItem().toString());
-	    			panel_lista_perfiles.add(lista_perfiles);
-	    			panel_lista_perfiles.repaint();
-					System.out.println(comboBox_GrupoOcupacional.getSelectedItem().toString());
-				}
-				}
-				catch(Exception ex)
-				{
-					limpiarLista();
-					ex.getStackTrace();
-					DefaultTableModel modelo_tabla = new DefaultTableModel();
-	    			modelo_tabla.addColumn("Nombre");
-	    			lista_perfiles.setModel(modelo_tabla);
-					c.ObtenerPerfiles(modelo_tabla, elementos_lista);
-					panel_lista_perfiles.add(lista_perfiles);
-	    			panel_lista_perfiles.repaint();
-				}*/
+			}
+				
 							
 		
 
@@ -681,6 +643,14 @@ public class Vista_Principal extends JFrame implements ActionListener {
 	public void limpiarLista()
 	{
 		elementos_lista.clear();
+		/*
+		int index = 0;
+		while(index < elementos_lista.size())
+		{
+			elementos_lista.remove(index);
+			index ++;
+		}
+			*/
 	}
 	
 	public void limpiarcomponentes() {

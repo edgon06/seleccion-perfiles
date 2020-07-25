@@ -15,6 +15,7 @@ import java.lang.Integer;
 
 import javax.naming.spi.DirStateFactory.Result;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 import org.jpl7.*;
 import org.jpl7.fli.*;
@@ -155,13 +156,8 @@ public class Motor_Inferencia
 	public void ConsultaPrueba()
 	{
 		try 
-		{
-			
+		{	
 			System.out.println("Hola Mundo");
-			
-			
-			// Directorio Christian: C:\\Users\\bob_0\\eclipse-workspace\\seleccion-perfiles\\src\\programa\\base_conocimiento.pl
-			// Directorio Edwin: D:\Archivos\Proyectos\eclipse-workspace\seleccion-perfiles\src\programa\base_conocimiento.pl
 			Query q1 = 
 				    new Query( 
 					"consult", 
@@ -317,10 +313,8 @@ public class Motor_Inferencia
 	/* ******************************************************************************************************************************************** */
 	/* Metodo para Filtrar perfiles por edad */
 	
-	public Iterator FiltrarPerfilesEdad(int Edad)
+	public void FiltrarPerfilesEdad(int Edad, DefaultTableModel modelo_tabla)
 	{
-		Iterator perfiles = null;
-		
 		Query q1 = 
 			    new Query( 
 				"consult", 
@@ -346,50 +340,28 @@ public class Motor_Inferencia
 				      new Term[] { CIP, Nombre , Apellido, Telefono , Cargo, Sexo, Fecha_nacimiento, Formacion_academica, Experiencia, Referencias, Centro_Regional, Pruebas_psicotecnicas } 
 				  );
 		
+		modelo_tabla.addColumn("Nombre");
+		modelo_tabla.addColumn("CIP");
+		String[] datos = new String[2];
 		
-		//if(q2.hasSolution())
-		//{			
-			/*int y=0;
 			java.util.Map<String,Term>[] solutions = q2.allSolutions();
 			ArrayList<Empleado> p = new ArrayList<Empleado>();
 			for ( int i=0 ; i < solutions.length ; i++ ) 
 			{ 
 				if(CalcularEdad(solutions[i].get("Fecha_nacimiento").toString())==Edad)
 				{	
-					y++;
-					p.add(new Empleado(y , solutions[i].get("CIP").toString(),solutions[i].get("Nombre").toString(),solutions[i].get("Apellido").toString()));
+					datos[0] = solutions[i].get("Nombre").toString() + " " + solutions[i].get("Apellido").toString();
+					datos[1] = solutions[i].get("CIP").toString();
+					modelo_tabla.addRow(datos);
 				}
-				
 			}	
-			
-			perfiles = p.iterator();*/
-			int i=0;
-			ArrayList<Empleado> p = new ArrayList<Empleado>();
-			//for ( int i=0 ; i < solutions.length ; i++ ) 
-			java.util.Map<String,Term> solutions;
-			while ( q2.hasMoreSolutions())
-			{ 
-					solutions = q2.nextSolution();
-					
-					if(CalcularEdad(solutions.get("Fecha_nacimiento").toString())==Edad)
-					p.add(i,new Empleado(solutions.get("CIP").toString(),solutions.get("Nombre").toString(),solutions.get("Apellido").toString()));	
-			i++;
-			}	
-			
-			perfiles = p.iterator();
-		/*}
-		else
-		{
-			JOptionPane.showMessageDialog(null, "Error al filtrar perfiles por edad ");
-		}*/
-		
-		return perfiles;
+	
 	}
 	
 	/* ******************************************************************************************************************************************** */
 	/* Metodo para Filtrar perfiles por centro Regional */
 	
-	public ArrayList<Empleado> FiltrarPerfilesCentroRegional(String Centro)
+	public void FiltrarPerfilesCentroRegional(String Centro, DefaultTableModel modelo_tabla)
 	{
 		
 		Query q1 = 
@@ -418,43 +390,32 @@ public class Motor_Inferencia
 				     
 				  );
 		
+		
 		JOptionPane.showMessageDialog(null, "Esta a punto de filtrar perfiles por centro regional ");
-		
-		//if(q2.hasSolution())
-		//{		
 			
-			java.util.Map<String,Term> solutions;	
-			int i=0;
-			//java.util.Map<String,Term>[] solutions = q2.allSolutions();
-			ArrayList<Empleado> p = new ArrayList<Empleado>();
-			//for ( int i=0 ; i < solutions.length ; i++ ) 
-			//{ 
-			//		p.add(i,new Empleado(i,solutions[i].get("CIP").toString(),solutions[i].get("Nombre").toString(),solutions[i].get("Apellido").toString()));			
-			//}
-			while ( q2.hasMoreSolutions()) {    
-				 solutions = q2.nextSolution();
-			p.add(i,new Empleado(i,solutions.get("CIP").toString(),solutions.get("Nombre").toString(),solutions.get("Apellido").toString()));			
-			i++;
+		modelo_tabla.addColumn("Nombre");
+		modelo_tabla.addColumn("CIP");
+	
+		String[] datos = new String[2];
+			java.util.Map<String,Term>[] solutions = q2.allSolutions();
+			//ArrayList<Empleado> p = new ArrayList<Empleado>();
+			for ( int i=0 ; i < solutions.length ; i++ ) 
+			{ 
+				datos[0] = solutions[i].get("Nombre").toString() + " " + solutions[i].get("Apellido").toString();
+				datos[1] = solutions[i].get("CIP").toString();
+				modelo_tabla.addRow(datos);
+					//p.add(i,new Empleado(i,solutions[i].get("CIP").toString(),solutions[i].get("Nombre").toString(),solutions[i].get("Apellido").toString()));
 			}
-			//q2.close();
-
 			
-		//}
-		//else
-		//{
-			//JOptionPane.showMessageDialog(null, "Error al filtrar perfiles por centro regional ");
-	//	}
+		//return p;
 		
-		return p;
 	}
 	
 	/* ******************************************************************************************************************************************** */
 	/* Metodo para Filtrar perfiles por area laboral */
 	
-	public Iterator FiltrarPerfilesAreaLaboral(String grupo_laboral)
-	{
-		Iterator perfiles = null;
-		
+	public void FiltrarPerfilesAreaLaboral(String grupo_laboral, DefaultTableModel modelo_tabla)
+	{		
 		Query q1 = 
 			    new Query( 
 				"consult", 
@@ -465,39 +426,25 @@ public class Motor_Inferencia
 		Variable Nombre = new Variable("Nombre");
 		Variable Apellido = new Variable("Apellido");
 
-	
 		Query q2 = 
 				  new Query( 
 				      "buscar_grupo", 
 				      new Term[] { new Atom(grupo_laboral),CIP, Nombre , Apellido,} 
 				  );
+		JOptionPane.showMessageDialog(null, "Esta a punto de filtrar perfiles por su area laboral ");
 		
+		modelo_tabla.addColumn("Nombre");
+		modelo_tabla.addColumn("CIP");
+		String[] datos = new String[2];
 		
-		//if(q2.hasSolution())
-		//{			
-			java.util.Map<String,Term> solutions;	
-			int i=0;
-			
-			//java.util.Map<String,Term>[] solutions = q2.allSolutions();
-			ArrayList<Empleado> p = new ArrayList<Empleado>();
-			/*for ( int i=0 ; i < solutions.length ; i++ ) 
+			java.util.Map<String,Term>[] solutions = q2.allSolutions();
+			for ( int i=0 ; i < solutions.length ; i++ ) 
 			{ 
-					p.add(new Empleado(i,solutions[i].get("CIP").toString(),solutions[i].get("Nombre").toString(),solutions[i].get("Apellido").toString()));					
-			}*/
-			while ( q2.hasMoreSolutions()) {    
-				 solutions = q2.nextSolution();
-			p.add(i,new Empleado(i,solutions.get("CIP").toString(),solutions.get("Nombre").toString(),solutions.get("Apellido").toString()));			
-			i++;
-			}
-			
-			perfiles = p.iterator();
-		//}
-		//else
-		//{
-		//	JOptionPane.showMessageDialog(null, "Error al filtrar perfiles por area laboral");
-		//}
-		
-		return perfiles;
+				datos[0] = solutions[i].get("Nombre").toString() + " " + solutions[i].get("Apellido").toString();
+				datos[1] = solutions[i].get("CIP").toString();
+				modelo_tabla.addRow(datos);
+				//p.add(new Empleado(i,solutions[i].get("CIP").toString(),solutions[i].get("Nombre").toString(),solutions[i].get("Apellido").toString()));					
+			}			
 	}
 	
 	/* ******************************************************************************************************************************************** */

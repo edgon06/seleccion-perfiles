@@ -21,7 +21,7 @@ public class Controlador
 	/* ******************************************************************************************************************************************** */
 	
 	/* Debe solicitar los perfiles al motor de inferencia	 */
-	public void ObtenerPerfiles(DefaultTableModel modelo_tabla, ArrayList <Empleado> empleados)
+	public void ObtenerPerfiles(DefaultTableModel modelo_tabla)
 	{
 		Iterator p;
 		String [] datos = new String[1];
@@ -34,64 +34,25 @@ public class Controlador
 			System.out.println(datos[0]);
 			System.out.println(o.getIndice_tabla());
 			modelo_tabla.addRow(datos);
-			empleados.add(o);
+			
 			
 		}
 	}
 	
-	public void ObtenerPerfilesEdad(DefaultTableModel modelo_tabla, ArrayList <Empleado> empleados, int Edad )
+	public void ObtenerPerfilesEdad(DefaultTableModel modelo_tabla, int Edad )
 	{
-		Iterator p;
-		String [] datos = new String[1];
-		p = MI.FiltrarPerfilesEdad(Edad);
-		while(p.hasNext())
-		{
-			
-			Empleado o = (Empleado) p.next();
-			datos[0] = o.getNombre() +" "+ o.getApellido();
-			System.out.println(datos[0]);
-			System.out.println(o.getIndice_tabla());
-			modelo_tabla.addRow(datos);
-			empleados.add(o);
-			
-		}
+		MI.FiltrarPerfilesEdad(Edad, modelo_tabla);
 	}
 	
-	public void ObtenerPerfilesCentroRegional(DefaultTableModel modelo_tabla, ArrayList <Empleado> empleados, String Centro_regional )
+	public void ObtenerPerfilesCentroRegional(DefaultTableModel modelo_tabla, String Centro_regional )
 	{
-		Iterator p;
-		String [] datos = new String[1];
-		empleados = MI.FiltrarPerfilesCentroRegional(Centro_regional);
-		p=empleados.iterator();
-		while(p.hasNext())
-		{
-			
-			Empleado o = (Empleado) p.next();
-			datos[0] = o.getNombre() +" "+ o.getApellido();
-			System.out.println(datos[0]);
-			System.out.println(o.getIndice_tabla());
-			modelo_tabla.addRow(datos);
-			empleados.add(o);
-			
-		}
+		MI.FiltrarPerfilesCentroRegional(Centro_regional, modelo_tabla);
+		
 	}
 	
-	public void ObtenerPerfilesAreaLaboral(DefaultTableModel modelo_tabla, ArrayList <Empleado> empleados, String Area_laboral )
+	public void ObtenerPerfilesAreaLaboral(DefaultTableModel modelo_tabla, String Area_laboral )
 	{
-		Iterator p;
-		String [] datos = new String[1];
-		p = MI.FiltrarPerfilesAreaLaboral(Area_laboral);
-		while(p.hasNext())
-		{
-			
-			Empleado o = (Empleado) p.next();
-			datos[0] = o.getNombre() +" "+ o.getApellido();
-			System.out.println(datos[0]);
-			System.out.println(o.getIndice_tabla());
-			modelo_tabla.addRow(datos);
-			empleados.add(o);
-			
-		}
+		MI.FiltrarPerfilesAreaLaboral(Area_laboral, modelo_tabla);
 	}
 	
 	/* ******************************************************************************************************************************************** */
