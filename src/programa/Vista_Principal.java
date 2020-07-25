@@ -55,9 +55,13 @@ public class Vista_Principal extends JFrame implements ActionListener {
 	/* ******************************************************************************************************************************************** */
 	/* Propiedades de la clase */
 	private Vista_Filtrado ventanaFiltrado; 
+	private Vista_Manuales ventanaManuales;
 	private Controlador c = new Controlador();
 
+	/* Controles para la barra de menu */
+	private JMenuBar menuBar;
 	private JMenuItem filtrar;
+	private JMenuItem manuales;
 	
 	/* Paneles */
 	private JPanel contentPane;
@@ -72,7 +76,6 @@ public class Vista_Principal extends JFrame implements ActionListener {
 	
 	/* Controles para listas de perfiles */
 	private JTable lista_perfiles;
-	private ArrayList <Empleado> elementos_lista = new ArrayList<Empleado>();
 	
 	/* Controles para Panel de Filtrado */
 	private JButton btn_busqueda;
@@ -88,13 +91,15 @@ public class Vista_Principal extends JFrame implements ActionListener {
 	private JTextField textField_busqueda;
 	private JTextField textField_Edad;
 	
+	private JCheckBox chckbx_grupo;
+	private JCheckBox chckbx_Cargo;
+	private JCheckBox chckbx_Centro;
+	private JCheckBox checkBox_Edad ;
+	
 	/* Elementos de Panel  de Perfil */
-
 	private JLabel lblFormacionAcademica;
 	private JLabel lblExperiencia;
 	private JLabel lblReferencias;
-	
-	
 	private JLabel lblTitulo;
 	private JLabel lblNombre;
 	private JLabel lblApellido;
@@ -110,31 +115,30 @@ public class Vista_Principal extends JFrame implements ActionListener {
 	private JTextField textField_formacion;
 	private JTextField textField_referencias;
 	private JTextField textField_cargo;
-	private JCheckBox chckbx_grupo;
-	private JCheckBox chckbx_Cargo;
-	private JCheckBox chckbx_Centro;
-	private JCheckBox checkBox_Edad ;
+	
+	
+	
 	/* ******************************************************************************************************************************************** */
 	/* Metodo para inicializar barra de menu*/
+	
 	private void InicializarBarraMenu(JPanel panel) 
 	{
-		//Crear Barra de Menu 
-		JMenuBar menuBar = new JMenuBar();
-		//Añadir Barra de menu en la ventana
+	//	Crear Barra de Menu 
+		menuBar = new JMenuBar();
+	//	Añadir Barra de menu en la ventana
 		setJMenuBar(menuBar);
 			
-		//Crear boton de 'Filtrado Avanzado'
+	//	Crear boton de 'Filtrado Avanzado'
 		filtrar = new JMenuItem("Filtrado Avanzado");
 		filtrar.setHorizontalAlignment(SwingConstants.LEFT);
 		filtrar.addActionListener(this);
 		menuBar.add(filtrar);
 		
-		
-		//Crear boton de 'Manuales de Cargo'
-		JMenuItem manuales = new JMenuItem("Manuales de Cargo");
+	//	Crear boton de 'Manuales de Cargo'
+		manuales = new JMenuItem("Manuales de Cargo");
 		manuales.setHorizontalAlignment(SwingConstants.LEFT);
+		manuales.addActionListener(this);
 		menuBar.add(manuales);
-		
 	}
 	
 	/* ******************************************************************************************************************************************** */
@@ -142,15 +146,21 @@ public class Vista_Principal extends JFrame implements ActionListener {
 	
 	private void InicializarPaneles(JPanel panelPrincipal) 
 	{
-		
 		crearVentanaFiltradoAvanzado();	
-	/* Inicializar panel de lista de perfiles */
+		crearVentanaManuales();
+	/*	Inicializar panel de lista de perfiles */
 		panel_lista_perfiles = new JPanel();
 		panel_lista_perfiles.setToolTipText("Lista de perfiles");
 		panel_lista_perfiles.setPreferredSize(new Dimension(200, 300));// Controlar el grosor del panel
 		panel_lista_perfiles.setBorder(new LineBorder(new Color(0, 0, 0)));
 	
-	/*Inicializar panel que tendra el perfil seleccionado y las opciones de filtrado  */
+		/*	Añadir panel de lista de perfiles al panel principal (contentPane)	 */
+		scrollpanel_izquierdo = new JScrollPane(panel_lista_perfiles);
+		scrollpanel_izquierdo.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		scrollpanel_izquierdo.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+		panelPrincipal.add(scrollpanel_izquierdo, BorderLayout.WEST);
+		
+	/*	Inicializar panel que tendra el perfil seleccionado y las opciones de filtrado  */
 		panel_contenido = new JPanel();
 		panel_contenido.setLayout(new BorderLayout(0,0));
 		
@@ -158,88 +168,77 @@ public class Vista_Principal extends JFrame implements ActionListener {
 		panel_filtrado = new JPanel();
 		panel_filtrado.setBorder(new LineBorder(new Color(0, 0, 0)));
 		panel_filtrado.setPreferredSize(new Dimension(200, 130));// Controlar el grosor del panel Dimension(anchura, altura)
-				
+		
+	/*	Cargar panel con opciones de filtrado */
+		CargarOpcionesFiltrado(panel_filtrado);
+		
 	/*	Inicializar panel del perfil seleccionado  */
 		panel_perfil = new JPanel();
 		panel_perfil.setToolTipText("Lista de Perfiles Filtrados");
 		panel_perfil.setBorder(new LineBorder(new Color(0, 0, 0)));
 		
-		
-	/*Cargar panel con lista de perfiles */
-		CargarPerfiles(null);
-	/*Cargar panel con opciones de filtrado */
-		CargarOpcionesFiltrado(panel_filtrado);
-	
-		
-		
-	/*Añadir panel de lista de perfiles al panel principal (contentPane)	 */
-		scrollpanel_izquierdo = new JScrollPane(panel_lista_perfiles);
-		scrollpanel_izquierdo.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		scrollpanel_izquierdo.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-		panelPrincipal.add(scrollpanel_izquierdo, BorderLayout.WEST);
-		
-	/*Añadir panel con opciones de filtrado al panel derecho */
+	/*	Añadir panel con opciones de filtrado al panel derecho */
 		panel_contenido.add(panel_filtrado,BorderLayout.NORTH);
 		panel_filtrado.setLayout(new BoxLayout(panel_filtrado, BoxLayout.Y_AXIS));
 		
-	
-	/*Añadir panel donde se muestra el perfil seleccionado en el panel	derecho */
+	/*	Añadir panel donde se muestra el perfil seleccionado en el panel derecho */
 		panel_contenido.add(panel_perfil,BorderLayout.CENTER);
-		
 		CargarPanelPerfil();
 		
-	/* Añadir el panel derecho al panel principal  */		
+	/*	Añadir el panel derecho al panel principal  */		
 		panelPrincipal.add(panel_contenido,BorderLayout.CENTER);
-		
 	}
 	
 	/* ******************************************************************************************************************************************** */
 	/* Metodo para cargar el panel con las opciones de filtrado */
+	
 	private void CargarOpcionesFiltrado(JPanel panel)
 	{
 		panel_filtrado_norte = new JPanel();
 		panel_filtrado.add(panel_filtrado_norte);
 		
-		 Label_busqueda = new JLabel("B\u00FAsqueda (Filtrado de Informaci\u00F3n)");
+		Label_busqueda = new JLabel("B\u00FAsqueda (Filtrado de Informaci\u00F3n)");
 		panel_filtrado_norte.add(Label_busqueda);
 		
 		textField_busqueda = new JTextField();
 		panel_filtrado_norte.add(textField_busqueda);
 		textField_busqueda.setColumns(35);
 		
-		 btn_busqueda = new JButton("Buscar");
-		 btn_busqueda.addActionListener(this);
+		btn_busqueda = new JButton("Buscar");
+		btn_busqueda.addActionListener(this);
 		panel_filtrado_norte.add(btn_busqueda);
 		
-		 panel_filtrado_sur = new JPanel();
+		panel_filtrado_sur = new JPanel();
 		panel_filtrado.add(panel_filtrado_sur);
 		panel_filtrado_sur.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
 		
-		 lblCentroRegional = new JLabel("Centro Regional");
+		lblCentroRegional = new JLabel("Centro Regional");
 		panel_filtrado_sur.add(lblCentroRegional);
 		 
-		 chckbx_Centro = new JCheckBox("",false);
-		 panel_filtrado_sur.add(chckbx_Centro);
-		 chckbx_Centro.addActionListener(this);
+		chckbx_Centro = new JCheckBox("",false);
+		panel_filtrado_sur.add(chckbx_Centro);
+		chckbx_Centro.addActionListener(this);
+		 
 		// *********************************************************************************************************************************************************************************
-		 comboBox_Centro = new JComboBox();
-		 comboBox_Centro.setEnabled(false);
-		 comboBox_Centro.addActionListener(this);
+		 
+		comboBox_Centro = new JComboBox();
+		comboBox_Centro.setEnabled(false);
+		comboBox_Centro.addActionListener(this);
 		 
 		panel_filtrado_sur.add(comboBox_Centro);
 		
-		 Label_CargoActual = new JLabel("Cargo Actual");
+		Label_CargoActual = new JLabel("Cargo Actual");
 		panel_filtrado_sur.add(Label_CargoActual);
 		 
-		 chckbx_Cargo = new JCheckBox("",false);
-		 panel_filtrado_sur.add(chckbx_Cargo);
-		 chckbx_Cargo.addActionListener(this);
+		chckbx_Cargo = new JCheckBox("",false);
+		panel_filtrado_sur.add(chckbx_Cargo);
+		chckbx_Cargo.addActionListener(this);
 		
-		 comboBox_CargoActual = new JComboBox();
-		 comboBox_CargoActual.setEnabled(false);
+		comboBox_CargoActual = new JComboBox();
+		comboBox_CargoActual.setEnabled(false);
 		panel_filtrado_sur.add(comboBox_CargoActual);
 		
-		 lblEdad = new JLabel("Edad");
+		lblEdad = new JLabel("Edad");
 		panel_filtrado_sur.add(lblEdad);
 		
 		checkBox_Edad = new JCheckBox("",false);
@@ -250,66 +249,60 @@ public class Vista_Principal extends JFrame implements ActionListener {
 		panel_filtrado_sur.add(textField_Edad);
 		textField_Edad.setColumns(4);
 		
-		 Label_Ocupacional = new JLabel("Grupo Ocupacional");
+		Label_Ocupacional = new JLabel("Grupo Ocupacional");
 		panel_filtrado_sur.add(Label_Ocupacional);
 		 
-		 chckbx_grupo = new JCheckBox("",false);
-		 panel_filtrado_sur.add(chckbx_grupo);
-		 chckbx_grupo.addActionListener(this);
-		 comboBox_GrupoOcupacional = new JComboBox();
-		 comboBox_GrupoOcupacional.setEnabled(false);
+		chckbx_grupo = new JCheckBox("",false);
+		panel_filtrado_sur.add(chckbx_grupo);
+		chckbx_grupo.addActionListener(this);
+		comboBox_GrupoOcupacional = new JComboBox();
+		comboBox_GrupoOcupacional.setEnabled(false);
 		panel_filtrado_sur.add(comboBox_GrupoOcupacional);
+		
+		//	Llenar combo boxes con valores en la base de datos
 		c.LlenarComboBoxes(comboBox_Centro, comboBox_CargoActual, comboBox_GrupoOcupacional);
 	}
 	
 	/* ******************************************************************************************************************************************** */
 	/* Metodo para llenar el panel de perfiles con la lista de perfiles */
+	
 	private void CargarPerfiles(DefaultTableModel modelo_tabla) 
 	{
+	/*	Limpiar el panel */
 		panel_lista_perfiles.removeAll();
-		//Establecer el Layout del panel con la lista de perfiles:
+	/*	Establecer el Layout del panel con la lista de perfiles: */
 		panel_lista_perfiles.setLayout(new BoxLayout(panel_lista_perfiles, BoxLayout.Y_AXIS));
-		
-		
+	/*	Crear tabla */
 		lista_perfiles = new JTable();
-		if(modelo_tabla == null)
-		{
-			DefaultTableModel modelo_provisional = new DefaultTableModel();
-			modelo_provisional.addColumn("Nombre");
-			modelo_provisional.addColumn("CIP");
-			lista_perfiles.setModel(modelo_provisional);
-			lista_perfiles.getColumnModel().getColumn(1).setPreferredWidth(0);;
-			lista_perfiles.getColumnModel().getColumn(1).setResizable(false);
-		}
-		else
-		{
-			lista_perfiles.setModel(modelo_tabla);
-			lista_perfiles.getColumnModel().getColumn(1).setPreferredWidth(0);;
-			lista_perfiles.getColumnModel().getColumn(1).setResizable(false);
-		}
+	
+	/*	Establecer modelo recibido en la tabla */	
+		lista_perfiles.setModel(modelo_tabla);
+		lista_perfiles.getColumnModel().getColumn(1).setPreferredWidth(0);
+		lista_perfiles.getColumnModel().getColumn(1).setResizable(false);
 		panel_lista_perfiles.add(lista_perfiles);
 		lista_perfiles.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 			
 			@Override
 			public void valueChanged(ListSelectionEvent event) 
 			{
-				
 				try {
 					MostrarPerfil(c.PerfilSeleccionado(lista_perfiles.getValueAt(lista_perfiles.getSelectedRow(),1).toString().replaceAll("'", "")));
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
-					JOptionPane.showMessageDialog(null, lista_perfiles.getValueAt(lista_perfiles.getSelectedRow(),1).toString().replaceAll("'", ""));
-				}
-				
+					JOptionPane.showMessageDialog(null,"Algo anda mal... "+ lista_perfiles.getValueAt(lista_perfiles.getSelectedRow(),1).toString().replaceAll("'", ""));
+				}	
 			}
 		});
+		
+		/* Actualizar el panel */
 		panel_lista_perfiles.repaint();
 		panel_lista_perfiles.revalidate();
 		panel_lista_perfiles.validate();
 	}
 	/* ******************************************************************************************************************************************** */
 	/* Metodo para mostrar el panel de contenido del Perfil */
+	
 	private void CargarPanelPerfil()
 	{
 		/* Panel de Perfil seleccionado */
@@ -414,6 +407,7 @@ public class Vista_Principal extends JFrame implements ActionListener {
 	
 	/* ******************************************************************************************************************************************** */
 	/* Metodo para mostrar el perfil seleccionado en el panel de contenido */
+	
 	private void MostrarPerfil(Empleado empleado)
 	{
 		//Establecer el Layout del panel con la lista de perfiles:
@@ -434,7 +428,60 @@ public class Vista_Principal extends JFrame implements ActionListener {
 	}
 	
 	/* ******************************************************************************************************************************************** */
+	/* Metodo para crear  la ventana de manuales de cargo */
+	public void crearVentanaManuales()
+	{
+		try {
+			ventanaManuales = new Vista_Manuales();
+			} catch (Exception ex) 
+			{
+				ex.printStackTrace();
+			}
+	}
+	/* ******************************************************************************************************************************************** */
+	/* Metodo para crear  la ventana de filtrado avanzado */
 	
+	public void crearVentanaFiltradoAvanzado()
+	{
+		try {
+			 	ventanaFiltrado = new Vista_Filtrado();
+			} catch (Exception ex) 
+			{
+				ex.printStackTrace();
+			}
+	}
+	
+	/* ******************************************************************************************************************************************** */
+	/*  Metodo para mostrar la ventana de manuales de cargo */
+	
+	public void abrirManuales()
+	{
+		ventanaManuales.setVisible(true);
+	}	
+
+	
+	/* ******************************************************************************************************************************************** */
+	/*  Metodo para mostrar la ventana de filtrado avanzado */
+	
+	public void abrirFiltradoAvanzado()
+	{
+		ventanaFiltrado.setVisible(true);
+	}
+	
+	/* ******************************************************************************************************************************************** */
+	/*  Metodo para poner despejar los comboboxes del apartado de filtrado */
+	public void limpiarcomponentes() 
+	{
+		comboBox_Centro.setSelectedIndex(-1);
+		comboBox_CargoActual.setSelectedIndex(-1);;
+		comboBox_GrupoOcupacional.setSelectedIndex(-1);;
+
+	}
+
+
+	/* ******************************************************************************************************************************************** */
+	/*                                                      Constructor de la ventana                                                               */
+	/* ******************************************************************************************************************************************** */
 	/**
 	 * Construir la ventana.
 	 */
@@ -443,23 +490,24 @@ public class Vista_Principal extends JFrame implements ActionListener {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
-            public void windowClosing(java.awt.event.WindowEvent evt) {
+            public void windowClosing(java.awt.event.WindowEvent evt) 
+            {
+            //Acciones al cerrar la ventana	
                c.EliminarBC();
             }
             
             @Override
-            public void windowOpened(java.awt.event.WindowEvent e){
-            	   //Realizas lo que quieras
+            public void windowOpened(java.awt.event.WindowEvent e)
+            {
+            //Acciones al cargar la ventana
+            	c.IniciarMI();
             	c.PruebaConexion();
     			//MostrarPerfil(c.PerfilSeleccionado("8-333-3333"));
     			DefaultTableModel modelo_tabla = new DefaultTableModel();
-    			modelo_tabla.addColumn("Nombre");
-    			lista_perfiles.setModel(modelo_tabla);
     			c.ObtenerPerfiles(modelo_tabla);
+    			CargarPerfiles(modelo_tabla);
     			
-    			
-    			panel_lista_perfiles.repaint();
-            	  }
+            }
         });
 		
 		setBounds(100, 100, 802, 431);
@@ -470,23 +518,22 @@ public class Vista_Principal extends JFrame implements ActionListener {
 		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
 		
-		c.IniciarMI();
+		
 		InicializarBarraMenu(contentPane);
-		InicializarPaneles(contentPane);
-		
-		
-		
-		
+		InicializarPaneles(contentPane);	
 	}
 	
+	
+	
 	/* ******************************************************************************************************************************************** */
-	/* Eventos de los botones */
- 
+	/*                                                       Eventos de los botones                                                                 */
+	/* ******************************************************************************************************************************************** */
+	
 	@Override
 	public void actionPerformed(ActionEvent e) 
 	{
-    	String aux="";
-		
+		/* ********************************************************************************************************************************************************************************** */
+		/* controlar checkbox simultaneos */
         if(chckbx_Centro.isSelected()){
         	
             chckbx_Cargo.setEnabled(false);
@@ -536,7 +583,7 @@ public class Vista_Principal extends JFrame implements ActionListener {
         	textField_Edad.setEnabled(false);
         }
         else {
-        	limpiarLista();
+     
         	limpiarcomponentes();
             chckbx_Centro.setEnabled(true);
             chckbx_Cargo.setEnabled(true);
@@ -548,12 +595,16 @@ public class Vista_Principal extends JFrame implements ActionListener {
 		{
 			abrirFiltradoAvanzado();
 		}
+		if(e.getSource()==manuales)
+		{
+			abrirManuales();
+		}
 		
 		/* ********************************************************************************************************************************************************************************** */
 		/* Filtrar por centro regional */
 		if(e.getSource()==btn_busqueda && chckbx_Centro.isSelected() &&!comboBox_Centro.getSelectedItem().toString().equals(null))
 		{
-			aux= comboBox_Centro.getSelectedItem().toString();
+			
 			System.out.println(comboBox_Centro.getSelectedItem().toString());
 			chckbx_Centro.setSelected(false);
 			chckbx_Cargo.setSelected(false);
@@ -565,15 +616,12 @@ public class Vista_Principal extends JFrame implements ActionListener {
             chckbx_grupo.setEnabled(true);
             checkBox_Edad.setEnabled(true);
             
-           
-		
 			DefaultTableModel modelo_tabla = new DefaultTableModel();
-			c.ObtenerPerfilesCentroRegional(modelo_tabla, aux);
+			c.ObtenerPerfilesCentroRegional(modelo_tabla, comboBox_Centro.getSelectedItem().toString());
 			CargarPerfiles(modelo_tabla);
-			
 			limpiarcomponentes();
-			aux="";
 		}
+		
 		/* ********************************************************************************************************************************************************************************** */
 		/* Filtrar por area laboral */
 		if(e.getSource()==btn_busqueda && chckbx_grupo.isSelected() &&!comboBox_GrupoOcupacional.getSelectedItem().toString().equals(null))
@@ -589,11 +637,11 @@ public class Vista_Principal extends JFrame implements ActionListener {
             chckbx_grupo.setEnabled(true);
             checkBox_Edad.setEnabled(true);
             
-           
 			DefaultTableModel modelo_tabla = new DefaultTableModel();
 			c.ObtenerPerfilesAreaLaboral(modelo_tabla, comboBox_GrupoOcupacional.getSelectedItem().toString());
 			System.out.println(comboBox_GrupoOcupacional.getSelectedItem().toString());
 			CargarPerfiles(modelo_tabla);
+			limpiarcomponentes();
 		}
 		
 		/* ********************************************************************************************************************************************************************************** */
@@ -613,50 +661,7 @@ public class Vista_Principal extends JFrame implements ActionListener {
 				DefaultTableModel modelo_tabla = new DefaultTableModel();
 	    		c.ObtenerPerfilesEdad(modelo_tabla, Integer.parseInt(textField_Edad.getText().toString()));
 	    		CargarPerfiles(modelo_tabla);
-					
+	    		limpiarcomponentes();	
 			}
-				
-							
-		
-
-	}
-
-	/* ******************************************************************************************************************************************** */
-	/* Metodo para crear  la ventana de filtrado avanzado */
-	public void crearVentanaFiltradoAvanzado()
-	{
-		try {
-			 ventanaFiltrado = new Vista_Filtrado();
-			
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
-	}
-	
-	/* ******************************************************************************************************************************************** */
-	/*  Metodo para mostrar la ventana de filtrado avanzado */
-	public void abrirFiltradoAvanzado()
-	{
-		ventanaFiltrado.setVisible(true);
-	}
-	
-	public void limpiarLista()
-	{
-		elementos_lista.clear();
-		/*
-		int index = 0;
-		while(index < elementos_lista.size())
-		{
-			elementos_lista.remove(index);
-			index ++;
-		}
-			*/
-	}
-	
-	public void limpiarcomponentes() {
-		comboBox_Centro.setSelectedIndex(-1);
-		comboBox_CargoActual.setSelectedIndex(-1);;
-		comboBox_GrupoOcupacional.setSelectedIndex(-1);;
-
 	}
 }

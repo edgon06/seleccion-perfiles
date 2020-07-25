@@ -17,26 +17,12 @@ public class Controlador
 {
 	private Motor_Inferencia MI = new Motor_Inferencia();
 	
-	
 	/* ******************************************************************************************************************************************** */
+	/* Metodos para solicitar los perfiles al motor de inferencia y añadirlos al panel de lista de perfiles */
 	
-	/* Debe solicitar los perfiles al motor de inferencia	 */
 	public void ObtenerPerfiles(DefaultTableModel modelo_tabla)
 	{
-		Iterator p;
-		String [] datos = new String[1];
-		p = MI.getPerfiles();
-		while(p.hasNext())
-		{
-			
-			Empleado o = (Empleado) p.next();
-			datos[0] = o.getNombre() +" "+ o.getApellido();
-			System.out.println(datos[0]);
-			System.out.println(o.getIndice_tabla());
-			modelo_tabla.addRow(datos);
-			
-			
-		}
+		MI.getPerfiles(modelo_tabla);
 	}
 	
 	public void ObtenerPerfilesEdad(DefaultTableModel modelo_tabla, int Edad )
@@ -46,13 +32,17 @@ public class Controlador
 	
 	public void ObtenerPerfilesCentroRegional(DefaultTableModel modelo_tabla, String Centro_regional )
 	{
-		MI.FiltrarPerfilesCentroRegional(Centro_regional, modelo_tabla);
-		
+		MI.FiltrarPerfilesCentroRegional(Centro_regional, modelo_tabla);	
 	}
 	
 	public void ObtenerPerfilesAreaLaboral(DefaultTableModel modelo_tabla, String Area_laboral )
 	{
 		MI.FiltrarPerfilesAreaLaboral(Area_laboral, modelo_tabla);
+	}
+	
+	public void ObtenerPerfilesCargo(DefaultTableModel modelo_tabla, String Cargo)
+	{
+		MI.FiltrarPerfilesCargo(Cargo, modelo_tabla);
 	}
 	
 	/* ******************************************************************************************************************************************** */
@@ -66,31 +56,26 @@ public class Controlador
 	}
 
 	/* ******************************************************************************************************************************************** */
-	/* Propiedades de la clase */
-	/*
-	 * Debe tener un metodo para enviar los parametros de filtrado al motor de inferencia 
-	 * que retorne una lista con los perfiles que cumplan dichos parametros */
+	/*                                                      Metodos de Inicializacion                                                               */
+	/* ******************************************************************************************************************************************** */
 	
-	public void FiltrarPerfiles()
-	{
-		
-	}
-	
+	/* Metodo para lenar ComboBoxes*/
 	public void LlenarComboBoxes(JComboBox centros, JComboBox cargos, JComboBox grupos_ocupacionales)
 	{
+	/* Llenar ComboBox de Centros Regionales */
 		centros.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] {null, "Azuero", "Bocas del Toro","Chiriqui","Cocle","Colon","Panama","Panama Oeste","Tocumen","Veraguas" }));
 		
 		ConectorSQL conector = new ConectorSQL();
 		Connection conexion= conector.getConexion("UTP_empleados", "root", "");
 		
-		/* Llenar ComboBox de Cargos */
+	/* Llenar ComboBox de Cargos */
 		DefaultComboBoxModel<String> modelo_cargos = new javax.swing.DefaultComboBoxModel<String>();
 		String cargo;
 		try{
-			modelo_cargos.addElement(null);
 			Statement st2 = conexion.createStatement();
 			ResultSet CAR = st2.executeQuery("SELECT DISTINCT Nombre FROM Cargos ORDER BY Nombre");
 			try {
+				modelo_cargos.addElement(null);
 				while(CAR.next()) 
 				{
 					 cargo = CAR.getString(1);
@@ -107,7 +92,7 @@ public class Controlador
 		
 		cargos.setModel(modelo_cargos);
 		
-		/* Llenar ComboBox de Grupo Ocupacional */
+	/* Llenar ComboBox de Grupo Ocupacional */
 		DefaultComboBoxModel<String> modelo_grupos = new javax.swing.DefaultComboBoxModel<String>();
 		String grupo;
 		try {
@@ -139,42 +124,6 @@ public class Controlador
 		grupos_ocupacionales.setModel(modelo_grupos);
 	}
 	
-	/*
-	public void LlenarComboBoxes(JComboBox cargos)
-	{
-		ConectorSQL conector = new ConectorSQL();
-		Connection conexion= conector.getConexion("UTP_empleados", "root", "");
-
-		DefaultComboBoxModel<String> modelo_cargos = new javax.swing.DefaultComboBoxModel<String>();
-		String cargo;
-		try{
-			Statement st2 = conexion.createStatement();
-			ResultSet CAR = st2.executeQuery("SELECT DISTINCT Nombre FROM Cargos ORDER BY Nombre");
-			try {
-				while(CAR.next()) 
-				{
-					 cargo = CAR.getString(1);
-					 modelo_cargos.addElement(cargo);
-				}
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}finally 
-		{
-			try {
-				conexion.close();
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-		cargos.setModel(modelo_cargos);
-	}
-	*/
 	
 	/* ******************************************************************************************************************************************** */
 	/* Metodo para iniciar Motor de Inferencia */

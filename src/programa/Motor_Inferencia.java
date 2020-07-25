@@ -157,17 +157,16 @@ public class Motor_Inferencia
 	{
 		try 
 		{	
-			System.out.println("Hola Mundo");
+			System.out.println("Probando conexion con Prolog...");
 			Query q1 = 
 				    new Query( 
 					"consult", 
 					new Term[] {new Atom(base_conocimiento)} 
 				    );
 			
-			System.out.println( "consult " + (q1.hasSolution() ? "succeeded" : "failed"));
-			
-			
+			System.out.println( "Conection with Prolog Knowledge Base " + (q1.hasSolution() ? "succeeded" : "failed"));
 			Variable X = new Variable("X");
+			
 			Query q2 = 
 					  new Query( 
 					      "empleado", 
@@ -177,8 +176,8 @@ public class Motor_Inferencia
 					      new Atom("63000000 - Sr. Paz"),new Atom("Panama Oeste"),new Atom("Administrador de Soporte Tecnico")} 
 					  );
 			System.out.println( 
-					  "hay solucion? " + 
-					  ( q2.hasSolution() ? "provable" : "not provable" ) 
+					  "Existe un Edwin?: " + 
+					  ( q2.hasSolution() ? "puede ser" : "nope" ) 
 					);	
 			
 			java.util.Map<String,Term>[] solutions = q2.allSolutions();
@@ -193,8 +192,10 @@ public class Motor_Inferencia
 				
 	}
 	
+	
 	/* ******************************************************************************************************************************************** */
 	/* Metodo para obtener un perfil con la cedula dada */
+	
 	public Empleado getPerfil(String Cedula)
 	{
 		Empleado e = new Empleado();
@@ -250,10 +251,8 @@ public class Motor_Inferencia
 	/* ******************************************************************************************************************************************** */
 	/* Metodo para obtener todos los perfiles */
 	
-	public Iterator getPerfiles()
-	{
-		Iterator perfiles = null;
-		
+	public void getPerfiles(DefaultTableModel modelo_tabla)
+	{	
 		Query q1 = 
 			    new Query( 
 				"consult", 
@@ -278,36 +277,30 @@ public class Motor_Inferencia
 				      "empleado", 
 				      new Term[] { CIP, Nombre , Apellido, Telefono , Cargo, Sexo, Fecha_nacimiento, Formacion_academica, Experiencia, Referencias, Centro_Regional, Pruebas_psicotecnicas } 
 				  );
+		modelo_tabla.addColumn("Nombre");
+		modelo_tabla.addColumn("CIP");
+		String[] datos = new String[2];
 		
-		//if(q2.hasSolution())
-		//{			
-			/*java.util.Map<String,Term>[] solutions = q2.allSolutions();
-			ArrayList<Empleado> p = new ArrayList<Empleado>();
+		if(q2.hasSolution())
+		{			
+			java.util.Map<String,Term>[] solutions = q2.allSolutions();
 			for ( int i=0 ; i < solutions.length ; i++ ) 
 			{ 
-				p.add(new Empleado(i,solutions[i].get("CIP").toString(),solutions[i].get("Nombre").toString(),solutions[i].get("Apellido").toString()));
-				
-			}	
-			int i=0;
-			perfiles = p.iterator();*/
-			int i=0;
-			ArrayList<Empleado> p = new ArrayList<Empleado>();
-			java.util.Map<String,Term> solutions;
-			while ( q2.hasMoreSolutions())
-			{ 
-					solutions = q2.nextSolution();
-					
-					p.add(i,new Empleado(solutions.get("CIP").toString(),solutions.get("Nombre").toString(),solutions.get("Apellido").toString()));	
-			i++;
-			}	
-			perfiles = p.iterator();
-		/*}
-		else
-		{
-			JOptionPane.showMessageDialog(null, "Error en el metodo getPerfiles ");
-		}*/
+				datos[0] = solutions[i].get("Nombre").toString() + " " + solutions[i].get("Apellido").toString();
+				datos[1] = solutions[i].get("CIP").toString();
+				modelo_tabla.addRow(datos);
+			}
+		}
+	}
+	
+	
+	/* ******************************************************************************************************************************************** */
+	/* Metodo para obtener perfiles con un cargo dado */
+	
+	public void FiltrarPerfilesCargo(String cargo, DefaultTableModel modelo_tabla) 
+	{
 		
-		return perfiles;
+		
 	}
 	
 	/* ******************************************************************************************************************************************** */
@@ -526,6 +519,8 @@ public class Motor_Inferencia
 		
 		return edad;
 	}
+
+	
 	
 		
 }
